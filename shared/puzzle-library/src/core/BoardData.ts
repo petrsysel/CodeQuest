@@ -1,0 +1,11 @@
+import { IBoardData } from "./IBoardData";
+
+export class BoardData implements IBoardData{
+    width: number;
+    height: number;
+
+    constructor(width:number, height: number){
+        this.width = width
+        this.height = height
+    }
+}

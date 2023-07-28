@@ -6,18 +6,10 @@
       "forceConsistentCasingInFileNames": true,
       "strict": true,
       "skipLibCheck": true,
-      "outDir": "./dist",
-      "rootDir": "./src",
       "declaration": true,
       "composite": true,
-      "paths": {
-        "@utils":["../utils/src/index"]
-      }
-    },
-    "references": [
-      {
-        "path": "../utils/"
-      }
-    ]
-}
+      "outDir": "./dist",
+      "rootDir": "./src"
+    }
+  }
   
