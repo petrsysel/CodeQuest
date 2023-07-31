@@ -5,8 +5,10 @@ import { DefaultBoardData } from "./DefaultBoardData";
 
 export class PuzzleSettings implements IPuzzleSettings{
     boardData: IBoardData;
+    blockLimit: number;
 
-    constructor(){
-        this.boardData = new DefaultBoardData()
+    constructor(boardData: IBoardData, blockLimit: number){
+        this.boardData = boardData
+        this.blockLimit = blockLimit
     }
 }

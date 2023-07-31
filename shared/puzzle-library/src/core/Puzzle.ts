@@ -6,13 +6,15 @@ import { PuzzleObjectContainer } from "./PuzzleObjectContainer";
 import { PuzzleSettings } from "./PuzzleSettings";
 
 export class Puzzle implements IPuzzle{
+    name: string
     raw: IRawPuzzle
-    settings: IPuzzleSettings;
+    settings: PuzzleSettings;
     objects: IPuzzleObjectContainer;
 
-    constructor(raw: IRawPuzzle){
+    constructor(name: string, raw: IRawPuzzle, setting: PuzzleSettings, objects: IPuzzleObjectContainer){
+        this.name = name
         this.raw = raw
-        this.settings = new PuzzleSettings()
-        this.objects = new PuzzleObjectContainer()
+        this.settings = setting
+        this.objects = objects
     }
 }

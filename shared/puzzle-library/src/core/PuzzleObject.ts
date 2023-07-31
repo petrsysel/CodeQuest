@@ -8,8 +8,8 @@ export class PuzzleObject implements IPuzzleObject{
     data: IPuzzleObjectData;
     instructions: ICodeInstructionContainer;
 
-    constructor(data: IPuzzleObjectData){
+    constructor(data: IPuzzleObjectData, instructions: CodeInstructionContainer){
         this.data = data
-        this.instructions = new CodeInstructionContainer()
+        this.instructions = instructions
     }
 }

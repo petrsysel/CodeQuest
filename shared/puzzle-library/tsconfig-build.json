@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "paths": {
+      // "@utils":["../utils/src/index"]
+    }
+  },
+  "extends":"./tsconfig.json",
+  "exclude": [
+    "tests",
+    // "../utils/src"
+  ]
+}
+  
