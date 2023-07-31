@@ -1,4 +1,4 @@
-import { Vector2 } from "@utils";
+import { Vector2 } from "utils/src";
 import { IPuzzleObjectData } from "./IPuzzleObjectData";
 
 export class PuzzleObjectData implements IPuzzleObjectData{
