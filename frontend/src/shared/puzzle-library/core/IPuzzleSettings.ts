@@ -1,0 +1,3 @@
+interface IPuzzleSettings{
+    boardData: IBoardData
+}
