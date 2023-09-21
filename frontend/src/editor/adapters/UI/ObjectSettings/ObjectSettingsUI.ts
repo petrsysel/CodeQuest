@@ -1,13 +1,67 @@
+const objectSettingsTemplate = /*html*/`
+    <div class="object-fields">
+        <input type="text" id="name-element" class="object-name-input">
+        <table>
+            <tr>
+                <td>
+                    Vrstva: 
+                </td>
+                <td>
+                    <input type="number" id="layer-input-element">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Upravitelný hráčem: 
+                </td>
+                <td>
+                    <input type="checkbox" id="player-edit-input-element">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pozice X: 
+                </td>
+                <td>
+                    <input type="number" id="position-x-input-element">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pozice Y: 
+                </td>
+                <td>
+                    <input type="number" id="position-y-input-element">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Směr: 
+                </td>
+                <td>
+                    <select id="direction-input-element">
+                        <option value ="up" id="up-option-element">nahoru</option>
+                        <option value ="right" id="right-option-element">vpravo</option>
+                        <option value ="down" id="down-option-element">dolu</option>
+                        <option value ="left" id="left-option-element">vlevo</option>
+                    <select>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="costume-preview" id="costume-preview-element">
+    </div>
+`
+
 class ObjectSettingsUI implements IObjectSettingsUI{
     private _eventBehaviour: EventBehaviour<ObjectSettingsUIEvents, ObjectSettingsUIData>
     private _puzzleSettingsElement: HTMLElement
 
-    private _fieldsElement: HTMLElement
     private _costumeElement: HTMLElement
 
     private _nameElement: HTMLInputElement
-    private _settingsTableElement: HTMLTableElement
-
+    
     private _layerValueElement: HTMLInputElement
     private _playerEditValueElement: HTMLInputElement
     private _positionXValueElement: HTMLInputElement
@@ -25,81 +79,22 @@ class ObjectSettingsUI implements IObjectSettingsUI{
         this._eventBehaviour = new EventBehaviour()
         this._puzzleSettingsElement = document.getElementById('object-settings') as HTMLElement
 
-        this._fieldsElement = document.createElement('div')
-        this._fieldsElement.classList.add('object-fields')
-        this._costumeElement = document.createElement('div')
-        this._costumeElement.classList.add('costume-preview')
+        Templater.inject(this._puzzleSettingsElement, objectSettingsTemplate)
 
-        this._puzzleSettingsElement.appendChild(this._fieldsElement)
-        this._puzzleSettingsElement.appendChild(this._costumeElement)
+        this._costumeElement = document.getElementById('costume-preview-element') as HTMLElement
+        this._nameElement = document.getElementById('name-element') as HTMLInputElement
+    
+        this._layerValueElement = document.getElementById('layer-input-element') as HTMLInputElement
+        this._playerEditValueElement = document.getElementById('player-edit-input-element') as HTMLInputElement
+        this._positionXValueElement = document.getElementById('position-x-input-element') as HTMLInputElement
+        this._positionYValueElement = document.getElementById('position-y-input-element') as HTMLInputElement
 
-        this._nameElement = document.createElement('input')
-        this._nameElement.type = 'text'
-        this._nameElement.classList.add('object-name-input')
-
-        this._settingsTableElement = document.createElement('table')
-        this._layerValueElement = document.createElement('input')
-        this._layerValueElement.type = 'number'
-        this._playerEditValueElement = document.createElement('input')
-        this._playerEditValueElement.type = 'checkbox'
-        this._positionXValueElement = document.createElement('input')
-        this._positionXValueElement.type = 'number'
-        this._positionYValueElement = document.createElement('input')
-        this._positionYValueElement.type = 'number'
-        this._directionValueElement = document.createElement('select')
+        this._directionValueElement = document.getElementById('direction-input-element') as HTMLSelectElement
+        this._directionUp = document.getElementById('up-option-element') as HTMLOptionElement
+        this._directionRight = document.getElementById('right-option-element') as HTMLOptionElement
+        this._directionDown = document.getElementById('down-option-element') as HTMLOptionElement
+        this._directionLeft = document.getElementById('left-option-element') as HTMLOptionElement
         
-        this._directionUp = document.createElement('option')
-        this._directionUp.innerHTML = "nahoru"
-        this._directionRight = document.createElement('option')
-        this._directionRight.innerHTML = "vpravo"
-        this._directionDown = document.createElement('option')
-        this._directionDown.innerHTML = "dolu"
-        this._directionLeft = document.createElement('option')
-        this._directionLeft.innerHTML = "vlevo"
-        
-        this._directionValueElement.options.add(this._directionRight)
-        this._directionValueElement.options.add(this._directionDown)
-        this._directionValueElement.options.add(this._directionLeft)
-        this._directionValueElement.options.add(this._directionUp)
-        
-        let layerRow = document.createElement('tr')
-        let layerLabel = document.createElement('td')
-        layerLabel.innerHTML = "Vrstva"
-        layerRow.appendChild(layerLabel)
-        layerRow.appendChild(this._layerValueElement)
-
-        let playerEditRow = document.createElement('tr')
-        let playerEditLabel = document.createElement('td')
-        playerEditLabel.innerHTML = "Upravitelný hráčem"
-        playerEditRow.appendChild(playerEditLabel)
-        playerEditRow.appendChild(this._playerEditValueElement)
-
-        let positionXRow = document.createElement('tr')
-        let positionXLabel = document.createElement('td')
-        positionXLabel.innerHTML = "Pozice X"
-        positionXRow.appendChild(positionXLabel)
-        positionXRow.appendChild(this._positionXValueElement)
-
-        let positionYRow = document.createElement('tr')
-        let positionYLabel = document.createElement('td')
-        positionYLabel.innerHTML = "Pozice Y"
-        positionYRow.appendChild(positionYLabel)
-        positionYRow.appendChild(this._positionYValueElement)
-
-        let directionRow = document.createElement('tr')
-        let directionLabel = document.createElement('td')
-        directionLabel.innerHTML = "Směr"
-        directionRow.appendChild(directionLabel)
-        directionRow.appendChild(this._directionValueElement)
-
-        this._settingsTableElement.appendChild(layerRow)
-        this._settingsTableElement.appendChild(playerEditRow)
-        this._settingsTableElement.appendChild(positionXRow)
-        this._settingsTableElement.appendChild(positionYRow)
-        this._settingsTableElement.appendChild(directionRow)
-
-        this._fieldsElement.appendChild(this._nameElement)
-        this._fieldsElement.appendChild(this._settingsTableElement)
 
         this._nameElement.addEventListener('change', this._fieldChanged.bind(this))
         this._layerValueElement.addEventListener('change', this._fieldChanged.bind(this))

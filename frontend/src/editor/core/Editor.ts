@@ -32,6 +32,8 @@ class Editor{
             objectPanelUI.render(this._mockupPuzzle.getObjectList())
             if(this._selectedObjectId)objectPanelUI.setSelected(this._selectedObjectId)
 
+            let object = this._mockupPuzzle.getObject(id)
+            objectSettingsUI.render(object)
             
             costumePickerUI.render(this._mockupCostumes)
         })
