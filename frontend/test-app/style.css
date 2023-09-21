@@ -1,0 +1,161 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+#navbar{
+    /* position: ; */
+    top:0;
+    width: 100%;
+    height: 60px;
+}
+#editor{
+    display: grid;
+    grid-template-columns: 1fr 1fr 250px;
+    grid-template-rows: 60px 1fr 200px;
+    /* gap: 5px; */
+    height: calc(100vh - 60px);
+    grid-template-areas: 
+    'puzzle-settings puzzle-settings object-panel'
+    'code-editor board object-panel'
+    'code-editor object-settings object-panel';
+    margin: 0;
+    padding: 0;
+}
+.grid-item{
+    background-color: rgb(248, 129, 129);
+    /* margin: 5px; */
+    border: 1px solid black;
+}
+.grid-puzzle-settings{
+    grid-area: puzzle-settings;
+}
+.grid-code-editor{
+    grid-area: code-editor;
+}
+.grid-board{
+    grid-area: board;
+}
+.grid-object-settings{
+    grid-area: object-settings;
+    background-color: rgb(255, 218, 163);
+    display: flex;
+    justify-content: space-between;
+}
+.grid-object-panel{
+    grid-area: object-panel;
+    background-color: rgb(194, 153, 153);
+    /* overflow-y: scroll; */
+    user-select: none;
+}
+
+/* ========================= OBJECT PANEL ============================== */
+
+.object-panel-controls{
+    background-color: rgb(251, 172, 172);
+    display: inline-flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.object-table{
+    width: 100%;
+}
+.object-table tr{
+    cursor: pointer;
+}
+.object-table tr:hover{
+    background-color: gray;
+}
+.selected-object{
+    background-color: rgb(175, 108, 108);
+    
+}
+
+/* ============================ OBJECT SETTINGS ================================ */
+
+.object-fields{
+    min-width: 200px;
+    padding: 0.4em;
+}
+.object-fields table{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.object-fields input{
+    background-color: transparent;
+    border: 1px rgb(160, 160, 160) solid;
+    /* border: none; */
+    /* outline: none; */
+}
+/* .object-fields table input{
+    
+} */
+.costume-preview{
+    background-color: yellow;
+    width: 200px;
+    height: 100%;
+}
+.object-name-input{
+    font-size: 1.2em;
+    width: 100%;
+    margin-bottom: 0.2em;
+}
+
+.object-fields select{
+    background-color: transparent;
+    border: 1px rgb(160, 160, 160) solid;
+}
+
+.costume-picker-window{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.573);
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+}
+.costume-picker-panel{
+    
+    width: calc(100% - 20em);
+    height: calc(100% - 10em);
+    background-color:rgb(205, 205, 210) ;
+    margin: 5em 10em;
+}
+.costume-picker-control-bar{
+    /* width: 100%; */
+    position: relative;
+    display: flex;
+    /* justify-content:space-between; */
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    background-color: rgb(89, 156, 156);
+    font-size: 1.2em;
+    height: 3em;
+}
+.costume-picker-control-bar-item{
+    flex: 1;
+    /* background-color: orange; */
+    height: auto;
+    text-align: center;
+}
+
+.costume-picker-control-bar-item-close{
+    text-align: right;
+}
+.costume-picker-control-bar-item-filter{
+    text-align: left;
+}
+.costume-picker-costume-container{
+    overflow: scroll;
+    height: calc(100% - 3.7em);
+    display: block;
+}
+.costume-picker-costume-container img{
+    width: 15em;
+}
+a{
+    cursor: pointer;
+}
