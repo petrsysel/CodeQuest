@@ -2,15 +2,15 @@ const CPTemplate = /*html*/`
 <div id="cp-window-element" class="costume-picker-window">
     <div class="costume-picker-panel">
         <div class="costume-picker-control-bar">
-            <div class="costume-picker-control-bar-item">
+            <div class="costume-picker-control-bar-item costume-picker-label">
                 <span>
                     Vyber vzhled objektu
                 </span>
             </div>
             <div class="costume-picker-control-bar-item">
-                Vyhledat: <input type="text" class="costume-picker-control-bar-item-filter" id="cp-filter-input">
+                Vyhledat: <input type="text" class="costume-picker-filter" id="cp-filter-input">
             </div>
-            <div class="costume-picker-control-bar-item">
+            <div class="costume-picker-control-bar-item costume-picker-close">
                 <a hfref="javascript:void(0)"  id="cp-close-button"><img src="/frontend/images/icons/close.png"></a>
             </div>
         </div>
