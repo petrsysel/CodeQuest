@@ -1,9 +1,23 @@
+const objectPanelTemplate = /*html*/`
+    <div class="object-panel-controls">
+        <a href="javascript:void(0)" id="add-object-button-element"><img src="/frontend/images/icons/add.png"></a>
+        <a href="javascript:void(0)" id="delete-object-button-element"><img src="/frontend/images/icons/delete.png"></a>
+    </div>
+
+    <div>
+        <div>
+            <table class="object-table" id="object-table-element">
+            </table>
+        </div>
+    </div>
+`
+
 class ObjectPanelUI implements IObjectPanelUI{
     private _panelElement: HTMLElement
-    private _objectListElement: HTMLElement
+    // private _objectListElement: HTMLElement
     private _objectTableElement: HTMLElement
 
-    private _controlPanel: HTMLElement
+    // private _controlPanel: HTMLElement
     private _addObjectButton: HTMLAnchorElement
     private _deleteObjectButton: HTMLAnchorElement
 
@@ -12,22 +26,28 @@ class ObjectPanelUI implements IObjectPanelUI{
     constructor(){
         this._eventBehaviour = new EventBehaviour()
         this._panelElement = document.getElementById('object-panel') as HTMLElement
-        this._controlPanel = document.createElement('div')
-        this._controlPanel.classList.add('object-panel-controls')
-        this._addObjectButton = Utility.createHTMLIconButton("/frontend/images/icons/add.png")
 
-        this._deleteObjectButton = Utility.createHTMLIconButton("/frontend/images/icons/delete.png")
+        Teplater.inject(this._panelElement, objectPanelTemplate)
+
+        this._objectTableElement = document.getElementById('object-table-element') as HTMLAnchorElement
+        this._addObjectButton = document.getElementById('add-object-button-element') as HTMLAnchorElement
+        this._deleteObjectButton = document.getElementById('delete-object-button-element') as HTMLAnchorElement
+        // this._controlPanel = document.createElement('div')
+        // this._controlPanel.classList.add('object-panel-controls')
+        // this._addObjectButton = Utility.createHTMLIconButton("/frontend/images/icons/add.png")
+
+        // this._deleteObjectButton = Utility.createHTMLIconButton("/frontend/images/icons/delete.png")
         
-        this._objectListElement = document.createElement('div')
-        this._objectTableElement = document.createElement('table')
-        this._objectTableElement.classList.add('object-table')
+        // this._objectListElement = document.createElement('div')
+        // this._objectTableElement = document.createElement('table')
+        // this._objectTableElement.classList.add('object-table')
 
-        this._controlPanel.appendChild(this._addObjectButton)
-        this._controlPanel.appendChild(this._deleteObjectButton)
+        // this._controlPanel.appendChild(this._addObjectButton)
+        // this._controlPanel.appendChild(this._deleteObjectButton)
 
-        this._panelElement.appendChild(this._controlPanel)
-        this._panelElement.appendChild(this._objectListElement)
-        this._objectListElement.appendChild(this._objectTableElement)
+        // this._panelElement.appendChild(this._controlPanel)
+        // this._panelElement.appendChild(this._objectListElement)
+        // this._objectListElement.appendChild(this._objectTableElement)
 
         this._addObjectButton.addEventListener('click', (ev) => {
             this._emit('object-added', null)
