@@ -36,7 +36,7 @@ class CostumePickerUI implements ICostumePickerUI {
         placeHolder.id = "cp-place-holder"
         body.appendChild(placeHolder)
 
-        Teplater.inject( "cp-place-holder", CPTemplate)
+        Templater.inject( "cp-place-holder", CPTemplate)
 
         this._windowElement = document.getElementById("cp-window-element") as HTMLElement
         this._filterInput = document.getElementById("cp-filer-input") as HTMLInputElement

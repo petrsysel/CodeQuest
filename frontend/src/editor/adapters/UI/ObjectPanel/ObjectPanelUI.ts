@@ -27,7 +27,7 @@ class ObjectPanelUI implements IObjectPanelUI{
         this._eventBehaviour = new EventBehaviour()
         this._panelElement = document.getElementById('object-panel') as HTMLElement
 
-        Teplater.inject(this._panelElement, objectPanelTemplate)
+        Templater.inject(this._panelElement, objectPanelTemplate)
 
         this._objectTableElement = document.getElementById('object-table-element') as HTMLAnchorElement
         this._addObjectButton = document.getElementById('add-object-button-element') as HTMLAnchorElement
