@@ -28,3 +28,9 @@ type PuzzleSettings = {
     blocks:string[]
     sideWidth: number
 }
+
+type CostumeData = {
+    name: string,
+    path: string,
+    tags: string[]
+}
