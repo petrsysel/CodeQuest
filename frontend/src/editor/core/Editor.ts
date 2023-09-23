@@ -16,12 +16,15 @@ class Editor{
         this._mockupPuzzle = new Puzzle()
 
         codeUI.on('code-change', (data) => {
-            console.log("Let's save code!")
+            this._mockupPuzzle.changeObjectCode(this._selectedObjectId, data)
+            console.log(data)
+            objectPanelUI.render(this._mockupPuzzle.getObjectList())
         })
 
         objectPanelUI.on('object-added', (data) => {
             let id = this._mockupPuzzle.addObject()
             this._selectedObjectId = id
+            codeUI.clearWorkspace()
             objectPanelUI.render(this._mockupPuzzle.getObjectList())
             if(this._selectedObjectId)objectPanelUI.setSelected(this._selectedObjectId)
 
@@ -32,6 +35,7 @@ class Editor{
         })
         objectPanelUI.on('object-removed', (data) => {
             if(this._selectedObjectId)this._mockupPuzzle.removeObject(this._selectedObjectId)
+            codeUI.clearWorkspace()
             objectPanelUI.render(this._mockupPuzzle.getObjectList())
             objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
         })
@@ -42,6 +46,11 @@ class Editor{
             if(this._selectedObjectId)objectPanelUI.setSelected(this._selectedObjectId)
 
             let object = this._mockupPuzzle.getObject(id)
+            codeUI.clearWorkspace()
+            let code = this._mockupPuzzle.getObjectCode(id)
+            if(code){
+                codeUI.loadWorkspace(code)
+            }
             objectSettingsUI.render(object)
         })
 

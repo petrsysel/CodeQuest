@@ -60,7 +60,7 @@ class ObjectPanelUI implements IObjectPanelUI{
             row.appendChild(inGameEdit)
             row.appendChild(objectName)
 
-            haveCode.innerHTML = object.settings.code ? "X" : ""
+            haveCode.innerHTML = object.settings.code.trim() != "{}"&& object.settings.code ? "X" : ""
             inGameEdit.innerHTML = object.settings.playerEdit ? "X" : ""
             objectName.innerHTML = object.settings.name
             return row

@@ -8,4 +8,6 @@ interface IPuzzle{
     getObjectList(): PuzzleObject[]
     getObject(id: PuzzleObjectId | undefined): PuzzleObject | undefined
     changeObjectCostume(id: PuzzleObjectId, costume: CostumeData): boolean
+    changeObjectCode(id: PuzzleObjectId | undefined, data: CodeEditorWorkspace): boolean
+    getObjectCode(id: PuzzleObjectId|undefined): CodeEditorWorkspace | undefined
 }

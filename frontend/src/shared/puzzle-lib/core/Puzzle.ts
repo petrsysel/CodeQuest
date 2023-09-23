@@ -58,4 +58,14 @@ class Puzzle implements IPuzzle{
         else return false
         return true
     }
+    changeObjectCode(id: string|undefined, data: string): boolean {
+        let obj = this.getObject(id)
+        if(obj) obj.settings.code = data
+        else return false
+        return true
+    }
+    getObjectCode(id: string|undefined): string | undefined{
+        let obj = this.getObject(id)
+        if(obj) return obj.settings.code
+    }
 }

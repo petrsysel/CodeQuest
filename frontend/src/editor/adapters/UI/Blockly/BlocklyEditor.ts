@@ -5,13 +5,13 @@ class BlocklyEditor implements ICodeEditorUI {
     this._eventBehaviour = new EventBehaviour()
     this._setupBlockly()
   }
-  getWorkspace(): string {
+  getWorkspace(): CodeEditorWorkspace {
     // Saves only the variables information for the workspace.
     const save = Blockly.serialization.workspaces.save(this._workspace)
     let jsonString = JSON.stringify(save)
     return jsonString
   }
-  loadWorkspace(workspace: string): boolean {
+  loadWorkspace(workspace: CodeEditorWorkspace): boolean {
     try {
       let save = JSON.parse(workspace)
       Blockly.serialization.workspaces.load(save, this._workspace)
@@ -84,7 +84,7 @@ class BlocklyEditor implements ICodeEditorUI {
 
     this._workspace = Blockly.inject('blocklyDiv', options);
     this._workspace.addChangeListener((event: any) => {
-      if (event.type == 'move' || event.type == 'change') this._emit('code-change', event)
+      if (event.type == 'move' || event.type == 'change') this._emit('code-change', this.getWorkspace())
       // console.log(event.type)
     })
   }
@@ -95,5 +95,8 @@ class BlocklyEditor implements ICodeEditorUI {
 
   on(event: CodeEditorUIEvents, callback: (data: CodeEditorUIData) => void){
     this._eventBehaviour.on(event, callback)
+  }
+  clearWorkspace(): void {
+    this.loadWorkspace("{}")
   }
 }
