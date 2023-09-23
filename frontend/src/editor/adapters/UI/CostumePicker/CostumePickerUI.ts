@@ -47,17 +47,35 @@ class CostumePickerUI implements ICostumePickerUI {
 
         this._close()
     }
-    render(images: string[]): void {
-        this._windowElement.style.display = "block"
-        images.forEach(costumeUrl => {
-            let costumeElement = document.createElement('img')
-            costumeElement.src = costumeUrl
+    render(costumes: CostumeData[]): void {
+        this._open()
+        this._costumeContainer.innerHTML = ""
+        costumes.forEach(costume => {
+            let costumeTemplate = /*html*/`
+                <img src="${costume.path}">
+                <span>${costume.name}</span>
+            `
+            let costumeElement = document.createElement('div')
+            costumeElement.innerHTML = costumeTemplate
+            costumeElement.classList.add('costume-list-item')
+            costumeElement.addEventListener('click',() => {
+                this._selectionHandler(costume)
+            })
+            
             this._costumeContainer.appendChild(costumeElement)
         })
     }
 
+    private _selectionHandler(costume: CostumeData){
+        this._close()
+        this._emit('costume-pick', costume)
+    }
+
     private _close(){
         this._windowElement.style.display = "none"
+    }
+    private _open(){
+        this._windowElement.style.display = "block"
     }
 
     private _emit(event: CostumePickerEvent, data: CostumePickerData){

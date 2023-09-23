@@ -1,9 +1,7 @@
 type CostumePickerEvent = "costume-pick"
-type CostumePickerData = {
-    costumePath:string
-}
+type CostumePickerData = CostumeData
 
 interface ICostumePickerUI {
-    render(images:string[]):void
+    render(costumes: CostumeData[]):void
     on(event: CostumePickerEvent, callback:(data: CostumePickerData) => void): void
 }

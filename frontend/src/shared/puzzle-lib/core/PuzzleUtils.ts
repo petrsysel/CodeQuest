@@ -21,10 +21,19 @@ class PuzzleUtils{
                 layer: 1,
                 playerEdit: false,
                 code: "",
-                direction: "right",
+                direction: "down",
                 X: 0,
-                Y: 0
+                Y: 0,
+                costume: this.getDefaultCostume()
             }
         }
+    }
+
+    static getDefaultCostume(): CostumeData{
+        return {
+			name: "Kouzelník",
+			path: "/frontend/costumes/Kouzelník.png",
+			tags: ["fantasy", "kouzelník"]
+		}
     }
 }

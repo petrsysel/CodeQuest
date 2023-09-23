@@ -7,4 +7,5 @@ interface IPuzzle{
     getObjectSettings(id: PuzzleObjectId): PuzzleObjectSettings | undefined
     getObjectList(): PuzzleObject[]
     getObject(id: PuzzleObjectId): PuzzleObject | undefined
+    changeObjectCostume(id: PuzzleObjectId, costume: CostumeData): boolean
 }

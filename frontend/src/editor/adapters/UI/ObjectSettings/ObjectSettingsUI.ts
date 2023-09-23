@@ -12,6 +12,14 @@ const objectSettingsTemplate = /*html*/`
             </tr>
             <tr>
                 <td>
+                    Typ: 
+                </td>
+                <td>
+                    <input type="text" id="type-input-element">
+                </td>
+            </tr>
+            <tr>
+                <td>
                     Upravitelný hráčem: 
                 </td>
                 <td>
@@ -63,6 +71,7 @@ class ObjectSettingsUI implements IObjectSettingsUI{
     private _nameElement: HTMLInputElement
     
     private _layerValueElement: HTMLInputElement
+    private _typeValueElement: HTMLInputElement
     private _playerEditValueElement: HTMLInputElement
     private _positionXValueElement: HTMLInputElement
     private _positionYValueElement: HTMLInputElement
@@ -85,6 +94,7 @@ class ObjectSettingsUI implements IObjectSettingsUI{
         this._nameElement = document.getElementById('name-element') as HTMLInputElement
     
         this._layerValueElement = document.getElementById('layer-input-element') as HTMLInputElement
+        this._typeValueElement = document.getElementById('type-input-element') as HTMLInputElement
         this._playerEditValueElement = document.getElementById('player-edit-input-element') as HTMLInputElement
         this._positionXValueElement = document.getElementById('position-x-input-element') as HTMLInputElement
         this._positionYValueElement = document.getElementById('position-y-input-element') as HTMLInputElement
@@ -113,20 +123,28 @@ class ObjectSettingsUI implements IObjectSettingsUI{
         this._positionXValueElement.value = object.settings.X.toString()
         this._positionYValueElement.value = object.settings.Y.toString()
         
+        let imgRotation = 0
         switch(object.settings.direction){
             case 'up':
                 this._directionUp.selected = true
+                imgRotation = 180
             break
             case 'right':
                 this._directionRight.selected = true
+                imgRotation = -90
             break
             case 'down':
                 this._directionDown.selected = true
+                imgRotation = 0
             break
             case 'left':
                 this._directionLeft.selected = true
+                imgRotation = 90
             break
         }
+
+
+        this._costumeElement.innerHTML = `<img src="${object.settings.costume.path}" style="transform:rotate(${imgRotation}deg)">`
     }
 
     private _fieldChanged(){
@@ -137,8 +155,8 @@ class ObjectSettingsUI implements IObjectSettingsUI{
             code: this._selectedObject?this._selectedObject.settings.code:"",
             direction: this._getSelectedDirection(),
             X: +this._positionXValueElement.value,
-            Y: +this._positionYValueElement.value
-
+            Y: +this._positionYValueElement.value,
+            costume: this._selectedObject?this._selectedObject.settings.costume:PuzzleUtils.getDefaultCostume()
         }
         this._emit('settings-changed', settings)
     }

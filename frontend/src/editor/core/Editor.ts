@@ -1,13 +1,6 @@
 class Editor{
     private _mockupPuzzle: Puzzle
-    private _mockupCostumes = [
-        "/frontend/costumes/Keř 1.png",
-        "/frontend/costumes/Keř 2.png",
-        "/frontend/costumes/Kouzelník s klíčem.png",
-        "/frontend/costumes/Kouzelník s plamenem.png",
-        "/frontend/costumes/Kouzelník.png",
-        "/frontend/costumes/Modrý klíč.png",
-    ]
+    private _mockupCostumes = getMockCostumes()
 
     private _selectedObjectId: PuzzleObjectId | undefined
 
@@ -65,6 +58,13 @@ class Editor{
         })
         objectSettingsUI.on('change-costume-request', () => {
             costumePickerUI.render(this._mockupCostumes)
+        })
+        costumePickerUI.on('costume-pick', (costume) => {
+            console.log(`Změněn kostým: ${costume.name}`)
+            if(!this._selectedObjectId) return
+            this._mockupPuzzle.changeObjectCostume(this._selectedObjectId, costume)
+            let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
+            objectSettingsUI.render(actualObject)
         })
     }
 }

@@ -1,17 +1,17 @@
 function getMockCostumes(): CostumeData[]{
 	return [
 		{
-			name: "Kozelník s klíčem",
+			name: "Kouzelník s klíčem",
 			path: "/frontend/costumes/Kouzelník s klíčem.png",
 			tags: ["fantasy", "kouzelník", "klíč"]
 		},
 		{
-			name: "Kozelník s plamenem",
+			name: "Kouzelník s plamenem",
 			path: "/frontend/costumes/Kouzelník s plamenem.png",
 			tags: ["fantasy", "kouzelník", "oheň", "plamen"]
 		},
 		{
-			name: "Kozelník",
+			name: "Kouzelník",
 			path: "/frontend/costumes/Kouzelník.png",
 			tags: ["fantasy", "kouzelník"]
 		},

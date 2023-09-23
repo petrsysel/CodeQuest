@@ -51,4 +51,11 @@ class Puzzle implements IPuzzle{
         })
         return obj
     }
+
+    changeObjectCostume(id: string, costume: CostumeData): boolean {
+        let obj = this.getObject(id)
+        if(obj) obj.settings.costume = costume
+        else return false
+        return true
+    }
 }

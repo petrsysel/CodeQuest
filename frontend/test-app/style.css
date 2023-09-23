@@ -92,8 +92,12 @@ body{
     
 } */
 .costume-preview{
-    background-color: yellow;
+    /* background-color: yellow; */
     width: 200px;
+    height: 100%;
+    cursor: pointer;
+}
+.costume-preview img {
     height: 100%;
 }
 .object-name-input{
@@ -168,7 +172,13 @@ body{
     flex: 1;
 }
 .costume-picker-costume-container img{
-    width: 15em;
+    height: 12em;
+}
+.costume-list-item{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
 }
 a{
     cursor: pointer;

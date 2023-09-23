@@ -13,7 +13,8 @@ type PuzzleObjectSettings = {
     code: string,
     direction: "up"|"right"|"down"|"left",
     X: number,
-    Y: number
+    Y: number,
+    costume: CostumeData
 }
 
 type PuzzlePrimitive = {
