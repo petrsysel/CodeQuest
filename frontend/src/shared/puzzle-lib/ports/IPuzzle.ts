@@ -6,6 +6,6 @@ interface IPuzzle{
     getSettings(): PuzzleSettings
     getObjectSettings(id: PuzzleObjectId): PuzzleObjectSettings | undefined
     getObjectList(): PuzzleObject[]
-    getObject(id: PuzzleObjectId): PuzzleObject | undefined
+    getObject(id: PuzzleObjectId | undefined): PuzzleObject | undefined
     changeObjectCostume(id: PuzzleObjectId, costume: CostumeData): boolean
 }

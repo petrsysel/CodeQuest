@@ -44,7 +44,7 @@ class Puzzle implements IPuzzle{
     getObjectList(): PuzzleObject[] {
         return this._primitive.objects
     }
-    getObject(id: PuzzleObjectId): PuzzleObject | undefined{
+    getObject(id: PuzzleObjectId | undefined): PuzzleObject | undefined{
         let obj = undefined
         this._primitive.objects.forEach(object => {
             if(id == object.id) obj = object

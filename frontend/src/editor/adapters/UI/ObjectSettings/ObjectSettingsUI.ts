@@ -1,5 +1,5 @@
 const objectSettingsTemplate = /*html*/`
-    <div class="object-fields">
+    <div class="object-fields" id="object-fields-element">
         <input type="text" id="name-element" class="object-name-input">
         <table>
             <tr>
@@ -52,6 +52,9 @@ const objectSettingsTemplate = /*html*/`
     
     <div class="costume-preview" id="costume-preview-element">
     </div>
+    <div id="nonselect-element" class="nonselect-element">
+        Není vybrán žádný objekt
+    </div>
 `
 
 class ObjectSettingsUI implements IObjectSettingsUI{
@@ -59,6 +62,8 @@ class ObjectSettingsUI implements IObjectSettingsUI{
     private _puzzleSettingsElement: HTMLElement
 
     private _costumeElement: HTMLElement
+    private _fieldsElement: HTMLElement
+    private _nonselectElement: HTMLElement
 
     private _nameElement: HTMLInputElement
     
@@ -81,6 +86,8 @@ class ObjectSettingsUI implements IObjectSettingsUI{
 
         Templater.inject(this._puzzleSettingsElement, objectSettingsTemplate)
 
+        this._nonselectElement = document.getElementById('nonselect-element') as HTMLElement
+        this._fieldsElement = document.getElementById('object-fields-element') as HTMLElement
         this._costumeElement = document.getElementById('costume-preview-element') as HTMLElement
         this._nameElement = document.getElementById('name-element') as HTMLInputElement
     
@@ -106,7 +113,28 @@ class ObjectSettingsUI implements IObjectSettingsUI{
     }
     render(object: PuzzleObject | undefined): void {
         this._selectedObject = object
-        if(!object) return
+        this._showSettings(object != undefined)
+        if(object) this._renderSettings(object)
+    }
+
+    private _showSettings(show:boolean = true){
+        if(show){
+            this._fieldsElement.style.display = "block"
+            this._costumeElement.style.display = "block"
+            this._nonselectElement.style.display = "none"
+        }
+        else{
+            this._fieldsElement.style.display = "none"
+            this._costumeElement.style.display = "none"
+            this._nonselectElement.style.display = "block"
+        }
+    }
+
+    private _renderNothing(){
+        
+    }
+
+    private _renderSettings(object: PuzzleObject){
         this._nameElement.value = object.settings.name
         this._layerValueElement.value = object.settings.layer.toString()
         this._playerEditValueElement.checked = object.settings.playerEdit

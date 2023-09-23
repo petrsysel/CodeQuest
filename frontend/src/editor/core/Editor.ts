@@ -33,6 +33,7 @@ class Editor{
         objectPanelUI.on('object-removed', (data) => {
             if(this._selectedObjectId)this._mockupPuzzle.removeObject(this._selectedObjectId)
             objectPanelUI.render(this._mockupPuzzle.getObjectList())
+            objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
         })
         objectPanelUI.on('object-selected', (data) => {
             let id = (data as OPDSelection).id
@@ -66,5 +67,8 @@ class Editor{
             let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
             objectSettingsUI.render(actualObject)
         })
+
+        
+        objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
     }
 }
