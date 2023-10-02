@@ -1,8 +1,10 @@
 class BlocklyEditor implements ICodeEditorUI {
   private _workspace: any
   private _eventBehaviour: EventBehaviour<CodeEditorUIEvents, CodeEditorUIData>
+  private _workspaceGenerator: BlocklyWorkspaceGenerator
   constructor() {
     this._eventBehaviour = new EventBehaviour()
+    this._workspaceGenerator = new BlocklyWorkspaceGenerator()
     this._setupBlockly()
   }
   getWorkspace(): CodeEditorWorkspace {
@@ -25,67 +27,13 @@ class BlocklyEditor implements ICodeEditorUI {
   }
 
   private _setupBlockly() {
-    const toolbox = {
-      "kind": "flyoutToolbox",
-      "contents": [
-        {
-          "kind": "block",
-          "type": "controls_if"
-        },
-        {
-          "kind": "block",
-          "type": "controls_repeat_ext"
-        },
-        {
-          "kind": "block",
-          "type": "logic_compare"
-        },
-        {
-          "kind": "block",
-          "type": "math_number"
-        },
-        {
-          "kind": "block",
-          "type": "math_arithmetic"
-        },
-        {
-          "kind": "block",
-          "type": "text"
-        },
-        {
-          "kind": "block",
-          "type": "text_print"
-        },
-      ]
-    }
-
-    let options = {
-      toolbox: toolbox,
-      collapse: true,
-      comments: true,
-      disable: true,
-      maxBlocks: Infinity,
-      trashcan: true,
-      horizontalLayout: false,
-      toolboxPosition: 'start',
-      css: true,
-      media: 'https://blockly-demo.appspot.com/static/media/',
-      rtl: false,
-      scrollbars: true,
-      sounds: true,
-      oneBasedIndex: true,
-      grid: {
-        spacing: 20,
-        length: 1,
-        colour: '#888',
-        snap: false
-      }
-    }
-
-    this._workspace = Blockly.inject('blocklyDiv', options);
+    
+    this._workspace = this._workspaceGenerator.createWorkspace(null)
     this._workspace.addChangeListener((event: any) => {
       if (event.type == 'move' || event.type == 'change') this._emit('code-change', this.getWorkspace())
     })
+    let blocks = this._workspace.getAllBlocks()
+    console.log(blocks)
   }
 
   private _emit(event: CodeEditorUIEvents, data: CodeEditorUIData){

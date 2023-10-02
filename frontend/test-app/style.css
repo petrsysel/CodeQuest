@@ -12,7 +12,8 @@
     --medium-main-color: rgb(184, 115, 51); */
     --dark-main-color: rgb(0, 46, 130);
     --light-main-color: rgb(212, 217, 227);
-    --medium-main-color: rgb(136, 162, 209);
+    --light-blue: rgb(189, 202, 225);
+    --medium-main-color: rgb(189, 202, 225);
     --dark-text: black;
     --light-text: white;
 }
@@ -54,6 +55,7 @@ body{
 }
 .grid-puzzle-settings{
     grid-area: puzzle-settings;
+    background-color: var(--dark-main-color);
 }
 .grid-code-editor{
     grid-area: code-editor;
@@ -63,13 +65,13 @@ body{
 }
 .grid-object-settings{
     grid-area: object-settings;
-    background-color: var(--light-main-color);
+    background-color: var(--medium-main-color);
     display: flex;
     justify-content: space-between;
 }
 .grid-object-panel{
     grid-area: object-panel;
-    background-color: var(--light-main-color);
+    background-color: var(--medium-main-color);
     /* overflow-y: scroll; */
     user-select: none;
 }

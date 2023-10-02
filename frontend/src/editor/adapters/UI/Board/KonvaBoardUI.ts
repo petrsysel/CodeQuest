@@ -159,7 +159,6 @@ class KonvaBoardUI implements IBoardUI{
 				// 	shadowOffset: { x: 0, y: 0 },
 				// 	shadowOpacity: 0.5,
 				})
-				console.log("Image loaded")
 				layer.add(darthNode);
 
 				darthNode.on('mouseup touchend dragend', function () {

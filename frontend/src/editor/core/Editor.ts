@@ -19,7 +19,6 @@ class Editor{
 
         codeUI.on('code-change', (data) => {
             this._mockupPuzzle.changeObjectCode(this._selectedObjectId, data)
-            console.log(data)
             objectPanelUI.render(this._mockupPuzzle.getObjectList())
         })
 
@@ -74,7 +73,6 @@ class Editor{
             costumePickerUI.render(this._mockupCostumes)
         })
         costumePickerUI.on('costume-pick', (costume) => {
-            console.log(`Změněn kostým: ${costume.name}`)
             if(!this._selectedObjectId) return
             this._mockupPuzzle.changeObjectCostume(this._selectedObjectId, costume)
             let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
