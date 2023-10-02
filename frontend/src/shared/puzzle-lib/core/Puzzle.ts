@@ -68,4 +68,27 @@ class Puzzle implements IPuzzle{
         let obj = this.getObject(id)
         if(obj) return obj.settings.code
     }
+    setObjectPosition(id: string | undefined, x: number, y: number): boolean {
+        let obj = this.getObject(id)
+        let validated = this._validatePosition(x,y)
+        if(obj){
+            obj.settings.X = validated.validateX
+            obj.settings.Y = validated.validateY
+        }
+        else return false
+        return true
+    }
+
+    private _validatePosition(x:number, y:number){
+        let validateX = x
+        let validateY = y
+        if(x < 0) validateX = 0
+        else if(x > this._primitive.settings.sideWidth - 1) validateX = this._primitive.settings.sideWidth - 1
+        if(y < 0) validateY = 0
+        if(y > this._primitive.settings.sideWidth - 1) validateY = this._primitive.settings.sideWidth - 1
+        return {
+            validateX,
+            validateY
+        }
+    }
 }

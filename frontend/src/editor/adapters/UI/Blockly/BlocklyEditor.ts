@@ -85,7 +85,6 @@ class BlocklyEditor implements ICodeEditorUI {
     this._workspace = Blockly.inject('blocklyDiv', options);
     this._workspace.addChangeListener((event: any) => {
       if (event.type == 'move' || event.type == 'change') this._emit('code-change', this.getWorkspace())
-      // console.log(event.type)
     })
   }
 

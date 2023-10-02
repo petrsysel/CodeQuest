@@ -10,4 +10,5 @@ interface IPuzzle{
     changeObjectCostume(id: PuzzleObjectId, costume: CostumeData): boolean
     changeObjectCode(id: PuzzleObjectId | undefined, data: CodeEditorWorkspace): boolean
     getObjectCode(id: PuzzleObjectId|undefined): CodeEditorWorkspace | undefined
+    setObjectPosition(id: PuzzleObjectId|undefined, x:number, y:number):boolean
 }

@@ -1,9 +1,21 @@
 @font-face {
     font-family: myFirstFont;
-    src: url(../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf);
+    src: url(../fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf);
     margin: 0;
     padding: 0;
-  }
+    font-weight: bold;
+}
+
+:root{
+    /* --dark-main-color: rgb(143, 163, 89);
+    --light-main-color: rgb(168, 168, 168);
+    --medium-main-color: rgb(184, 115, 51); */
+    --dark-main-color: rgb(0, 46, 130);
+    --light-main-color: rgb(212, 217, 227);
+    --medium-main-color: rgb(136, 162, 209);
+    --dark-text: black;
+    --light-text: white;
+}
 
 body{
     margin: 0;
@@ -36,7 +48,7 @@ body{
     padding: 0;
 }
 .grid-item{
-    background-color: rgb(248, 129, 129);
+    background-color: var(--light-main-color);
     /* margin: 5px; */
     border: 1px solid black;
 }
@@ -51,13 +63,13 @@ body{
 }
 .grid-object-settings{
     grid-area: object-settings;
-    background-color: rgb(255, 218, 163);
+    background-color: var(--light-main-color);
     display: flex;
     justify-content: space-between;
 }
 .grid-object-panel{
     grid-area: object-panel;
-    background-color: rgb(194, 153, 153);
+    background-color: var(--light-main-color);
     /* overflow-y: scroll; */
     user-select: none;
 }
@@ -65,7 +77,7 @@ body{
 /* ========================= OBJECT PANEL ============================== */
 
 .object-panel-controls{
-    background-color: rgb(251, 172, 172);
+    background-color: var(--dark-main-color);
     display: inline-flex;
     justify-content: space-around;
     width: 100%;
@@ -81,7 +93,7 @@ body{
     background-color: gray;
 }
 .selected-object{
-    background-color: rgb(175, 108, 108);
+    background-color: var(--dark-main-color);
     
 }
 
@@ -96,11 +108,14 @@ body{
     margin: 0;
     padding: 0;
 }
-.object-fields input{
-    background-color: transparent;
-    border: 1px rgb(160, 160, 160) solid;
+.object-fields input {
+    background-color: white;
+    border: 1px black solid;
+    border-radius: 100px;
+    padding-left: 0.5em;
     /* border: none; */
     /* outline: none; */
+
 }
 /* .object-fields table input{
     
@@ -122,7 +137,7 @@ body{
 
 .object-fields select{
     background-color: transparent;
-    border: 1px rgb(160, 160, 160) solid;
+    border: 1px --dark-main-color solid;
 }
 
 .costume-picker-window{
@@ -138,7 +153,8 @@ body{
     
     width: calc(100% - 20em);
     height: calc(100% - 10em);
-    background-color:rgb(205, 205, 210) ;
+    background-color: var(--light-main-color);
+    color: var(--dark-text);
     margin: 5em 10em;
     display: flex;
     flex-direction: column;
@@ -151,7 +167,8 @@ body{
     flex-direction: row;
     align-content: center;
     align-items: center;
-    background-color: rgb(89, 156, 156);
+    background-color: var(--dark-main-color);
+    color: var(--light-text);
     font-size: 1.2em;
     /* height: fit-content; */
     /* flex: 1; */
@@ -172,8 +189,8 @@ body{
     text-align: left;
 }
 .costume-picker-filter{
-    background-color: transparent;
-    border: 1px black solid;
+    background-color: var(--light-main-color);
+    border: 1px --dark-main-color solid;
     border-radius: 100px;
     font-size: 1em;
 }

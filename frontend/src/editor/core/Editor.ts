@@ -15,6 +15,8 @@ class Editor{
         
         this._mockupPuzzle = new Puzzle()
 
+        
+
         codeUI.on('code-change', (data) => {
             this._mockupPuzzle.changeObjectCode(this._selectedObjectId, data)
             console.log(data)
@@ -65,6 +67,8 @@ class Editor{
             objectPanelUI.setSelected(this._selectedObjectId)
             
             objectSettingsUI.render(actualObject)
+
+            boardUI.render(this._mockupPuzzle.getObjectList())
         })
         objectSettingsUI.on('change-costume-request', () => {
             costumePickerUI.render(this._mockupCostumes)
@@ -75,8 +79,16 @@ class Editor{
             this._mockupPuzzle.changeObjectCostume(this._selectedObjectId, costume)
             let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
             objectSettingsUI.render(actualObject)
+
+            boardUI.render(this._mockupPuzzle.getObjectList())
         })
 
+        boardUI.on('object-moved', (data) => {
+            this._mockupPuzzle.setObjectPosition(data.objectId, data.x, data.y)
+            this._selectedObjectId = data.objectId
+            boardUI.render(this._mockupPuzzle.getObjectList())
+            objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
+        })
         
         objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
     }

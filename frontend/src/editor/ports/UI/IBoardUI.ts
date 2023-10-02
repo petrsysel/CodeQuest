@@ -1,5 +1,9 @@
 type BoardUIEvents = "object-selected"|"object-moved"
-type BoardUIData = unknown
+type BoardUIData = {
+    objectId: PuzzleObjectId,
+    x: number,
+    y: number
+}
 
 interface IBoardUI {
     setSelected(objectId: PuzzleObjectId): void
