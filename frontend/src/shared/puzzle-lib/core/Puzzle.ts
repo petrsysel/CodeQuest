@@ -29,7 +29,8 @@ class Puzzle implements IPuzzle{
         return true
     }
     changeSettings(settings: PuzzleSettings): boolean {
-        return false
+        this._primitive.settings = settings
+        return true
     }
     getObjectSettings(id: PuzzleObjectId): PuzzleObjectSettings | undefined{
         let objSettings = undefined
@@ -90,5 +91,10 @@ class Puzzle implements IPuzzle{
             validateX,
             validateY
         }
+    }
+    revalidateObjects(){
+        this._primitive.objects.forEach(object => {
+            object.settings = ObjectSettingsValidator.validate(this._primitive.settings, object.settings, object.settings)
+        })
     }
 }

@@ -1,4 +1,4 @@
-type ControlPanelUIEvents = "puzzle-settings-changed"|"play-puzzle"|"save-game"
+type ControlPanelUIEvents = "puzzle-settings-request"|"play-puzzle"|"save-game"
 type ControlPanelUIData = unknown
 interface IControlPanelUI{
     render(settins: PuzzleSettings): void

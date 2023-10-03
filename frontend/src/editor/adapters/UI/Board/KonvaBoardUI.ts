@@ -24,7 +24,7 @@ class KonvaBoardUI implements IBoardUI{
 
 		this._konvaContainer = document.getElementById('board-container') as HTMLElement
 
-		this._konvaData = this._initKonva()
+		this._konvaData = this._initKonva(this._konvaContainer.offsetWidth,this._konvaContainer.offsetHeight, 5)
 		this._drawBackground()
 	}
 
@@ -40,14 +40,14 @@ class KonvaBoardUI implements IBoardUI{
 		
 	}
 
-	private _initKonva(){
-		let width = this._konvaContainer.offsetWidth
-      	let height = this._konvaContainer.offsetHeight
+	private _initKonva(w:number, h:number, size:number){
+		let width = w
+      	let height = h
 
 		// Vypadá to, že bude potřeba přijímat celý puzzle
-		let sideWidth = 5
+		let sideWidth = size
 		let shorterSide = width - height < 0 ? width : height
-		let space = shorterSide/30
+		let space = shorterSide/(size*8)
 		let spacesWidth = space*sideWidth
 		let fieldSize = (shorterSide - spacesWidth)/sideWidth
 		let fieldsWidth = (fieldSize*sideWidth) + spacesWidth - space
@@ -104,7 +104,7 @@ class KonvaBoardUI implements IBoardUI{
 					cornerRadius: 25,
 					stroke: null,
 				});
-		
+				
 				// let b = box
 				// box.on('mouseover', function () {
 				// 	b.fill('#000000')
@@ -119,7 +119,13 @@ class KonvaBoardUI implements IBoardUI{
 		}
 	}
 
-	render(objects: PuzzleObject[]): void {
+	render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]): void {
+		if(puzzleSettings.sideWidth != this._konvaData.boardSideSize){
+
+			this._konvaData = this._initKonva(this._konvaData.width, this._konvaData.height, puzzleSettings.sideWidth)
+			this._drawBackground()
+		}
+
 		let squareWidth = this._konvaData.squareWidth
 		let space = this._konvaData.spaceWidth
 

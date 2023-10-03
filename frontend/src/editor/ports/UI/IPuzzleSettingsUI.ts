@@ -1,5 +1,5 @@
-type PuzzleSettingsEvent = "costume-pick"
-type PuzzleSettingsData = CostumeData
+type PuzzleSettingsEvent = "settings-changed"
+type PuzzleSettingsData = PuzzleSettings
 
 interface IPuzzleSettingsUI {
     render(puzzle: PuzzleSettings, blocks: Block[]):void

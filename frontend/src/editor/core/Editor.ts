@@ -10,6 +10,7 @@ class Editor{
     private objectPanelUI: IObjectPanelUI
     private objectSettingsUI: IObjectSettingsUI
     private costumePickerUI: ICostumePickerUI
+    private puzzleSettingsUI: IPuzzleSettingsUI
 
     constructor(
         boardUI: IBoardUI,
@@ -17,7 +18,8 @@ class Editor{
         controlPanelUI: IControlPanelUI,
         objectPanelUI: IObjectPanelUI,
         objectSettingsUI: IObjectSettingsUI,
-        costumePickerUI: ICostumePickerUI
+        costumePickerUI: ICostumePickerUI,
+        puzzleSettingsUI: IPuzzleSettingsUI
         ){
         
         this._mockupPuzzle = new Puzzle()
@@ -28,6 +30,7 @@ class Editor{
         this.objectPanelUI = objectPanelUI
         this.objectSettingsUI = objectSettingsUI
         this.costumePickerUI = costumePickerUI
+        this.puzzleSettingsUI = puzzleSettingsUI
 
         codeUI.on('code-change', (data) => {
             this._mockupPuzzle.changeObjectCode(this._selectedObjectId, data)
@@ -76,6 +79,18 @@ class Editor{
             this._selectedObjectId = data.objectId
             this._renderAll()
         })
+
+        controlPanelUI.on('puzzle-settings-request', data => {
+            puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), [])
+        })
+
+        puzzleSettingsUI.on('settings-changed', data => {
+            let validatedSettings = PuzzleSettingsValidator.validate(data, this._mockupPuzzle.getSettings())
+            this._mockupPuzzle.changeSettings(validatedSettings)
+            this._mockupPuzzle.revalidateObjects()
+            this._renderAll()
+            this.puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), [])
+        })
         
         this._renderAll()
     }
@@ -86,13 +101,14 @@ class Editor{
         let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
         this.objectSettingsUI.render(actualObject)
 
-        this.boardUI.render(this._mockupPuzzle.getObjectList())
+        this.boardUI.render(this._mockupPuzzle.getSettings(), this._mockupPuzzle.getObjectList())
         
         this.codeUI.clearWorkspace()
         let code = this._mockupPuzzle.getObjectCode(this._selectedObjectId)
         if(code){
             this.codeUI.loadWorkspace(code)
         }
+        this.controlPanelUI.render(this._mockupPuzzle.getSettings())
     }
 
     private _renderObjectPanel(){

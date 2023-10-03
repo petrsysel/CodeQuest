@@ -1,6 +1,6 @@
 const controlPanelTemplate = /*html*/`
-	<div>
-	<span id="control-panel-puzzle-name">Název úlohy</span>
+	<div class="control-panel-puzzle-name-container">
+	<div id="control-panel-puzzle-name">Název úlohy</div>
 	</div>
 	<div class="control-panel-controls">
 	<a href="javascript:void(0)" id="puzzle-settings-button-element"><img src="/frontend/images/icons/cq-settings.png"></a>
@@ -14,11 +14,22 @@ class ControlPanelUI implements IControlPanelUI{
 
 	private _panelElement: HTMLElement
 
+	private _settingsButton: HTMLElement
+
+	private _puzzleNameElement: HTMLElement
+
 	constructor(){
 		this._eventBehaviour = new EventBehaviour()
 
 		this._panelElement = document.getElementById('control-panel') as HTMLElement
 		Templater.inject(this._panelElement, controlPanelTemplate)
+
+		this._settingsButton = document.getElementById('puzzle-settings-button-element') as HTMLElement
+		this._puzzleNameElement = document.getElementById('control-panel-puzzle-name') as HTMLElement
+
+		this._settingsButton.addEventListener('click', () => {
+			this._emit('puzzle-settings-request', null)
+		})
 	}
 
 	private _emit(event: ControlPanelUIEvents, data: ControlPanelUIData){
@@ -30,6 +41,6 @@ class ControlPanelUI implements IControlPanelUI{
 	}
 
 	render(settins: PuzzleSettings): void {
-		
+		this._puzzleNameElement.innerHTML = settins.name
 	}
 }

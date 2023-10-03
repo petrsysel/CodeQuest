@@ -7,6 +7,6 @@ type BoardUIData = {
 
 interface IBoardUI {
     setSelected(objectId: PuzzleObjectId): void
-    render(objects: PuzzleObject[]): void
+    render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]): void
     on(event: BoardUIEvents, callback: (data: BoardUIData) => void): void
 }

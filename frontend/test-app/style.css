@@ -58,7 +58,7 @@ body{
 .grid-puzzle-settings{
     grid-area: puzzle-settings;
     background-color: var(--dark-secondary-color);
-    display: inline-flex;
+    display: flex;
     justify-content: space-between;
     flex-direction: row;
     align-content: center;
@@ -249,5 +249,30 @@ a{
 /*========================== CONTROL PANEL ============================*/
 #control-panel-puzzle-name{
     color: white;
-    font-size: 1.5em;
+    font-size: 1.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 450px;
+}
+.control-panel-controls{
+    display: flex;
+    flex-wrap: nowrap;
+    word-wrap: none;
+}
+
+.puzzle-settings-container{
+    display: flex;
+    padding: 1em;
+}
+.puzzle-settings-fields{
+    /* background-color: yellow; */
+    /* height:; */
+    flex: 1;
+}
+.puzzle-settings-blocks{
+    /* background-color: red; */
+    height: 100%;
+    flex: 1;
 }
