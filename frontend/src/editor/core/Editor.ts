@@ -4,6 +4,13 @@ class Editor{
 
     private _selectedObjectId: PuzzleObjectId | undefined
 
+    private boardUI: IBoardUI
+    private codeUI: ICodeEditorUI
+    private controlPanelUI: IControlPanelUI
+    private objectPanelUI: IObjectPanelUI
+    private objectSettingsUI: IObjectSettingsUI
+    private costumePickerUI: ICostumePickerUI
+
     constructor(
         boardUI: IBoardUI,
         codeUI: ICodeEditorUI,
@@ -15,44 +22,35 @@ class Editor{
         
         this._mockupPuzzle = new Puzzle()
 
-        
+        this.boardUI = boardUI
+        this.codeUI = codeUI
+        this.controlPanelUI = controlPanelUI
+        this.objectPanelUI = objectPanelUI
+        this.objectSettingsUI = objectSettingsUI
+        this.costumePickerUI = costumePickerUI
 
         codeUI.on('code-change', (data) => {
             this._mockupPuzzle.changeObjectCode(this._selectedObjectId, data)
-            objectPanelUI.render(this._mockupPuzzle.getObjectList())
+            this._renderObjectPanel()
         })
 
         objectPanelUI.on('object-added', (data) => {
             let id = this._mockupPuzzle.addObject()
             this._selectedObjectId = id
             codeUI.clearWorkspace()
-            objectPanelUI.render(this._mockupPuzzle.getObjectList())
-            if(this._selectedObjectId)objectPanelUI.setSelected(this._selectedObjectId)
-
-            let object = this._mockupPuzzle.getObject(id)
-            objectSettingsUI.render(object)
-            
+            this._renderAll()
             costumePickerUI.render(this._mockupCostumes)
         })
         objectPanelUI.on('object-removed', (data) => {
             if(this._selectedObjectId)this._mockupPuzzle.removeObject(this._selectedObjectId)
             codeUI.clearWorkspace()
-            objectPanelUI.render(this._mockupPuzzle.getObjectList())
-            objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
+            this._renderAll()
         })
         objectPanelUI.on('object-selected', (data) => {
             let id = (data as OPDSelection).id
             this._selectedObjectId = id
 
-            if(this._selectedObjectId)objectPanelUI.setSelected(this._selectedObjectId)
-
-            let object = this._mockupPuzzle.getObject(id)
-            codeUI.clearWorkspace()
-            let code = this._mockupPuzzle.getObjectCode(id)
-            if(code){
-                codeUI.loadWorkspace(code)
-            }
-            objectSettingsUI.render(object)
+            this._renderAll()
         })
 
         objectSettingsUI.on('settings-changed', data => {
@@ -62,12 +60,7 @@ class Editor{
             let validatedSettings = ObjectSettingsValidator.validate(this._mockupPuzzle.getSettings(),data as PuzzleObjectSettings, actualObject.settings)
             this._mockupPuzzle.changeObjectSettings(this._selectedObjectId, validatedSettings)
             
-            objectPanelUI.render(this._mockupPuzzle.getObjectList())
-            objectPanelUI.setSelected(this._selectedObjectId)
-            
-            objectSettingsUI.render(actualObject)
-
-            boardUI.render(this._mockupPuzzle.getObjectList())
+            this._renderAll()
         })
         objectSettingsUI.on('change-costume-request', () => {
             costumePickerUI.render(this._mockupCostumes)
@@ -75,19 +68,36 @@ class Editor{
         costumePickerUI.on('costume-pick', (costume) => {
             if(!this._selectedObjectId) return
             this._mockupPuzzle.changeObjectCostume(this._selectedObjectId, costume)
-            let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
-            objectSettingsUI.render(actualObject)
-
-            boardUI.render(this._mockupPuzzle.getObjectList())
+            this._renderAll()
         })
 
         boardUI.on('object-moved', (data) => {
             this._mockupPuzzle.setObjectPosition(data.objectId, data.x, data.y)
             this._selectedObjectId = data.objectId
-            boardUI.render(this._mockupPuzzle.getObjectList())
-            objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
+            this._renderAll()
         })
         
-        objectSettingsUI.render(this._mockupPuzzle.getObject(this._selectedObjectId))
+        this._renderAll()
+    }
+
+    private _renderAll(){
+        this._renderObjectPanel()
+
+        let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
+        this.objectSettingsUI.render(actualObject)
+
+        this.boardUI.render(this._mockupPuzzle.getObjectList())
+        
+        this.codeUI.clearWorkspace()
+        let code = this._mockupPuzzle.getObjectCode(this._selectedObjectId)
+        if(code){
+            this.codeUI.loadWorkspace(code)
+        }
+    }
+
+    private _renderObjectPanel(){
+        this.objectPanelUI.render(this._mockupPuzzle.getObjectList())
+        if(!this._selectedObjectId) return
+        this.objectPanelUI.setSelected(this._selectedObjectId)
     }
 }
