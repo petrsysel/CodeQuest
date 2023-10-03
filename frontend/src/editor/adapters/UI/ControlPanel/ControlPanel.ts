@@ -9,7 +9,7 @@ const controlPanelTemplate = /*html*/`
 	<div>
 `
 
-class ControlPanel implements IControlPanelUI{
+class ControlPanelUI implements IControlPanelUI{
 	private _eventBehaviour: EventBehaviour<ControlPanelUIEvents, ControlPanelUIData>
 
 	private _panelElement: HTMLElement

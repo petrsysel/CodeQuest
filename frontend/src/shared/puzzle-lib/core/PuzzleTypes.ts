@@ -25,8 +25,8 @@ type PuzzlePrimitive = {
 }
 
 type PuzzleSettings = {
-    name: string
-    blocks:string[]
+    name: string,
+    blocks:Block[],
     sideWidth: number
 }
 
@@ -34,4 +34,10 @@ type CostumeData = {
     name: string,
     path: string,
     tags: string[]
+}
+
+type Block = {
+    type: String,
+    name: String,
+    category: String
 }

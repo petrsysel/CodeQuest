@@ -94,6 +94,8 @@ body{
 
 .object-table{
     width: 100%;
+    border-collapse: collapse;
+    
 }
 .object-table tr{
     cursor: pointer;
@@ -101,6 +103,13 @@ body{
 .object-table tr:hover{
     background-color: gray;
 }
+.object-table td{
+    min-width: 1em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+}
+/* .object-table td img{
+} */
 .selected-object{
     background-color: var(--medium-main-color);
     

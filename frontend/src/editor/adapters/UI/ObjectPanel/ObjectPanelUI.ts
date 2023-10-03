@@ -57,12 +57,15 @@ class ObjectPanelUI implements IObjectPanelUI{
             let inGameEdit = document.createElement('td')
             let objectName = document.createElement('td')
 
+            let codeImage = "<img src='/frontend/images/icons/cq-code.png'>"
+            let gameImage = "<img src='/frontend/images/icons/cq-game.png'>"
+
             row.appendChild(haveCode)
             row.appendChild(inGameEdit)
             row.appendChild(objectName)
 
-            haveCode.innerHTML = object.settings.code.trim() != "{}"&& object.settings.code ? "X" : ""
-            inGameEdit.innerHTML = object.settings.playerEdit ? "X" : ""
+            haveCode.innerHTML = object.settings.code.trim() != "{}"&& object.settings.code ? codeImage : ""
+            inGameEdit.innerHTML = object.settings.playerEdit ? gameImage : ""
             objectName.innerHTML = object.settings.name
             return row
         }

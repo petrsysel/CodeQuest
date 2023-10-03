@@ -6,7 +6,7 @@ class PuzzleUtils{
             settings:{
                 name: "Nová Úloha",
                 sideWidth: 5,
-                blocks: ["all"]
+                blocks: []
             },
             objects: []
         }
