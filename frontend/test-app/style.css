@@ -126,14 +126,20 @@ body{
     margin: 0;
     padding: 0;
 }
-.object-fields input {
+.object-fields input{
     background-color: white;
     border: 1px black solid;
     border-radius: 100px;
     padding-left: 0.5em;
     /* border: none; */
     /* outline: none; */
+}
 
+#direction-input-element{
+    background-color: white;
+    border-radius: 100px;width: 100%;
+    border: 1px solid black;
+    padding-left: 0.5em;
 }
 /* .object-fields table input{
     
