@@ -1,6 +1,6 @@
 @font-face {
-    font-family: myFirstFont;
-    src: url(../fonts/Montserrat_Alternates/MontserratAlternates-Medium.ttf);
+    font-family: mainFont;
+    src: url(../fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf);
     margin: 0;
     padding: 0;
     font-weight: bold;
@@ -11,6 +11,7 @@
     --light-main-color: rgb(168, 168, 168);
     --medium-main-color: rgb(184, 115, 51); */
     --dark-main-color: rgb(0, 46, 130);
+    --dark-secondary-color: rgb(0, 46, 130);
     --light-main-color: rgb(212, 217, 227);
     --light-blue: rgb(189, 202, 225);
     --medium-main-color: rgb(189, 202, 225);
@@ -21,10 +22,10 @@
 body{
     margin: 0;
     padding: 0;
-    font-family: myFirstFont, Verdana;
+    font-family: mainFont, Verdana;
 }
 *{
-    font-family: myFirstFont, Verdana;
+    font-family: mainFont, Verdana;
     font-size: 18px;
     margin: 0;
     padding: 0;
@@ -34,16 +35,17 @@ body{
     top:0;
     width: 100%;
     height: 60px;
+    background-color: var(--dark-main-color);
 }
 #editor{
     display: grid;
     grid-template-columns: 1fr 1fr 250px;
-    grid-template-rows: 60px 1fr 200px;
+    grid-template-rows: 1fr 60px 200px;
     /* gap: 5px; */
     height: calc(100vh - 60px);
     grid-template-areas: 
-    'puzzle-settings puzzle-settings object-panel'
     'code-editor board object-panel'
+    'code-editor puzzle-settings object-panel'
     'code-editor object-settings object-panel';
     margin: 0;
     padding: 0;
@@ -55,7 +57,7 @@ body{
 }
 .grid-puzzle-settings{
     grid-area: puzzle-settings;
-    background-color: var(--dark-main-color);
+    background-color: var(--dark-secondary-color);
 }
 .grid-code-editor{
     grid-area: code-editor;
@@ -65,13 +67,13 @@ body{
 }
 .grid-object-settings{
     grid-area: object-settings;
-    background-color: var(--medium-main-color);
+    background-color: var(--light-main-color);
     display: flex;
     justify-content: space-between;
 }
 .grid-object-panel{
     grid-area: object-panel;
-    background-color: var(--medium-main-color);
+    background-color: var(--light-main-color);
     /* overflow-y: scroll; */
     user-select: none;
 }
@@ -79,7 +81,7 @@ body{
 /* ========================= OBJECT PANEL ============================== */
 
 .object-panel-controls{
-    background-color: var(--dark-main-color);
+    background-color: var(--dark-secondary-color);
     display: inline-flex;
     justify-content: space-around;
     width: 100%;
@@ -95,7 +97,7 @@ body{
     background-color: gray;
 }
 .selected-object{
-    background-color: var(--dark-main-color);
+    background-color: var(--medium-main-color);
     
 }
 

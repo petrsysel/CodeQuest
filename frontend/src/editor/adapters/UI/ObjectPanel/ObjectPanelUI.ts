@@ -1,7 +1,8 @@
 const objectPanelTemplate = /*html*/`
     <div class="object-panel-controls">
-        <a href="javascript:void(0)" id="add-object-button-element"><img src="/frontend/images/icons/add.png"></a>
-        <a href="javascript:void(0)" id="delete-object-button-element"><img src="/frontend/images/icons/delete.png"></a>
+        <a href="javascript:void(0)" id="add-object-button-element"><img src="/frontend/images/icons/cq-add.png"></a>
+        <a href="javascript:void(0)" id="duplicate-object-button-element"><img src="/frontend/images/icons/cq-duplicate.png"></a>
+        <a href="javascript:void(0)" id="delete-object-button-element"><img src="/frontend/images/icons/cq-delete.png"></a>
     </div>
 
     <div>
