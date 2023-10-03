@@ -4,5 +4,6 @@ function main(){
     let objectSettings = new ObjectSettingsUI()
     let costumePicker = new CostumePickerUI()
     let board = new KonvaBoardUI()
-    let editor = new Editor(board, blocklyEditor, <IControlPanelUI>{}, objectPanel, objectSettings, costumePicker)
+    let controlPanel = new ControlPanel()
+    let editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker)
 }

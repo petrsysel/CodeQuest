@@ -50,7 +50,7 @@ class BlocklyWorkspaceGenerator{
 			'componentStyles': {
 			  'workspaceBackgroundColour': light,
 			  'toolboxBackgroundColour': dark,
-			  'toolboxForegroundColour': light,
+			  'toolboxForegroundColour': '#fff',
 			  'flyoutBackgroundColour': medium,
 			  'flyoutForegroundColour': light,
 			  'flyoutOpacity': 0.8,
