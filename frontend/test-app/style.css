@@ -101,7 +101,7 @@ body{
     cursor: pointer;
 }
 .object-table tr:hover{
-    background-color: gray;
+    background-color: var(--medium-main-color);
 }
 .object-table td{
     min-width: 1em;
@@ -111,8 +111,8 @@ body{
 /* .object-table td img{
 } */
 .selected-object{
-    background-color: var(--medium-main-color);
-    
+    background-color: var(--dark-main-color);
+    color: white;
 }
 
 /* ============================ OBJECT SETTINGS ================================ */
