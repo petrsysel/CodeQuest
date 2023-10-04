@@ -110,6 +110,7 @@ class Editor{
         let actualObject = this._mockupPuzzle.getObject(this._selectedObjectId)
         this.objectSettingsUI.render(actualObject)
 
+        if(this._selectedObjectId) this.boardUI.setSelected(this._selectedObjectId)
         this.boardUI.render(this._mockupPuzzle.getSettings(), this._mockupPuzzle.getObjectList())
         
         this.codeUI.clearWorkspace()

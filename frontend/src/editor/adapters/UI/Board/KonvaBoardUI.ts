@@ -160,12 +160,12 @@ class KonvaBoardUI implements IBoardUI{
 						y:squareWidth/2
 					},
 					draggable:true,
-					rotation:angle
+					rotation:angle,
 				//   cornerRadius: 20,
-				//   	shadowColor: 'red',
-				// 	shadowBlur: 10,
-				// 	shadowOffset: { x: 0, y: 0 },
-				// 	shadowOpacity: 0.5,
+				  	shadowColor: 'blue',
+					shadowBlur: 10,
+					shadowOffset: { x: 0, y: 0 },
+					shadowOpacity: object.id == that._selectedObject?1:0,
 				})
 				layer.add(darthNode);
 
