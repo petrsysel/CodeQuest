@@ -18,6 +18,7 @@ class KonvaBoardUI implements IBoardUI{
 
 	private _konvaContainer: HTMLElement
 	private _konvaData: KonvaData
+	private _selectedObject: string
 
 	constructor(){
 		this._eventBehaviour = new EventBehaviour()
@@ -25,6 +26,7 @@ class KonvaBoardUI implements IBoardUI{
 		this._konvaContainer = document.getElementById('board-container') as HTMLElement
 
 		this._konvaData = this._initKonva(this._konvaContainer.offsetWidth,this._konvaContainer.offsetHeight, 5)
+		this._selectedObject = ""
 		this._drawBackground()
 	}
 
@@ -37,7 +39,7 @@ class KonvaBoardUI implements IBoardUI{
 	}
 
 	setSelected(objectId: string): void {
-		
+		this._selectedObject = objectId
 	}
 
 	private _initKonva(w:number, h:number, size:number){

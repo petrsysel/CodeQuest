@@ -211,6 +211,7 @@ body{
 }
 .costume-picker-label{
     text-align: left;
+    margin-left: 1em;
 }
 .costume-picker-filter{
     background-color: var(--light-main-color);
@@ -265,6 +266,8 @@ a{
 .puzzle-settings-container{
     display: flex;
     padding: 1em;
+    height: 100%;
+    overflow: hidden;
 }
 .puzzle-settings-fields{
     /* background-color: yellow; */
@@ -272,7 +275,29 @@ a{
     flex: 1;
 }
 .puzzle-settings-blocks{
-    /* background-color: red; */
-    height: 100%;
     flex: 1;
 }
+.puzzle-settings-blocks div{
+    height: 100%;
+    overflow-y: scroll;
+}
+.puzzle-settings-blocks ul{
+    margin-left: 2em;
+    list-style: none;
+
+}
+.puzzle-settings-blocks li{
+    display: list-item;
+
+}
+.puzzle-settings-blocks input, label{
+    cursor: pointer;
+    margin: 0.3em;
+
+}
+/* label{
+    /* cursor: pointer; */
+/* } */
+/* ul ul{
+    margin-left: 2em;
+} */

@@ -37,7 +37,7 @@ type CostumeData = {
 }
 
 type Block = {
-    type: String,
-    name: String,
-    category: String
+    type: string,
+    name: string,
+    category: string
 }

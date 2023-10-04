@@ -6,6 +6,7 @@ interface ICodeEditorUI{
     getWorkspace():CodeEditorWorkspace
     on(event: CodeEditorUIEvents, callback: (data: CodeEditorUIData) => void): void
     clearWorkspace():void
+    getBlocks(): Block[]
 }
 
 type CodeEditorWorkspace = string

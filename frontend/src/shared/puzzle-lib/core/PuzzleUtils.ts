@@ -36,4 +36,36 @@ class PuzzleUtils{
 			tags: ["fantasy", "kouzelník"]
 		}
     }
+
+    static toggleBlockType(blocks: Block[], block: Block): Block[]{
+        let toggledBlocks = [...blocks]
+        let index = toggledBlocks.findIndex(b => b.type == block.type)
+        if(index !== -1){
+            toggledBlocks.splice(index,1)
+        }
+        else{
+            toggledBlocks.push(block)
+        }
+        return toggledBlocks
+    }
+
+    static toggleBlockCategory(blocks: Block[], allBlocks: Block[], category: String): Block[]{
+        let categoryExists = blocks.some(b => b.category == category)
+        
+        if(categoryExists){
+            return blocks.filter(b => b.category !== category)    
+        }
+        else{
+            let newBlocks = allBlocks.filter(b => b.category == category)
+            return [...blocks, ...newBlocks]
+        }
+    }
+    static toggleBlockAll(blocks: Block[], allBlocks: Block[]): Block[]{
+        if(blocks.length > 0){
+            return []    
+        }
+        else{
+            return [...allBlocks]
+        }
+    }
 }

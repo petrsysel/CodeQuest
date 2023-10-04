@@ -21,11 +21,18 @@ class Editor{
         costumePickerUI: ICostumePickerUI,
         puzzleSettingsUI: IPuzzleSettingsUI
         ){
-        
+        this.codeUI = codeUI
+
         this._mockupPuzzle = new Puzzle()
+        // will be fixed
+        this._mockupPuzzle.changeSettings({
+            name: this._mockupPuzzle.getSettings().name,
+            sideWidth: this._mockupPuzzle.getSettings().sideWidth,
+            blocks: codeUI.getBlocks()
+        })
 
         this.boardUI = boardUI
-        this.codeUI = codeUI
+        
         this.controlPanelUI = controlPanelUI
         this.objectPanelUI = objectPanelUI
         this.objectSettingsUI = objectSettingsUI
@@ -81,7 +88,8 @@ class Editor{
         })
 
         controlPanelUI.on('puzzle-settings-request', data => {
-            puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), [])
+            let blocks = codeUI.getBlocks()
+            puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), blocks)
         })
 
         puzzleSettingsUI.on('settings-changed', data => {
@@ -89,7 +97,8 @@ class Editor{
             this._mockupPuzzle.changeSettings(validatedSettings)
             this._mockupPuzzle.revalidateObjects()
             this._renderAll()
-            this.puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), [])
+            let blocks = codeUI.getBlocks()
+            this.puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), blocks)
         })
         
         this._renderAll()

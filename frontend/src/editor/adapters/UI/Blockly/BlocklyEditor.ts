@@ -32,8 +32,25 @@ class BlocklyEditor implements ICodeEditorUI {
     this._workspace.addChangeListener((event: any) => {
       if (event.type == 'move' || event.type == 'change') this._emit('code-change', this.getWorkspace())
     })
-    let blocks = this._workspace.getAllBlocks()
-    console.log(blocks)
+  }
+
+  getBlocks(): Block[] {
+    let blocks: Block[] = []
+    let list = ""
+    this._workspace.toolbox_.contents_.forEach((category: any) => {
+      let catName = category.name_
+      if(!category.toolboxItemDef_.contents) return
+      category.toolboxItemDef_.contents.forEach((block: any) => {
+        let type = block.type
+        list += type+"\n"
+        blocks.push({
+          name: BlockNameContainer.getName(type),
+          type: type,
+          category: catName
+        })
+      })
+    })
+    return blocks
   }
 
   private _emit(event: CodeEditorUIEvents, data: CodeEditorUIData){

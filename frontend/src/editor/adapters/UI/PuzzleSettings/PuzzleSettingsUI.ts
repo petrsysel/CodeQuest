@@ -28,7 +28,7 @@ const puzzleSettingsTemplate = /*html*/`
 				
 			<div class="puzzle-settings-blocks">
 				<span>Bloky povolené v úloze</span>
-				<table></table>
+				<div id="puzzle-settings-blocklist"></div>
 			</div>
         </div>
     </div>
@@ -43,9 +43,13 @@ class PuzzleSettingsUI implements IPuzzleSettingsUI {
 
 	private _puzzleNameElement: HTMLInputElement
 	private _boardSizeElement: HTMLInputElement
+    private _blockList: HTMLElement
+
+    private _enabledBlocks: Block[]
 
     constructor(){
         this._eventBehaviour = new EventBehaviour()
+        this._enabledBlocks = []
 
         let body = document.getElementsByTagName('body')[0]
         let placeHolder = document.createElement('div')
@@ -56,6 +60,7 @@ class PuzzleSettingsUI implements IPuzzleSettingsUI {
 
         this._windowElement = document.getElementById("puzzle-settings-window-element") as HTMLElement
         this._closeButton = document.getElementById("puzzle-settings-close-button") as HTMLAnchorElement
+        this._blockList = document.getElementById('puzzle-settings-blocklist') as HTMLElement
 
         this._closeButton.addEventListener('click', this._close.bind(this))
 
@@ -78,7 +83,78 @@ class PuzzleSettingsUI implements IPuzzleSettingsUI {
 		this._open()
         this._puzzleNameElement.value = puzzle.name
 		this._boardSizeElement.value = puzzle.sideWidth.toString()
+
+        let categories:{name:string, blocks:Block[]}[] = []
+
+        blocks.forEach(block => {
+            let category = categories.filter(cat => cat.name === block.category)
+            if(category[0]){
+                category[0].blocks.push(block)
+            }
+            else{
+                categories.push({name: block.category, blocks:[block]})
+            }
+        })
+
+        let enabled = puzzle.blocks
+        
+        
+        this._blockList.innerHTML = ""
+
+        let allCheckbox = document.createElement('input')
+        allCheckbox.type = "checkbox"
+        allCheckbox.checked = enabled.length>0
+        allCheckbox.addEventListener('click', event => {
+            this._enabledBlocks = PuzzleUtils.toggleBlockAll(enabled, blocks)
+            this._onSettingsChange()
+        })
+        let allText = document.createElement('span')
+        allText.innerHTML = "Vše/nic"
+        let allLabel = document.createElement('label')
+        allLabel.appendChild(allCheckbox)
+        allLabel.appendChild(allText)
+        this._blockList.appendChild(allLabel)
+        this._blockList.appendChild(document.createElement('br'))
+        
+        categories.forEach(category => {
+            let categoryList = document.createElement('ul')
+            let categoryName = document.createElement('span')
+            categoryName.innerHTML = category.name
+            let categoryCheckbox = document.createElement('input')
+            categoryCheckbox.type = "checkbox"
+            categoryCheckbox.addEventListener('click', event => {
+                this._enabledBlocks = PuzzleUtils.toggleBlockCategory(enabled, blocks, category.name)
+                this._onSettingsChange()
+            })
+            categoryCheckbox.checked = enabled.some(b => b.category == category.name)
+            let categoryLabel = document.createElement('label')
+            categoryLabel.appendChild(categoryCheckbox)
+            categoryLabel.appendChild(categoryName)
+            this._blockList.appendChild(categoryLabel)
+            category.blocks.forEach(block => {
+                let categoryItem = document.createElement('li')
+                let label = document.createElement('label')
+                let checkbox = document.createElement('input')
+                checkbox.type = "checkbox"
+                
+                checkbox.checked = enabled.some(b => b.type == block.type)
+
+                let blockName = document.createElement('span')
+                blockName.innerHTML = block.name
+                label.appendChild(checkbox)
+                label.appendChild(blockName)
+                categoryItem.appendChild(label)
+                
+                categoryList.appendChild(categoryItem)
+                checkbox.addEventListener('click', event => {
+                    this._enabledBlocks = PuzzleUtils.toggleBlockType(enabled, block)
+                    this._onSettingsChange()
+                })
+            })
+            this._blockList.appendChild(categoryList)
+        })
 	}
+
 
     private _selectionHandler(costume: CostumeData){
         this._close()
@@ -89,7 +165,7 @@ class PuzzleSettingsUI implements IPuzzleSettingsUI {
 		let settings: PuzzleSettings = {
 			name: this._puzzleNameElement.value,
 			sideWidth: +this._boardSizeElement.value,
-			blocks: []
+			blocks: this._enabledBlocks
 		}
 		this._emit('settings-changed', settings)
 	}
