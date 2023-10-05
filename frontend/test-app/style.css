@@ -307,11 +307,20 @@ a{
 .puzzle-settings-blocks input, label{
     cursor: pointer;
     margin: 0.3em;
-
 }
-/* label{
-    /* cursor: pointer; */
-/* } */
-/* ul ul{
-    margin-left: 2em;
-} */
+/* ====================================================================== */
+/* ================================ GAME ================================ */
+/* ====================================================================== */
+#game{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 60px 200px;
+    /* gap: 5px; */
+    height: calc(100vh - 60px);
+    grid-template-areas: 
+    'code-editor board'
+    'code-editor puzzle-settings'
+    'code-editor object-settings';
+    margin: 0;
+    padding: 0;
+}

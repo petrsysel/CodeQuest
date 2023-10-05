@@ -6,5 +6,8 @@ function main(){
     let board = new KonvaBoardUI()
     let controlPanel = new ControlPanelUI()
     let puzzleSettings = new PuzzleSettingsUI()
+
     let editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings)
+
+    
 }
