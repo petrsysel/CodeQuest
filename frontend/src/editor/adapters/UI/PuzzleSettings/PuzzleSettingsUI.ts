@@ -83,6 +83,7 @@ class PuzzleSettingsUI implements IPuzzleSettingsUI {
 		this._open()
         this._puzzleNameElement.value = puzzle.name
 		this._boardSizeElement.value = puzzle.sideWidth.toString()
+        this._enabledBlocks = puzzle.blocks
 
         let categories:{name:string, blocks:Block[]}[] = []
 
