@@ -10,7 +10,9 @@ type KonvaData = {
 	innerBoardWidth:number,
 	leftOffset: number,
 	topOffset: number,
-	boardSideSize: number
+	boardSideSize: number,
+	startX: number,
+	startY: number
 }
 
 class KonvaBoardUI implements IBoardUI{
@@ -20,8 +22,12 @@ class KonvaBoardUI implements IBoardUI{
 	private _konvaData: KonvaData
 	private _selectedObject: string
 
+	private _loadedCostumes: {path: string, image:any}[]
+
 	constructor(){
 		this._eventBehaviour = new EventBehaviour()
+
+		this._loadedCostumes = []
 
 		this._konvaContainer = document.getElementById('board-container') as HTMLElement
 
@@ -57,6 +63,9 @@ class KonvaBoardUI implements IBoardUI{
 		let leftOffset = (width-fieldsWidth)/2
 		let topOffset = (height-fieldsWidth)/2
 
+		let startX = leftOffset + fieldSize/2
+		let startY = topOffset + fieldSize/2
+
 		let stage = new Konva.Stage({
 			container: 'board-container',
 			width: width,
@@ -75,7 +84,9 @@ class KonvaBoardUI implements IBoardUI{
 			squareWidth: fieldSize,
 			leftOffset:leftOffset,
 			topOffset:topOffset,
-			boardSideSize: sideWidth
+			boardSideSize: sideWidth,
+			startX: startX,
+			startY: startY
 		}
 		konvaData.stage.add(konvaData.backgroundLayer)
 		konvaData.stage.add(konvaData.objectLayer)
@@ -106,16 +117,6 @@ class KonvaBoardUI implements IBoardUI{
 					cornerRadius: 25,
 					stroke: null,
 				});
-				
-				// let b = box
-				// box.on('mouseover', function () {
-				// 	b.fill('#000000')
-				// 	console.log("overrr")
-				// 	document.body.style.cursor = "pointer"
-				// });
-				// box.on('mouseout', function () {
-				// 	document.body.style.cursor = 'default';
-				// });
 				this._konvaData.backgroundLayer.add(box);
 			}
 		}
@@ -127,7 +128,7 @@ class KonvaBoardUI implements IBoardUI{
 			this._konvaData = this._initKonva(this._konvaData.width, this._konvaData.height, puzzleSettings.sideWidth)
 			this._drawBackground()
 		}
-
+		
 		let squareWidth = this._konvaData.squareWidth
 		let space = this._konvaData.spaceWidth
 
@@ -135,7 +136,7 @@ class KonvaBoardUI implements IBoardUI{
 		let startY = this._konvaData.topOffset + squareWidth/2
 
 		let layer = this._konvaData.objectLayer
-		layer.destroyChildren()
+		layer.removeChildren()
 
 		let sortedObjects = objects.sort((a, b) => {
 			return a.settings.layer - b.settings.layer
@@ -149,8 +150,37 @@ class KonvaBoardUI implements IBoardUI{
 			else if(object.settings.direction == "down") angle = 0
 			else angle = 90
 
-			Konva.Image.fromURL(object.settings.costume.path, function (darthNode:any) {
-				darthNode.setAttrs({
+			let path = object.settings.costume.path
+
+			if(!this._loadedCostumes.some(c => c.path == path)){
+				Konva.Image.fromURL(path, function (image:any) {
+					that._loadedCostumes.push({path:path,image: image})
+					createInstance()
+				})
+			}
+			else{
+				createInstance()
+			}
+			
+
+			function createInstance(){
+				let image = that._loadedCostumes.find(c => c.path == path)?.image
+				let newobject = image.clone()
+				setImage(newobject)
+				newobject.on('mouseup touchend dragend', function () {
+					let offsetX = that._konvaData.startX
+					let offsetY = that._konvaData.startY
+					let squareW = that._konvaData.squareWidth
+					let spaceW = that._konvaData.spaceWidth
+					let x = Math.round((newobject.x() - offsetX)/(squareW+spaceW))
+					let y = Math.round((newobject.y() - offsetY)/(squareW+spaceW))
+					
+					that._emit("object-moved", {objectId:object.id,x:x, y:y})
+				})
+			}
+
+			function setImage(image: any){
+				image.setAttrs({
 					x: startX + (object.settings.X * (squareWidth + space)),
 					y: startY + (object.settings.Y * (squareWidth + space)),
 					width: squareWidth,
@@ -167,15 +197,10 @@ class KonvaBoardUI implements IBoardUI{
 					shadowOffset: { x: 0, y: 0 },
 					shadowOpacity: object.id == that._selectedObject?1:0,
 				})
-				layer.add(darthNode);
+				layer.add(image);
 
-				darthNode.on('mouseup touchend dragend', function () {
-					let x = Math.round((darthNode.x() - startX)/(squareWidth+space))
-					let y = Math.round((darthNode.y() - startY)/(squareWidth+space))
-					
-					that._emit("object-moved", {objectId:object.id,x:x, y:y})
-				})
-			})
+				
+			}
 		})
 	}
 }

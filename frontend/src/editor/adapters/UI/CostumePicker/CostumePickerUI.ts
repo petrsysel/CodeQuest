@@ -65,7 +65,6 @@ class CostumePickerUI implements ICostumePickerUI {
             })
             return byName || byTag
         })
-        console.log(filtered)
         costumes = filtered
 
         this._costumeContainer.innerHTML = ""
