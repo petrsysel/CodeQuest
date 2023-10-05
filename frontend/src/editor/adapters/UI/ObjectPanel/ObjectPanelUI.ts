@@ -19,6 +19,7 @@ class ObjectPanelUI implements IObjectPanelUI{
 
     private _addObjectButton: HTMLAnchorElement
     private _deleteObjectButton: HTMLAnchorElement
+    private _duplicateObjectButton: HTMLAnchorElement
 
     private _eventBehaviour: EventBehaviour<ObjectPanelUIEvents, ObjectPanelUIData>
     
@@ -31,12 +32,16 @@ class ObjectPanelUI implements IObjectPanelUI{
         this._objectTableElement = document.getElementById('object-table-element') as HTMLAnchorElement
         this._addObjectButton = document.getElementById('add-object-button-element') as HTMLAnchorElement
         this._deleteObjectButton = document.getElementById('delete-object-button-element') as HTMLAnchorElement
+        this._duplicateObjectButton = document.getElementById('duplicate-object-button-element') as HTMLAnchorElement
         
         this._addObjectButton.addEventListener('click', (ev) => {
             this._emit('object-added', null)
         })
         this._deleteObjectButton.addEventListener('click', (ev) => {
             this._emit('object-removed', null)
+        })
+        this._duplicateObjectButton.addEventListener('click', ev => {
+            this._emit('object-duplicated', null)
         })
     }
     render(objects: PuzzleObject[]): void {

@@ -28,6 +28,21 @@ class PuzzleUtils{
             }
         }
     }
+    static duplicateObject(from: PuzzleObject): PuzzleObject{
+        return {
+            id: (crypto as any).randomUUID(),
+            settings:{
+                name: from.settings.name,
+                layer: from.settings.layer,
+                playerEdit: from.settings.playerEdit,
+                code: from.settings.code,
+                direction: from.settings.direction,
+                X: from.settings.X,
+                Y: from.settings.Y,
+                costume: from.settings.costume
+            }
+        }
+    }
 
     static getDefaultCostume(): CostumeData{
         return {

@@ -1,4 +1,4 @@
-type ObjectPanelUIEvents = "object-removed"|"object-added"|"object-selected" 
+type ObjectPanelUIEvents = "object-removed"|"object-added"|"object-duplicated"|"object-selected" 
 
 // ObjectPanelDataSelection
 type OPDSelection = {

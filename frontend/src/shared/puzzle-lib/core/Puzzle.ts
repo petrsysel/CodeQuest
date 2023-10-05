@@ -18,6 +18,17 @@ class Puzzle implements IPuzzle{
         // console.log(JSON.stringify(this._primitive, undefined, 4))
         return newObject.id
     }
+    duplicateObject(originalId: string): PuzzleObjectId {
+        let originalObject = this.getObject(originalId) as PuzzleObject
+
+        let newObject = PuzzleUtils.duplicateObject(originalObject)
+        this._primitive.objects.push(
+            newObject
+        )
+        this._objectCounter++
+        // console.log(JSON.stringify(this._primitive, undefined, 4))
+        return newObject.id
+    }
     removeObject(id: string): boolean {
         this._primitive.objects = this._primitive.objects.filter(_ => _.id != id)
         return false

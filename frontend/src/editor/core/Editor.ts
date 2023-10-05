@@ -56,6 +56,13 @@ class Editor{
             codeUI.clearWorkspace()
             this._renderAll()
         })
+        objectPanelUI.on('object-duplicated', data => {
+            if(!this._selectedObjectId) return
+            let id = this._mockupPuzzle.duplicateObject(this._selectedObjectId)
+            this._selectedObjectId = id
+            codeUI.clearWorkspace()
+            this._renderAll()
+        })
         objectPanelUI.on('object-selected', (data) => {
             let id = (data as OPDSelection).id
             this._selectedObjectId = id
