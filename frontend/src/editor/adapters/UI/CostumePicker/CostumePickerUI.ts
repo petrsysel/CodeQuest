@@ -27,6 +27,7 @@ class CostumePickerUI implements ICostumePickerUI {
     private _costumeContainer: HTMLElement
 
     private _eventBehaviour: EventBehaviour<CostumePickerEvent, CostumePickerData>
+    private _costumes: CostumeData[]
 
     constructor(){
         this._eventBehaviour = new EventBehaviour()
@@ -36,19 +37,37 @@ class CostumePickerUI implements ICostumePickerUI {
         placeHolder.id = "cp-place-holder"
         body.appendChild(placeHolder)
 
+        this._costumes = []
+
         Templater.inject( "cp-place-holder", CPTemplate)
 
         this._windowElement = document.getElementById("cp-window-element") as HTMLElement
-        this._filterInput = document.getElementById("cp-filer-input") as HTMLInputElement
+        this._filterInput = document.getElementById("cp-filter-input") as HTMLInputElement
         this._closeButton = document.getElementById("cp-close-button") as HTMLAnchorElement
         this._costumeContainer = document.getElementById("cp-costume-container") as HTMLElement
 
         this._closeButton.addEventListener('click', this._close.bind(this))
 
+        this._filterInput.addEventListener('keyup', event => {
+            this.render(this._costumes)
+        })
+
         this._close()
     }
     render(costumes: CostumeData[]): void {
         this._open()
+        this._costumes = [...costumes]
+        let filter = this._filterInput.value
+        let filtered = costumes.filter(costume => {
+            let byName = costume.name.toLowerCase().includes(filter.toLowerCase())
+            let byTag = costume.tags.some(tag => {
+                return tag.toLowerCase().includes(filter.toLowerCase())
+            })
+            return byName || byTag
+        })
+        console.log(filtered)
+        costumes = filtered
+
         this._costumeContainer.innerHTML = ""
         costumes.forEach(costume => {
             let costumeTemplate = /*html*/`
