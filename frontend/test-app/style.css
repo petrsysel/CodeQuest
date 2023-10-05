@@ -23,6 +23,7 @@ body{
     margin: 0;
     padding: 0;
     font-family: mainFont, Verdana;
+    overflow: hidden;
 }
 *{
     font-family: mainFont, Verdana;
@@ -80,6 +81,8 @@ body{
     grid-area: object-panel;
     background-color: var(--light-main-color);
     /* overflow-y: scroll; */
+    display: flex;
+    flex-direction: column;
     user-select: none;
 }
 
@@ -91,11 +94,14 @@ body{
     justify-content: space-around;
     width: 100%;
 }
-
+.objec-table-container{
+    height: 100%;
+    overflow: scroll;
+}
 .object-table{
     width: 100%;
+    flex: 1;
     border-collapse: collapse;
-    
 }
 .object-table tr{
     cursor: pointer;

@@ -5,11 +5,9 @@ const objectPanelTemplate = /*html*/`
         <a href="javascript:void(0)" id="delete-object-button-element"><img src="/frontend/images/icons/cq-delete.png"></a>
     </div>
 
-    <div>
-        <div>
-            <table class="object-table" id="object-table-element">
-            </table>
-        </div>
+    <div class="objec-table-container">
+        <table class="object-table" id="object-table-element">
+        </table>
     </div>
 `
 
