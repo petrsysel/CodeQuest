@@ -29,17 +29,12 @@ class CostumePickerUI implements ICostumePickerUI {
     private _eventBehaviour: EventBehaviour<CostumePickerEvent, CostumePickerData>
     private _costumes: CostumeData[]
 
-    constructor(){
+    constructor(destination: string){
         this._eventBehaviour = new EventBehaviour()
-
-        let body = document.getElementsByTagName('body')[0]
-        let placeHolder = document.createElement('div')
-        placeHolder.id = "cp-place-holder"
-        body.appendChild(placeHolder)
 
         this._costumes = []
 
-        Templater.inject( "cp-place-holder", CPTemplate)
+        Templater.inject(destination, CPTemplate)
 
         this._windowElement = document.getElementById("cp-window-element") as HTMLElement
         this._filterInput = document.getElementById("cp-filter-input") as HTMLInputElement

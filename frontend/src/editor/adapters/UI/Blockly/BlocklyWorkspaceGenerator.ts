@@ -1,8 +1,9 @@
 class BlocklyWorkspaceGenerator{
 	private _workspace: any
+	private _destination: string
 
-	constructor(){
-		
+	constructor(destination: string){
+		this._destination = destination
 	}
 
 	private _getWorkspaceOptions(toolbox: HTMLElement, theme: any){
@@ -70,7 +71,8 @@ class BlocklyWorkspaceGenerator{
 		let toolbox = BlocklyToolboxContainer.getToolbox()
 		let theme = this._getTheme()
 		let options = this._getWorkspaceOptions(toolbox, theme)
-		this._workspace = Blockly.inject('blocklyDiv', options);
+		
+		this._workspace = Blockly.inject(this._destination, options);
 
 		
 

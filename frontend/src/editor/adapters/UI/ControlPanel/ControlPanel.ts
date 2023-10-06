@@ -18,10 +18,10 @@ class ControlPanelUI implements IControlPanelUI{
 
 	private _puzzleNameElement: HTMLElement
 
-	constructor(){
+	constructor(destination: string){
 		this._eventBehaviour = new EventBehaviour()
 
-		this._panelElement = document.getElementById('control-panel') as HTMLElement
+		this._panelElement = document.getElementById(destination) as HTMLElement
 		Templater.inject(this._panelElement, controlPanelTemplate)
 
 		this._settingsButton = document.getElementById('puzzle-settings-button-element') as HTMLElement

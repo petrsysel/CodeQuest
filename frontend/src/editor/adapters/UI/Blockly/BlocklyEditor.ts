@@ -2,9 +2,9 @@ class BlocklyEditor implements ICodeEditorUI {
   private _workspace: any
   private _eventBehaviour: EventBehaviour<CodeEditorUIEvents, CodeEditorUIData>
   private _workspaceGenerator: BlocklyWorkspaceGenerator
-  constructor() {
+  constructor(destination: string) {
     this._eventBehaviour = new EventBehaviour()
-    this._workspaceGenerator = new BlocklyWorkspaceGenerator()
+    this._workspaceGenerator = new BlocklyWorkspaceGenerator(destination)
     this._setupBlockly()
   }
   getWorkspace(): CodeEditorWorkspace {

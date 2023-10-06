@@ -47,16 +47,11 @@ class PuzzleSettingsUI implements IPuzzleSettingsUI {
 
     private _enabledBlocks: Block[]
 
-    constructor(){
+    constructor(destination: string){
         this._eventBehaviour = new EventBehaviour()
         this._enabledBlocks = []
 
-        let body = document.getElementsByTagName('body')[0]
-        let placeHolder = document.createElement('div')
-        placeHolder.id = "puzzle-settings-place-holder"
-        body.appendChild(placeHolder)
-
-        Templater.inject( "puzzle-settings-place-holder", puzzleSettingsTemplate)
+        Templater.inject(destination , puzzleSettingsTemplate)
 
         this._windowElement = document.getElementById("puzzle-settings-window-element") as HTMLElement
         this._closeButton = document.getElementById("puzzle-settings-close-button") as HTMLAnchorElement

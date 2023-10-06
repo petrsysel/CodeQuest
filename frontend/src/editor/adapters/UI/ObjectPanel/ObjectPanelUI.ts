@@ -21,9 +21,9 @@ class ObjectPanelUI implements IObjectPanelUI{
 
     private _eventBehaviour: EventBehaviour<ObjectPanelUIEvents, ObjectPanelUIData>
     
-    constructor(){
+    constructor(destination: string){
         this._eventBehaviour = new EventBehaviour()
-        this._panelElement = document.getElementById('object-panel') as HTMLElement
+        this._panelElement = document.getElementById(destination) as HTMLElement
 
         Templater.inject(this._panelElement, objectPanelTemplate)
 

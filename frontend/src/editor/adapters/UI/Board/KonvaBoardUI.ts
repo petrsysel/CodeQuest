@@ -24,12 +24,16 @@ class KonvaBoardUI implements IBoardUI{
 
 	private _loadedCostumes: {path: string, image:any}[]
 
-	constructor(){
+	private _destination: string
+
+	constructor(destination: string){
 		this._eventBehaviour = new EventBehaviour()
 
-		this._loadedCostumes = []
+		this._destination = destination
 
-		this._konvaContainer = document.getElementById('board-container') as HTMLElement
+		this._loadedCostumes = []
+		console.log(destination)
+		this._konvaContainer = document.getElementById(destination) as HTMLElement
 
 		this._konvaData = this._initKonva(this._konvaContainer.offsetWidth,this._konvaContainer.offsetHeight, 5)
 		this._selectedObject = ""
@@ -67,7 +71,7 @@ class KonvaBoardUI implements IBoardUI{
 		let startY = topOffset + fieldSize/2
 
 		let stage = new Konva.Stage({
-			container: 'board-container',
+			container: this._destination,
 			width: width,
 			height: height,
 		})

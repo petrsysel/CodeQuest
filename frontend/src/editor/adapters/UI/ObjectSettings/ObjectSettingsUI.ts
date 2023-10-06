@@ -80,9 +80,9 @@ class ObjectSettingsUI implements IObjectSettingsUI{
 
     private _selectedObject: PuzzleObject | undefined
     
-    constructor(){
+    constructor(destination: string){
         this._eventBehaviour = new EventBehaviour()
-        this._puzzleSettingsElement = document.getElementById('object-settings') as HTMLElement
+        this._puzzleSettingsElement = document.getElementById(destination) as HTMLElement
 
         Templater.inject(this._puzzleSettingsElement, objectSettingsTemplate)
 
