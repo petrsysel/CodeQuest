@@ -32,7 +32,6 @@ class KonvaBoardUI implements IBoardUI{
 		this._destination = destination
 
 		this._loadedCostumes = []
-		console.log(destination)
 		this._konvaContainer = document.getElementById(destination) as HTMLElement
 
 		this._konvaData = this._initKonva(this._konvaContainer.offsetWidth,this._konvaContainer.offsetHeight, 5)
