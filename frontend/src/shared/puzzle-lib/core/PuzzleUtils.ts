@@ -4,7 +4,7 @@ class PuzzleUtils{
             id: (crypto as any).randomUUID(),
             version: 1,
             settings:{
-                name: "Nová Úloha",
+                name: "Nová úloha",
                 sideWidth: 5,
                 blocks: []
             },
