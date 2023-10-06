@@ -324,3 +324,24 @@ a{
     margin: 0;
     padding: 0;
 }
+.game-object-list-wrapper{
+    /* display: flex; */
+    /* overflow-x: scroll; */
+    /* background-color: orange; */
+    width: 100%;
+    display: flex;
+}
+.game-object-list-container{
+    display: flex;
+    white-space:nowrap;
+    overflow-x: scroll;
+    width: 0;
+    flex: 1;
+    overflow-y: hidden;
+    /* justify-content: space-around; */
+}
+.game-object-list-container img{
+    margin: 0 1em;
+    height: 100%;
+    filter: drop-shadow(0 0 4px blue);
+}
