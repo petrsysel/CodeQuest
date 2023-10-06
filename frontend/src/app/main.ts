@@ -1,5 +1,4 @@
 function main(){
-    /*
     let blocklyEditor = new BlocklyEditor('blockly-placeholder')
     let objectPanel = new ObjectPanelUI('object-panel')
     let objectSettings = new ObjectSettingsUI('object-settings')
@@ -9,7 +8,7 @@ function main(){
     let puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
 
     let editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings)
-    */
+    
     let gameBlockly = new BlocklyEditor('game-blockly-placeholder')
     let gameBoard = new KonvaBoardUI('game-board-container')
     let gameControlPanel = new GameControlPanel('game-control-panel')

@@ -15,6 +15,7 @@ class ControlPanelUI implements IControlPanelUI{
 	private _panelElement: HTMLElement
 
 	private _settingsButton: HTMLElement
+	private _tryPuzzleButton: HTMLElement
 
 	private _puzzleNameElement: HTMLElement
 
@@ -25,10 +26,14 @@ class ControlPanelUI implements IControlPanelUI{
 		Templater.inject(this._panelElement, controlPanelTemplate)
 
 		this._settingsButton = document.getElementById('puzzle-settings-button-element') as HTMLElement
+		this._tryPuzzleButton = document.getElementById('try-puzzle-button-element') as HTMLElement
 		this._puzzleNameElement = document.getElementById('control-panel-puzzle-name') as HTMLElement
 
 		this._settingsButton.addEventListener('click', () => {
 			this._emit('puzzle-settings-request', null)
+		})
+		this._tryPuzzleButton.addEventListener('click', () => {
+			this._emit('play-puzzle', null)
 		})
 	}
 

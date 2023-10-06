@@ -107,6 +107,11 @@ class Editor{
             let blocks = codeUI.getBlocks()
             this.puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), blocks)
         })
+
+        controlPanelUI.on('play-puzzle', () => {
+            let puzzle = this._mockupPuzzle.stringify()
+            console.log(puzzle)
+        })
         
         this._renderAll()
     }

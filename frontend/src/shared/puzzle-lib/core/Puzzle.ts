@@ -108,4 +108,16 @@ class Puzzle implements IPuzzle{
             object.settings = ObjectSettingsValidator.validate(this._primitive.settings, object.settings, object.settings)
         })
     }
+
+    stringify(){
+        let jsonObj = JSON.stringify(this._primitive,)
+        let encoded = encodeURIComponent(jsonObj)
+        
+        return encoded
+    }
+    
+    loadFromString(puzzleString: string){
+        let decoded = decodeURIComponent(puzzleString)
+        this._primitive = JSON.parse(decoded)
+    }
 }
