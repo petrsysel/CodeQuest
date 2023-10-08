@@ -26,10 +26,13 @@ class KonvaBoardUI implements IBoardUI{
 
 	private _destination: string
 
-	constructor(destination: string){
+	private _options: BoardOptions
+
+	constructor(destination: string, options: BoardOptions){
 		this._eventBehaviour = new EventBehaviour()
 
 		this._destination = destination
+		this._options = options
 
 		this._loadedCostumes = []
 		this._konvaContainer = document.getElementById(destination) as HTMLElement
@@ -178,7 +181,15 @@ class KonvaBoardUI implements IBoardUI{
 					let x = Math.round((newobject.x() - offsetX)/(squareW+spaceW))
 					let y = Math.round((newobject.y() - offsetY)/(squareW+spaceW))
 					
-					that._emit("object-moved", {objectId:object.id,x:x, y:y})
+					if(that._options.draggable) that._emit("object-moved", {objectId:object.id,x:x, y:y})
+
+					if(that._options.selectable == 'player'){
+						if(object.settings.playerEdit) that._emit('object-selected', {
+							x: x,
+							y: y,
+							objectId: object.id
+						})
+					}
 				})
 			}
 
@@ -192,7 +203,7 @@ class KonvaBoardUI implements IBoardUI{
 						x:squareWidth/2,
 						y:squareWidth/2
 					},
-					draggable:true,
+					draggable:that._options.draggable,
 					rotation:angle,
 				//   cornerRadius: 20,
 				  	shadowColor: 'blue',

@@ -3,14 +3,20 @@ function main(){
     let objectPanel = new ObjectPanelUI('object-panel')
     let objectSettings = new ObjectSettingsUI('object-settings')
     let costumePicker = new CostumePickerUI('cp-place-holder')
-    let board = new KonvaBoardUI('board-container')
+    let board = new KonvaBoardUI('board-container', {
+        draggable: true,
+        selectable: 'all'
+    })
     let controlPanel = new ControlPanelUI('control-panel')
     let puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
 
     let editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings)
     
     let gameBlockly = new BlocklyEditor('game-blockly-placeholder')
-    let gameBoard = new KonvaBoardUI('game-board-container')
+    let gameBoard = new KonvaBoardUI('game-board-container', {
+        draggable: false,
+        selectable: 'player'
+    })
     let gameControlPanel = new GameControlPanel('game-control-panel')
     let gameObjectList = new GameObjectList('game-object-list')
 

@@ -63,4 +63,9 @@ class BlocklyEditor implements ICodeEditorUI {
   clearWorkspace(): void {
     this.loadWorkspace("{}")
   }
+
+  getCode(): string {
+    var code = Blockly.JavaScript.workspaceToCode(this._workspace);
+    return code
+  }
 }

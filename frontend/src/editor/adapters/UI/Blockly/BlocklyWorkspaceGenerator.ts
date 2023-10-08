@@ -68,6 +68,7 @@ class BlocklyWorkspaceGenerator{
 
 	createWorkspace(blockOptions: any){
 		BlocklyBlockDefinitionContainer.init()
+		BlocklyBehaviourDefinitionContainer.init()
 		let toolbox = BlocklyToolboxContainer.getToolbox()
 		let theme = this._getTheme()
 		let options = this._getWorkspaceOptions(toolbox, theme)

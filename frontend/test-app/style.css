@@ -258,7 +258,7 @@ a{
 }
 
 /*========================== CONTROL PANEL ============================*/
-#control-panel-puzzle-name{
+#control-panel-puzzle-name, #game-control-panel-puzzle-name{
     color: white;
     font-size: 1.1em;
     white-space: nowrap;

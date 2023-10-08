@@ -109,6 +109,10 @@ class Puzzle implements IPuzzle{
         })
     }
 
+    getFirstPlayerObject(){
+        return this._primitive.objects.find(o => o.settings.playerEdit)?.id
+    }
+
     stringify(){
         let jsonObj = JSON.stringify(this._primitive,)
         let encoded = encodeURIComponent(jsonObj)
