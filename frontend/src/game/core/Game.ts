@@ -7,7 +7,8 @@ class Game{
 		codeUI: ICodeEditorUI,
 		boardUI: IBoardUI,
 		controlPanelUI: IControlPanelUI,
-		objectList: IObjectPanelUI
+		objectList: IObjectPanelUI,
+		gameResolver: IGameResolver
 		){
 		
 		this._puzzle = new Puzzle()
@@ -38,7 +39,7 @@ class Game{
 
 		controlPanelUI.on('play-puzzle', () => {
 			let code = codeUI.getCode()
-			console.log(code)
+			gameResolver.resolve(this._puzzle)
 		})
 		
 

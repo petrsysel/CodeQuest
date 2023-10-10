@@ -83,4 +83,19 @@ class PuzzleUtils{
             return [...allBlocks]
         }
     }
+
+    static createActors(puzzle: Puzzle){
+        let objects = puzzle.getObjectList().filter(o =>{
+            let code = o.settings.code
+            if(code != "" && code != "{}") return true
+            else return false
+        })
+        let actors: GameActor[] = []
+        
+        objects.forEach(object => {
+            actors.push(new GameActor(object))
+        })
+
+        return actors
+    }
 }
