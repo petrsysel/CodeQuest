@@ -46,9 +46,18 @@ class Game{
 		boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
 
 		boardUI.on('object-selected', data => {
+			this._selectedObjectId = data.objectId
 			console.log(`Object ${data.objectId} was selected`)
 			boardUI.setSelected(data.objectId)
 			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+			let object = this._puzzle.getObject(this._selectedObjectId)
+			codeUI.clearWorkspace()
+			if(object)codeUI.loadWorkspace(object.settings.code)
+		})
+		
+		codeUI.on('code-change', data => {
+
+			if(this._selectedObjectId) this._puzzle.changeObjectCode(this._selectedObjectId, data)
 		})
 	}
 

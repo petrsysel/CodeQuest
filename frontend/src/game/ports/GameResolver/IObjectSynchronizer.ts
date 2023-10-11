@@ -1,4 +1,3 @@
 interface IObjectSynchronizer{
-	registerAction(actor: GameActor, action: () => void): void
-	constructor(...actors: GameActor[]): void
+	registerAction(actor: GameActor, action: () => void, onFinished: (resutl:any) => void): void
 }

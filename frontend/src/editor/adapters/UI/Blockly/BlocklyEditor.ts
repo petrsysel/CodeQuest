@@ -20,10 +20,9 @@ class BlocklyEditor implements ICodeEditorUI {
       return true
     }
     catch (e) {
-      console.error(e)
+      // console.error(`Error while loading workspace: ${e}`)
       return false
     }
-
   }
 
   private _setupBlockly() {
@@ -65,7 +64,7 @@ class BlocklyEditor implements ICodeEditorUI {
   }
 
   getCode(): string {
-    var code = Blockly.JavaScript.workspaceToCode(this._workspace);
+    let code = Blockly.JavaScript.workspaceToCode(this._workspace);
     return code
   }
 }
