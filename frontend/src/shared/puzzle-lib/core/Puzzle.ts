@@ -124,4 +124,27 @@ class Puzzle implements IPuzzle{
         let decoded = decodeURIComponent(puzzleString)
         this._primitive = JSON.parse(decoded)
     }
+
+    commandGoForward(objectId: PuzzleObjectId){
+        this.commandGoForwardBy(objectId, 1)
+    }
+    commandJump(objectId: PuzzleObjectId){
+        this.commandGoForwardBy(objectId, 2)
+    }
+    private commandGoForwardBy(objectId: PuzzleObjectId, distance: number){
+        let object = this.getObject(objectId)
+        if(!object) return
+        if(object.settings.direction == 'up'){
+            object.settings.Y -= distance
+        }
+        else if(object.settings.direction == 'right'){
+            object.settings.X += distance
+        }
+        else if(object.settings.direction == 'down'){
+            object.settings.Y += distance
+        }
+        else{
+            object.settings.X -= distance
+        }
+    }
 }

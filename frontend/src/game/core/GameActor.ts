@@ -16,4 +16,7 @@ class GameActor{
 	getObject(){
 		return this._primitive
 	}
+	id(){
+		return this._primitive.id
+	}
 }
