@@ -14,30 +14,38 @@ class GameResolver implements IGameResolver{
 			console.log(procedure.getRounds())
 		})
 
-		let goForward = async function goForward(actor: GameActor) {
+		const createAction = async (actor: GameActor, action: () => void) => {
 			return new Promise((resolve, reject) => {
 				synchronizer.registerAction(
-				actor, 
-				() => {
-					puzzle.commandGoForward(actor.id())
-					procedure.addInstruction(new GoForward(actor.id()))
-				}, res => {
-					resolve(res)
-				})
+					actor, 
+					action,
+					res => {
+						resolve(res)
+					}
+				)
 			})
 		}
 
-		let jump = async (actor: GameActor) => {
-			return new Promise((resolve, reject) => {
-				synchronizer.registerAction(actor, () => {
-					puzzle.commandJump(actor.id())
-					procedure.addInstruction(new Jump(actor.id()))
-				}, res => {
-					resolve(res)
-				})
+		let goForward = async function goForward(actor: GameActor) {
+			return createAction(actor, () => {
+				puzzle.commands.goForward(actor.id())
+				procedure.addInstruction(new GoForward(actor.id()))
 			})
 		}
-		// `await jump(actor)\n`;
+		
+		let jump = async (actor: GameActor) => {
+			return createAction(actor, () => {
+				puzzle.commands.jump(actor.id())
+				procedure.addInstruction(new Jump(actor.id()))
+			})
+		}
+		let turn = async (actor: GameActor, direction: string) => {
+			return createAction(actor, () => {
+				puzzle.commands.turn(actor.id(), direction)
+				procedure.addInstruction(new Turn(actor.id(), direction))
+			})
+		}
+
 		// `await turn(actor, ${direction})\n`;
 		// `await setDirection(actor, ${value_direction})\n`;
 		// `await jumpTo(actor, ${value_x_position}, ${value_y_position})\n`;

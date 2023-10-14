@@ -125,13 +125,13 @@ class Puzzle implements IPuzzle{
         this._primitive = JSON.parse(decoded)
     }
 
-    commandGoForward(objectId: PuzzleObjectId){
-        this.commandGoForwardBy(objectId, 1)
+    private _commandGoForward(objectId: PuzzleObjectId){
+        this._commandGoForwardBy(objectId, 1)
     }
-    commandJump(objectId: PuzzleObjectId){
-        this.commandGoForwardBy(objectId, 2)
+    private _commandJump(objectId: PuzzleObjectId){
+        this._commandGoForwardBy(objectId, 2)
     }
-    private commandGoForwardBy(objectId: PuzzleObjectId, distance: number){
+    private _commandGoForwardBy(objectId: PuzzleObjectId, distance: number){
         let object = this.getObject(objectId)
         if(!object) return
         if(object.settings.direction == 'up'){
@@ -146,5 +146,37 @@ class Puzzle implements IPuzzle{
         else{
             object.settings.X -= distance
         }
+    }
+    private _commandTurn(objectId: PuzzleObjectId, direction: string){
+        let object = this.getObject(objectId)
+        if(!object) return
+        if(direction != 'right' && direction != 'left') return
+
+        let objectDirection = object.settings.direction
+        console.log("objectDirection")
+        console.log(objectDirection)
+        if(objectDirection == 'up'){
+            if(direction == 'right') objectDirection = 'right'
+            else objectDirection = 'left'
+        }
+        else if(objectDirection == 'right'){
+            if(direction == 'right') objectDirection = 'down'
+            else objectDirection = 'up'
+        }
+        else if(objectDirection == 'down'){
+            if(direction == 'right') objectDirection = 'left'
+            else objectDirection = 'right'
+        }
+        else {
+            if(direction == 'right') objectDirection = 'up'
+            else objectDirection = 'down'
+        }
+        object.settings.direction = objectDirection
+    }
+
+    commands = {
+        goForward: this._commandGoForward.bind(this),
+        jump: this._commandJump.bind(this),
+        turn: this._commandTurn.bind(this)
     }
 }

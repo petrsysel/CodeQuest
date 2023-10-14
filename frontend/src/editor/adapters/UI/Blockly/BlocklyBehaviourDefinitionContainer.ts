@@ -19,7 +19,7 @@ class BlocklyBehaviourDefinitionContainer {
 		Blockly.JavaScript.forBlock['turn'] = function(block: any, generator: any) {
 			var dropdown_turn_side = block.getFieldValue('turn_side');
 			let direction = dropdown_turn_side
-			var code = `await turn(actor, ${direction})\n`;
+			var code = `await turn(actor, "${direction}")\n`;
 			return code;
 		};
 		
