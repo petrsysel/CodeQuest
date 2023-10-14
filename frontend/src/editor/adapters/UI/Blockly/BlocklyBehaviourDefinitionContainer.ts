@@ -18,13 +18,14 @@ class BlocklyBehaviourDefinitionContainer {
 		
 		Blockly.JavaScript.forBlock['turn'] = function(block: any, generator: any) {
 			var dropdown_turn_side = block.getFieldValue('turn_side');
-			let direction = dropdown_turn_side
-			var code = `await turn(actor, "${direction}")\n`;
+			let direction = `"${dropdown_turn_side}"`
+			var code = `await turn(actor, ${direction})\n`;
 			return code;
 		};
 		
 		Blockly.JavaScript.forBlock['set_direction'] = function(block: any, generator: any) {
-			var value_direction = generator.valueToCode(block, 'direction', javascript.Order.ATOMIC);
+			var value_direction = generator.valueToCode(block, 'direction', javascript.Order.NONE);
+			console.log(typeof value_direction)
 			var code = `await setDirection(actor, ${value_direction})\n`;
 			return code;
 		};
@@ -38,8 +39,9 @@ class BlocklyBehaviourDefinitionContainer {
 		
 		Blockly.JavaScript.forBlock['direction_pick'] = function(block: any, generator: any) {
 			var dropdown_direction = block.getFieldValue('direction');
-			var code = `await directionPick(actor, ${dropdown_direction})`;
-			return [code, Blockly.JavaScript.ORDER_NONE];
+			var code = `"${dropdown_direction}"`
+			console.log(code)
+			return [code, Blockly.JavaScript.ORDER_ATOMIC];
 		};
 		
 		Blockly.JavaScript.forBlock['position_x'] = function(block: any, generator: any) {

@@ -153,8 +153,6 @@ class Puzzle implements IPuzzle{
         if(direction != 'right' && direction != 'left') return
 
         let objectDirection = object.settings.direction
-        console.log("objectDirection")
-        console.log(objectDirection)
         if(objectDirection == 'up'){
             if(direction == 'right') objectDirection = 'right'
             else objectDirection = 'left'
@@ -173,10 +171,44 @@ class Puzzle implements IPuzzle{
         }
         object.settings.direction = objectDirection
     }
+    private _commandSetDirection(objectId: PuzzleObjectId, direction: string){
+        let object = this.getObject(objectId)
+        if(!object) return
+        console.log(`DIRECTION: ${direction}`)
+        if(direction != 'right' && direction != 'left' && direction != 'up' && direction != 'down') return
+
+        object.settings.direction = direction
+    }
+    private _commandJumpTo(objectId: PuzzleObjectId, x: number, y: number){
+        let object = this.getObject(objectId)
+        if(!object) return
+        object.settings.X = x
+        object.settings.Y = y
+    }
+    private _commandGetX(objectId: PuzzleObjectId){
+        let object = this.getObject(objectId)
+        if(!object) return 0
+        return object.settings.X
+    }
+    private _commandGetY(objectId: PuzzleObjectId){
+        let object = this.getObject(objectId)
+        if(!object) return 0
+        return object.settings.Y
+    }
+    private _commandGetDirection(objectId: PuzzleObjectId){
+        let object = this.getObject(objectId)
+        if(!object) return 'down'
+        return object.settings.direction
+    }
 
     commands = {
         goForward: this._commandGoForward.bind(this),
         jump: this._commandJump.bind(this),
-        turn: this._commandTurn.bind(this)
+        turn: this._commandTurn.bind(this),
+        setDirection: this._commandSetDirection.bind(this),
+        jumpTo: this._commandJumpTo.bind(this),
+        getX: this._commandGetX.bind(this),
+        getY: this._commandGetY.bind(this),
+        getDirection: this._commandGetDirection.bind(this),
     }
 }

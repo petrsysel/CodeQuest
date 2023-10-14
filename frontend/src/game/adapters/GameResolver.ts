@@ -45,11 +45,24 @@ class GameResolver implements IGameResolver{
 				procedure.addInstruction(new Turn(actor.id(), direction))
 			})
 		}
-
-		// `await turn(actor, ${direction})\n`;
-		// `await setDirection(actor, ${value_direction})\n`;
-		// `await jumpTo(actor, ${value_x_position}, ${value_y_position})\n`;
-		// `await directionPick(actor, ${dropdown_direction})`;
+		let setDirection = async (actor: GameActor, direction: string) => {
+			puzzle.commands.setDirection(actor.id(), direction)
+			procedure.addInstruction(new SetDirection(actor.id(), direction))
+		}
+		let jumpTo = async (actor: GameActor, x: number, y: number) => {
+			puzzle.commands.jumpTo(actor.id(), x, y)
+			procedure.addInstruction(new JumpTo(actor.id(), x, y))
+		}
+		let getX = async (actor: GameActor) => {
+			return puzzle.commands.getX(actor.id())
+		}
+		let getY = async (actor: GameActor) => {
+			return puzzle.commands.getY(actor.id())
+		}
+		let getDirection = async (actor: GameActor) => {
+			return puzzle.commands.getDirection(actor.id())
+		}
+		
 		// `await getX(actor)`;
 		// `await getY(actor)`;
 		// `await getDirection(actor)`;
