@@ -14,7 +14,7 @@ class ObjectSynchronizer implements IObjectSynchronizer{
 	constructor(actors: GameActor[]){
 		this._actors = actors
 		this._registeredActions = []
-		this._registrationTimeout = 500 // To je moc!
+		this._registrationTimeout = 50 // To je moc!
 		this._timeoutHandle = -1
 		this._eventBehaviour = new EventBehaviour()
 	}
