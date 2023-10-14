@@ -1,27 +1,27 @@
 class BlocklyToolboxContainer{
 	private static _toolboxContent = /*html*/`
 	<category name="Pohyb" colour="#9fa55b">
-    <block type="go_forward" deletable="true" movable="true" editable="false"></block>
-    <block type="jump" deletable="true" movable="true" editable="false"></block>
-    <block type="turn" deletable="true" movable="true" editable="false">
+    <block type="go_forward" deletable="true" movable="true" editable="true"></block>
+    <block type="jump" deletable="true" movable="true" editable="true"></block>
+    <block type="turn" deletable="true" movable="true" editable="true">
       <field name="turn_side">turn_left</field>
     </block>
-    <block type="set_direction" deletable="true" movable="true" editable="false"></block>
-    <block type="jump_to" deletable="true" movable="true" editable="false"></block>
-    <block type="direction_pick" deletable="true" movable="true" editable="false">
+    <block type="set_direction" deletable="true" movable="true" editable="true"></block>
+    <block type="jump_to" deletable="true" movable="true" editable="true"></block>
+    <block type="direction_pick" deletable="true" movable="true" editable="true">
       <field name="direction">up</field>
     </block>
-    <block type="position_x" deletable="true" movable="true" editable="false"></block>
-    <block type="position_y" deletable="true" movable="true" editable="false"></block>
-    <block type="direction" deletable="true" movable="true" editable="false"></block>
+    <block type="position_x" deletable="true" movable="true" editable="true"></block>
+    <block type="position_y" deletable="true" movable="true" editable="true"></block>
+    <block type="direction" deletable="true" movable="true" editable="true"></block>
   </category>
   <category name="Vzhled" colour="#5b80a5">
-    <block type="say" deletable="true" movable="true" editable="false"></block>
-    <block type="change_costume" deletable="true" movable="true" editable="false"></block>
-    <block type="change_background" deletable="true" movable="true" editable="false"></block>
-    <block type="show" deletable="true" movable="true" editable="false"></block>
-    <block type="hide" deletable="true" movable="true" editable="false"></block>
-    <block type="set_layer" deletable="true" movable="true" editable="false"></block>
+    <block type="say" deletable="true" movable="true" editable="true"></block>
+    <block type="change_costume" deletable="true" movable="true" editable="true"></block>
+    <block type="change_background" deletable="true" movable="true" editable="true"></block>
+    <block type="show" deletable="true" movable="true" editable="true"></block>
+    <block type="hide" deletable="true" movable="true" editable="true"></block>
+    <block type="set_layer" deletable="true" movable="true" editable="true"></block>
   </category>
   <category name="Cykly" colour="#5ba55b">
     <block type="controls_repeat_ext">
@@ -192,18 +192,18 @@ class BlocklyToolboxContainer{
     </block>
   </category>
   <category name="Události" colour="#a5745b">
-    <block type="on_start" deletable="true" movable="true" editable="false"></block>
-    <block type="send_message" deletable="true" movable="true" editable="false"></block>
-    <block type="on_message_recieve" deletable="true" movable="true" editable="false"></block>
-    <block type="win" deletable="true" movable="true" editable="false"></block>
-    <block type="game_over" deletable="true" movable="true" editable="false"></block>
-    <block type="rule_check" deletable="true" movable="true" editable="false"></block>
-    <block type="wait" deletable="true" movable="true" editable="false"></block>
+    <block type="on_start" deletable="true" movable="true" editable="true"></block>
+    <block type="send_message" deletable="true" movable="true" editable="true"></block>
+    <block type="on_message_recieve" deletable="true" movable="true" editable="true"></block>
+    <block type="win" deletable="true" movable="true" editable="true"></block>
+    <block type="game_over" deletable="true" movable="true" editable="true"></block>
+    <block type="rule_check" deletable="true" movable="true" editable="true"></block>
+    <block type="wait" deletable="true" movable="true" editable="true"></block>
   </category>
   <category name="Vnímání" colour="#5ba58c">
     <block type="distance_to"></block>
-    <block type="is_touch" deletable="true" movable="true" editable="false"></block>
-    <block type="in_front_of_me" deletable="true" movable="true" editable="false"></block>
+    <block type="is_touch" deletable="true" movable="true" editable="true"></block>
+    <block type="in_front_of_me" deletable="true" movable="true" editable="true"></block>
   </category>
   <category name="Proměnné" colour="#a55b80" custom="VARIABLE"></category>
   <category name="Seznamy" colour="#995ba5">
