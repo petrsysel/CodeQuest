@@ -30,11 +30,11 @@ class BlocklyBlockDefinitionContainer{
 			"options": [
 			  [
 				"vlevo",
-				"turn_left"
+				"left"
 			  ],
 			  [
 				"vpravo",
-				"turn_right"
+				"right"
 			  ]
 			]
 		  }
