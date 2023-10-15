@@ -62,13 +62,16 @@ class GameResolver implements IGameResolver{
 		let getDirection = async (actor: GameActor) => {
 			return puzzle.commands.getDirection(actor.id())
 		}
+		let say = async (actor: GameActor, message: string) => {
+			procedure.addInstruction(new Say(actor.id(), message))
+		}
+		let changeCostume = async (actor: GameActor, costume: string) => {
+			procedure.addInstruction(new ChangeCostume(actor.id(), costume))
+		}
+		let changeBackground = async (actor: GameActor, background: string) => {
+			procedure.addInstruction(new ChangeBackground(actor.id(), background))
+		}
 		
-		// `await getX(actor)`;
-		// `await getY(actor)`;
-		// `await getDirection(actor)`;
-		// `await say(actor, ${value_message_to_say})\n`;
-		// `await changeCostume(actor, ${value_costume_name})\n`;
-		// `await changeBackground(actor, ${value_background_name})\n`;
 		// `await show(actor)\n`;
 		// `await hide(actor)\n`;
 		// `await setLayer(actor, ${value_layer})\n`;
