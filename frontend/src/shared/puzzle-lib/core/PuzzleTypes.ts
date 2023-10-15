@@ -14,7 +14,8 @@ type PuzzleObjectSettings = {
     direction: "up"|"right"|"down"|"left",
     X: number,
     Y: number,
-    costume: CostumeData
+    costume: CostumeData,
+    visible: boolean
 }
 
 type PuzzlePrimitive = {

@@ -47,6 +47,14 @@ const objectSettingsTemplate = /*html*/`
                     <select>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    Viditelný: 
+                </td>
+                <td>
+                    <input type="checkbox" id="visible-input-element">
+                </td>
+            </tr>
         </table>
     </div>
     
@@ -69,6 +77,7 @@ class ObjectSettingsUI implements IObjectSettingsUI{
     
     private _layerValueElement: HTMLInputElement
     private _playerEditValueElement: HTMLInputElement
+    private _visibleValueElement: HTMLInputElement
     private _positionXValueElement: HTMLInputElement
     private _positionYValueElement: HTMLInputElement
     private _directionValueElement: HTMLSelectElement
@@ -102,10 +111,12 @@ class ObjectSettingsUI implements IObjectSettingsUI{
         this._directionDown = document.getElementById('down-option-element') as HTMLOptionElement
         this._directionLeft = document.getElementById('left-option-element') as HTMLOptionElement
         
+        this._visibleValueElement = document.getElementById('visible-input-element') as HTMLInputElement
 
         this._nameElement.addEventListener('change', this._fieldChanged.bind(this))
         this._layerValueElement.addEventListener('change', this._fieldChanged.bind(this))
         this._playerEditValueElement.addEventListener('change', this._fieldChanged.bind(this))
+        this._visibleValueElement.addEventListener('change', this._fieldChanged.bind(this))
         this._positionXValueElement.addEventListener('change', this._fieldChanged.bind(this))
         this._positionYValueElement.addEventListener('change', this._fieldChanged.bind(this))
         this._directionValueElement.addEventListener('change', this._fieldChanged.bind(this))
@@ -138,6 +149,7 @@ class ObjectSettingsUI implements IObjectSettingsUI{
         this._nameElement.value = object.settings.name
         this._layerValueElement.value = object.settings.layer.toString()
         this._playerEditValueElement.checked = object.settings.playerEdit
+        this._visibleValueElement.checked = object.settings.visible
         this._positionXValueElement.value = object.settings.X.toString()
         this._positionYValueElement.value = object.settings.Y.toString()
         
@@ -174,7 +186,8 @@ class ObjectSettingsUI implements IObjectSettingsUI{
             direction: this._getSelectedDirection(),
             X: +this._positionXValueElement.value,
             Y: +this._positionYValueElement.value,
-            costume: this._selectedObject?this._selectedObject.settings.costume:PuzzleUtils.getDefaultCostume()
+            costume: this._selectedObject?this._selectedObject.settings.costume:PuzzleUtils.getDefaultCostume(),
+            visible: this._visibleValueElement.checked
         }
         this._emit('settings-changed', settings)
     }

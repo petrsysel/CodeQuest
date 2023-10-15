@@ -210,6 +210,7 @@ class KonvaBoardUI implements IBoardUI{
 					shadowBlur: 10,
 					shadowOffset: { x: 0, y: 0 },
 					shadowOpacity: object.id == that._selectedObject?1:0,
+					visible: object.settings.visible
 				})
 				layer.add(image);
 

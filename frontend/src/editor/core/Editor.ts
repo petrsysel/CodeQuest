@@ -31,7 +31,7 @@ class Editor{
             blocks: codeUI.getBlocks()
         })
 
-        this._mockupPuzzle.loadFromString(getPuzzleMock())
+        this._mockupPuzzle.loadFromString(puzzleMock.twoKeys())
 
         this.boardUI = boardUI
         

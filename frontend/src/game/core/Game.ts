@@ -12,7 +12,7 @@ class Game{
 		){
 		
 		this._puzzle = new Puzzle()
-		this._puzzle.loadFromString(getBlockTestMock())
+		this._puzzle.loadFromString(puzzleMock.threeWizards())
 		this._selectedObjectId = this._puzzle.getFirstPlayerObject()
 
 		objectList.render(this._puzzle.getObjectList())

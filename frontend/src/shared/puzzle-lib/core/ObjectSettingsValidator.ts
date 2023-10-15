@@ -15,7 +15,8 @@ class ObjectSettingsValidator {
             direction: newSettings.direction,
             X: boundValue(newSettings.X, 0, puzzleSettings.sideWidth - 1),
             Y: boundValue(newSettings.Y, 0, puzzleSettings.sideWidth - 1),
-            costume: newSettings.costume
+            costume: newSettings.costume,
+            visible: newSettings.visible
         }
         return validated
     }

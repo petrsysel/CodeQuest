@@ -24,7 +24,8 @@ class PuzzleUtils{
                 direction: "down",
                 X: 0,
                 Y: 0,
-                costume: this.getDefaultCostume()
+                costume: this.getDefaultCostume(),
+                visible: true
             }
         }
     }
@@ -39,7 +40,8 @@ class PuzzleUtils{
                 direction: from.settings.direction,
                 X: from.settings.X,
                 Y: from.settings.Y,
-                costume: from.settings.costume
+                costume: from.settings.costume,
+                visible: from.settings.visible
             }
         }
     }
