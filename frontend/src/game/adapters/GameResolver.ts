@@ -71,21 +71,44 @@ class GameResolver implements IGameResolver{
 		let changeBackground = async (actor: GameActor, background: string) => {
 			procedure.addInstruction(new ChangeBackground(actor.id(), background))
 		}
+		let show = async (actor: GameActor) => {
+			puzzle.commands.show(actor.id())
+			procedure.addInstruction(new Show(actor.id()))
+		}
+		let hide = async (actor: GameActor) => {
+			puzzle.commands.hide(actor.id())
+			procedure.addInstruction(new Hide(actor.id()))
+		}
+		let setLayer = async (actor: GameActor, layer: number) => {
+			procedure.addInstruction(new SetLayer(actor.id(), layer))
+		}
 		
-		// `await show(actor)\n`;
-		// `await hide(actor)\n`;
-		// `await setLayer(actor, ${value_layer})\n`;
-		// `// on_start nebude potřeba\n`;
 		// `async function checkRule(){
 		// 		${statements_rule_check_body}\n
 		// 	}`;
 		// `await sendMessage(actor, ${value_message_name})\n`;
-		// `// tohle si musím ještě promyslet\n`;
-		// `await wait(actor, ${value_turn_count})\n`;
-		// `await win(actor, ${value_win_message})\n`;
-		// `await gameOver(actor, ${value_game_over_message})\n`;
-		// `await isTouch(actor, ${value_object_name})`;
-		// `await isInFrontOfMe(actor, ${value_object_name})`;
+		// `async function onMessageRecieve(){}// tohle si musím ještě promyslet\n`;
+
+		let wait = async (actor: GameActor, turnCount: number) => {
+			return createAction(actor, () => {
+
+			})
+		}
+		let win = async (actor: GameActor, message: string) => {
+			procedure.addInstruction(new Win(actor.id(), message))
+		}
+		let gameOver = async (actor: GameActor, message: string) => {
+			procedure.addInstruction(new GameOver(actor.id(), message))
+		}
+		let isTouch = async (actor: GameActor, objectName: string) => {
+			return puzzle.commands.isTouch(actor.id(), objectName)
+		}
+		let isInFrontOfMe = async (actor: GameActor, objectName: string) => {
+			return puzzle.commands.isInFrontOfMe(actor.id(), objectName)
+		}
+		let distanceTo = async(actor: GameActor, objectName: string) => {
+			return puzzle.commands.distanceTo(actor.id(), objectName)
+		}
 		// `await distanceTo(actor, ${value_object_name})`;
 
 		actors.forEach(actor => {

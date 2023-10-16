@@ -200,6 +200,49 @@ class Puzzle implements IPuzzle{
         if(!object) return 'down'
         return object.settings.direction
     }
+    private _commandShow(objectId: PuzzleObjectId){
+        let object = this.getObject(objectId)
+        if(!object) return
+        object.settings.visible = true
+    }
+    private _commandHide(objectId: PuzzleObjectId){
+        let object = this.getObject(objectId)
+        if(!object) return
+        object.settings.visible = false
+    }
+    private _commandIsTouch(objectId: PuzzleObjectId, objectName: string){
+        let object = this.getObject(objectId)
+        if(!object) return false
+        let targetObjects = this._primitive.objects.filter(o => o.settings.name == objectName)
+        return targetObjects.some(o => o.settings.X == object?.settings.X && o.settings.Y == object.settings.Y)
+    }
+    private _commandIsInFrontOfMe(objectId: PuzzleObjectId, objectName: string){
+        let object = this.getObject(objectId)
+        if(!object) return false
+        let x = object.settings.X
+        let y = object.settings.Y
+        let direction = object.settings.direction
+
+        if(direction == 'up') y--
+        else if(direction == 'right') x++
+        else if(direction == 'down') y++
+        else x--
+
+        return this._primitive.objects.some(o => o.settings.X == x && o.settings.Y == y && o.settings.name == objectName)
+    }
+    private _commandDistanceTo(objectId: PuzzleObjectId, objectName: string){
+        let object = this.getObject(objectId)
+        if(!object) return -1
+
+        let distances = this._primitive.objects.filter(o => o.settings.name == objectName).map(o => {
+
+            let x = (object as PuzzleObject).settings.X - o.settings.X
+            let y = (object as PuzzleObject).settings.Y - o.settings.Y
+            return Math.sqrt((x * x) + (y * y))
+        })
+        if(distances.length == 0) return -1
+        return Math.min(...distances)
+    }
 
     commands = {
         goForward: this._commandGoForward.bind(this),
@@ -210,5 +253,10 @@ class Puzzle implements IPuzzle{
         getX: this._commandGetX.bind(this),
         getY: this._commandGetY.bind(this),
         getDirection: this._commandGetDirection.bind(this),
+        show: this._commandShow.bind(this),
+        hide: this._commandHide.bind(this),
+        isTouch: this._commandIsTouch.bind(this),
+        isInFrontOfMe: this._commandIsInFrontOfMe.bind(this),
+        distanceTo: this._commandDistanceTo.bind(this)
     }
 }
