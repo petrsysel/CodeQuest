@@ -1,12 +1,25 @@
-class GameResolver implements IGameResolver{
-	
-	constructor(){
+class GameResolver{
+	private _procedure
+	private _synchronizer
 
+	private _puzzle
+	private _actors
+
+	constructor(puzzle: Puzzle, actors: GameActor[]){
+		this._puzzle = puzzle
+		this._actors = actors
+		this._procedure = new GameProcedure()
+		this._synchronizer = new ObjectSynchronizer(actors)
+
+		this.resolve(this._puzzle, this._actors, this._synchronizer,this._procedure)
 	}
-	resolve(puzzle: Puzzle): GameRound[] {
-		let actors = PuzzleUtils.createActors(puzzle)
-		let procedure = new GameProcedure()
-		let synchronizer = new ObjectSynchronizer(actors)
+
+	getRounds(){
+		return this._procedure.getRounds()
+	}
+
+	resolve(puzzle: Puzzle, actors: GameActor[], synchronizer: ObjectSynchronizer, procedure: GameProcedure): GameRound[] {
+		
 
 		synchronizer.on('round-end', () => {
 			procedure.next()
@@ -114,15 +127,16 @@ class GameResolver implements IGameResolver{
 		actors.forEach(actor => {
 			let id = actor.getObject().id
 			let mark = 'fn' + id.split('-').join('_')
-			let code = BlocklyGenerator.getCodeFor(actor.getObject())
+			let code = actor.getCode()
 			let func = `async function ${mark}(){
 				${code};
 				await console.log('end of code ${id}')
 			};
 			${mark}();`
 			console.log(func)
-			eval(func)
+			const f = new Function('actor','goForward', func)
+			f(actor, goForward)
 		})
-		return []
+		return procedure.getRounds()
 	}
 }

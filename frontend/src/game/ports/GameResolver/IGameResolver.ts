@@ -1,3 +1,3 @@
 interface IGameResolver {
-	resolve(puzzle: Puzzle): GameRound[]
+	resolve(puzzle: Puzzle, actors: GameActor[]): GameRound[]
 }

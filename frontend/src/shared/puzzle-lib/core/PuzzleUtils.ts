@@ -91,13 +91,17 @@ class PuzzleUtils{
             let code = o.settings.code
             if(code != "" && code != "{}") return true
             else return false
-        })
-        let actors: GameActor[] = []
-        
-        objects.forEach(object => {
-            actors.push(new GameActor(object))
-        })
+        }).map(o => new GameActor(o, BlocklyGenerator.getCodeFor(o)))
 
-        return actors
+        return objects
+    }
+    static stringifyActors(actors: GameActor[]){
+        const stringActors = JSON.stringify(actors)
+        return stringActors
+    }
+    static destringifyActors(stringActors: string){
+        return JSON.parse(stringActors).map((sa:any) =>
+            new GameActor(sa._primitive, sa._code)
+        )
     }
 }

@@ -3,8 +3,8 @@ class BlocklyBehaviourDefinitionContainer {
 
 	static init(){
 		//@ts-ignore
-		window.LoopTrap = 1000
-		Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--window.LoopTrap == 0) throw "Infinite loop.";\n';
+		// window.LoopTrap = 1000
+		// Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--window.LoopTrap == 0) throw "Infinite loop.";\n';
 		
 		Blockly.JavaScript.forBlock['go_forward'] = function(block: any, generator: any) {
 			var code = `await goForward(actor)\n`;

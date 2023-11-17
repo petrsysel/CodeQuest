@@ -20,8 +20,8 @@ function main(){
     let gameControlPanel = new GameControlPanel('game-control-panel')
     let gameObjectList = new GameObjectList('game-object-list')
 
-    let gameResolver = new GameResolver()
+    // let gameResolver = new GameResolver()
 
-    let game = new Game(gameBlockly, gameBoard, gameControlPanel, gameObjectList, gameResolver)
+    let game = new Game(gameBlockly, gameBoard, gameControlPanel, gameObjectList)
     
 }
