@@ -15,6 +15,7 @@ class GameProcedure{
 	}
 
 	getRounds(){
-		return [...this._rounds]
+		const roundList = this._rounds.map(r => r.getInstructions())
+		return roundList
 	}
 }

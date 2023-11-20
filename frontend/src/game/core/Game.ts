@@ -7,7 +7,8 @@ class Game{
 		codeUI: ICodeEditorUI,
 		boardUI: IBoardUI,
 		controlPanelUI: IControlPanelUI,
-		objectList: IObjectPanelUI
+		objectList: IObjectPanelUI,
+		gameLauncher: IGameLauncher
 		){
 		
 		this._puzzle = new Puzzle()
@@ -38,12 +39,13 @@ class Game{
 
 		controlPanelUI.on('play-puzzle', () => {
 			let code = codeUI.getCode()
-			// gameResolver.resolve(this._puzzle)
-			let launcher = new GameLauncher(1000)
-			launcher.play(this._puzzle)
+			
+			gameLauncher.play(this._puzzle)
+		})
 
-			// let resolver = new GameResolver(this._puzzle,
-			// 	PuzzleUtils.createActors(this._puzzle))
+		gameLauncher.on("done", data => {
+			console.log("DATA FROM LAUNCHER")
+			console.log(data)
 		})
 		
 

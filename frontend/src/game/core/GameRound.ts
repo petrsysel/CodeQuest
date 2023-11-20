@@ -6,4 +6,8 @@ class GameRound{
 	addInstruction(instruction: GameInstruction){
 		this._instructions.push(instruction)
 	}
+
+	getInstructions(){
+		return this._instructions
+	}
 }

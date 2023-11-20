@@ -8,12 +8,16 @@ onmessage = e => {
 
 		let actors = PuzzleUtils.destringifyActors(data.actors)
 		
-		let resolver = new GameResolver(p, actors)
+		let resolver = new GameResolver(p, actors, () => {
+			postMessage({
+				status: 'inprogress',
+				data: rslv.getRounds()
+			})
+		})
 		rslv = resolver
 	}
 
 	if(data.command == 'get'){
-		console.log(rslv.getRounds())
 		postMessage({
 			status: 'result',
 			data: rslv.getRounds()

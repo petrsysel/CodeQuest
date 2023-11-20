@@ -5,26 +5,26 @@ class GameResolver{
 	private _puzzle
 	private _actors
 
-	constructor(puzzle: Puzzle, actors: GameActor[]){
+	constructor(puzzle: Puzzle, actors: GameActor[], onRoundAdded: () => void){
 		this._puzzle = puzzle
 		this._actors = actors
 		this._procedure = new GameProcedure()
 		this._synchronizer = new ObjectSynchronizer(actors)
 
-		this.resolve(this._puzzle, this._actors, this._synchronizer,this._procedure)
+		this.resolve(this._puzzle, this._actors, this._synchronizer,this._procedure, onRoundAdded)
 	}
 
 	getRounds(){
 		return this._procedure.getRounds()
 	}
 
-	resolve(puzzle: Puzzle, actors: GameActor[], synchronizer: ObjectSynchronizer, procedure: GameProcedure): void {
+	resolve(puzzle: Puzzle, actors: GameActor[], synchronizer: ObjectSynchronizer, procedure: GameProcedure, onRoundAdded: () => void): void {
 		
 
 		synchronizer.on('round-end', () => {
 			procedure.next()
-			
-			console.log(procedure.getRounds())
+			onRoundAdded()
+			// console.log(procedure.getRounds())
 		})
 
 		const createAction = async (actor: GameActor, action: () => void) => {

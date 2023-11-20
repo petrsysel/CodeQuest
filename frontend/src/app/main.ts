@@ -1,27 +1,27 @@
 function main(){
-    let blocklyEditor = new BlocklyEditor('blockly-placeholder')
-    let objectPanel = new ObjectPanelUI('object-panel')
-    let objectSettings = new ObjectSettingsUI('object-settings')
-    let costumePicker = new CostumePickerUI('cp-place-holder')
-    let board = new KonvaBoardUI('board-container', {
+    const blocklyEditor = new BlocklyEditor('blockly-placeholder')
+    const objectPanel = new ObjectPanelUI('object-panel')
+    const objectSettings = new ObjectSettingsUI('object-settings')
+    const costumePicker = new CostumePickerUI('cp-place-holder')
+    const board = new KonvaBoardUI('board-container', {
         draggable: true,
         selectable: 'all'
     })
-    let controlPanel = new ControlPanelUI('control-panel')
-    let puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
+    const controlPanel = new ControlPanelUI('control-panel')
+    const puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
 
-    let editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings)
+    const editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings)
     
-    let gameBlockly = new BlocklyEditor('game-blockly-placeholder')
-    let gameBoard = new KonvaBoardUI('game-board-container', {
+    const gameBlockly = new BlocklyEditor('game-blockly-placeholder')
+    const gameBoard = new KonvaBoardUI('game-board-container', {
         draggable: false,
         selectable: 'player'
     })
-    let gameControlPanel = new GameControlPanel('game-control-panel')
-    let gameObjectList = new GameObjectList('game-object-list')
+    const gameControlPanel = new GameControlPanel('game-control-panel')
+    const gameObjectList = new GameObjectList('game-object-list')
 
-    // let gameResolver = new GameResolver()
+    const gameLauncher = new GameLauncher(1000)
 
-    let game = new Game(gameBlockly, gameBoard, gameControlPanel, gameObjectList)
+    const game = new Game(gameBlockly, gameBoard, gameControlPanel, gameObjectList, gameLauncher)
     
 }
