@@ -18,7 +18,8 @@ class GameLauncher{
 		})
 		
 		worker.onmessage = message => {
-			console.log(message.data)
+			console.log("WORKER RESPONSE:")
+			console.log(message.data.data)
 		}
 
 		setTimeout(() => {

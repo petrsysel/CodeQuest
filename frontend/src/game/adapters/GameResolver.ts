@@ -18,7 +18,7 @@ class GameResolver{
 		return this._procedure.getRounds()
 	}
 
-	resolve(puzzle: Puzzle, actors: GameActor[], synchronizer: ObjectSynchronizer, procedure: GameProcedure): GameRound[] {
+	resolve(puzzle: Puzzle, actors: GameActor[], synchronizer: ObjectSynchronizer, procedure: GameProcedure): void {
 		
 
 		synchronizer.on('round-end', () => {
@@ -40,31 +40,36 @@ class GameResolver{
 		}
 
 		let goForward = async function goForward(actor: GameActor) {
+			let instr: GameInstruction = Instruction.goForward(actor.id())
 			return createAction(actor, () => {
 				puzzle.commands.goForward(actor.id())
-				procedure.addInstruction(new GoForward(actor.id()))
+				procedure.addInstruction(instr)
 			})
 		}
 		
 		let jump = async (actor: GameActor) => {
 			return createAction(actor, () => {
 				puzzle.commands.jump(actor.id())
-				procedure.addInstruction(new Jump(actor.id()))
+				const instr = Instruction.jump(actor.id())
+				procedure.addInstruction(instr)
 			})
 		}
 		let turn = async (actor: GameActor, direction: string) => {
 			return createAction(actor, () => {
 				puzzle.commands.turn(actor.id(), direction)
-				procedure.addInstruction(new Turn(actor.id(), direction))
+				const instr = Instruction.turn(actor.id(), direction as "right" | "left")
+				procedure.addInstruction(instr)
 			})
 		}
 		let setDirection = async (actor: GameActor, direction: string) => {
 			puzzle.commands.setDirection(actor.id(), direction)
-			procedure.addInstruction(new SetDirection(actor.id(), direction))
+			const instr = Instruction.setDirection(actor.id(), direction as "up" | "right" | "down" | "left")
+			procedure.addInstruction(instr)
 		}
 		let jumpTo = async (actor: GameActor, x: number, y: number) => {
 			puzzle.commands.jumpTo(actor.id(), x, y)
-			procedure.addInstruction(new JumpTo(actor.id(), x, y))
+			const instr = Instruction.jumpTo(actor.id(), x, y)
+			procedure.addInstruction(instr)
 		}
 		let getX = async (actor: GameActor) => {
 			return puzzle.commands.getX(actor.id())
@@ -76,24 +81,30 @@ class GameResolver{
 			return puzzle.commands.getDirection(actor.id())
 		}
 		let say = async (actor: GameActor, message: string) => {
-			procedure.addInstruction(new Say(actor.id(), message))
+			const instr = Instruction.say(actor.id(), message)
+			procedure.addInstruction(instr)
 		}
 		let changeCostume = async (actor: GameActor, costume: string) => {
-			procedure.addInstruction(new ChangeCostume(actor.id(), costume))
+			const instr = Instruction.changeCostume(actor.id(), costume)
+			procedure.addInstruction(instr)
 		}
 		let changeBackground = async (actor: GameActor, background: string) => {
-			procedure.addInstruction(new ChangeBackground(actor.id(), background))
+			const instr = Instruction.changeBackground(actor.id(), background)
+			procedure.addInstruction(instr)
 		}
 		let show = async (actor: GameActor) => {
 			puzzle.commands.show(actor.id())
-			procedure.addInstruction(new Show(actor.id()))
+			const instr = Instruction.show(actor.id())
+			procedure.addInstruction(instr)
 		}
 		let hide = async (actor: GameActor) => {
 			puzzle.commands.hide(actor.id())
-			procedure.addInstruction(new Hide(actor.id()))
+			const instr = Instruction.hide(actor.id())
+			procedure.addInstruction(instr)
 		}
 		let setLayer = async (actor: GameActor, layer: number) => {
-			procedure.addInstruction(new SetLayer(actor.id(), layer))
+			const instr = Instruction.setLayer(actor.id(), layer)
+			procedure.addInstruction(instr)
 		}
 		
 		// `async function checkRule(){
@@ -108,10 +119,13 @@ class GameResolver{
 			})
 		}
 		let win = async (actor: GameActor, message: string) => {
-			procedure.addInstruction(new Win(actor.id(), message))
+			// procedure.addInstruction(new Win(actor.id(), message))
+			const instr = Instruction.win(actor.id(), message)
+			procedure.addInstruction(instr)
 		}
 		let gameOver = async (actor: GameActor, message: string) => {
-			procedure.addInstruction(new GameOver(actor.id(), message))
+			const instr = Instruction.gameOver(actor.id(), message)
+			procedure.addInstruction(instr)
 		}
 		let isTouch = async (actor: GameActor, objectName: string) => {
 			return puzzle.commands.isTouch(actor.id(), objectName)
@@ -122,7 +136,6 @@ class GameResolver{
 		let distanceTo = async(actor: GameActor, objectName: string) => {
 			return puzzle.commands.distanceTo(actor.id(), objectName)
 		}
-		// `await distanceTo(actor, ${value_object_name})`;
 
 		actors.forEach(actor => {
 			let id = actor.getObject().id
@@ -134,9 +147,8 @@ class GameResolver{
 			};
 			${mark}();`
 			console.log(func)
-			const f = new Function('actor','goForward', func)
-			f(actor, goForward)
+			const f = new Function('actor','goForward', 'turn', func)
+			f(actor, goForward, turn)
 		})
-		return procedure.getRounds()
 	}
 }

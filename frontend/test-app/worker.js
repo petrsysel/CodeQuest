@@ -10,12 +10,13 @@ onmessage = e => {
 		
 		let resolver = new GameResolver(p, actors)
 		rslv = resolver
-		postMessage({
-			status: 'done'
-		})
 	}
 
 	if(data.command == 'get'){
 		console.log(rslv.getRounds())
+		postMessage({
+			status: 'result',
+			data: rslv.getRounds()
+		})
 	}
 }

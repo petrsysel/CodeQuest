@@ -1,130 +1,141 @@
-class GoForward implements IGameInstruction{
-	objectId: PuzzleObjectId
-	
-	constructor(objectId: PuzzleObjectId){
-		this.objectId = objectId
-	}
-}
+type InstructionType =
+	"goforward" |
+	"jump" |
+	"turn" |
+	"setdirection" |
+	"jumpto" |
+	"say" |
+	"changecostume" |
+	"changebackground" |
+	"show" |
+	"hide" |
+	"setlayer" |
+	"sendmessage" |
+	"wait" |
+	"win" |
+	"gameover"
 
-class Jump implements IGameInstruction{
-	objectId: PuzzleObjectId
-	
-	constructor(objectId: PuzzleObjectId){
-		this.objectId = objectId
-	}
-}
+// type GameInstruction = {
+// 	name: InstructionType
+// 	objectId: string
+// }
+type GameInstruction = {
+	name: InstructionType,
+	objectId: string
+} & Parameter
 
-class Turn implements IGameInstruction{
-	objectId: PuzzleObjectId
-	direction: string
-	constructor(objectId: PuzzleObjectId, direction: string){
-		this.objectId = objectId
-		this.direction = direction
-	}
-}
+type Parameter =
+	{side: "right" | "left"} |
+	{direction: "up" | "right"| "down" | "left"} |
+	{message: string} |
+	{costumeName: string} |
+	{backgroundName: string} |
+	{x: number, y: number} |
+	{layer: number} |
+	{roundAmount: number} |
+	{}
 
-class SetDirection implements IGameInstruction{
-	objectId: PuzzleObjectId
-	direction: string
-	constructor(objectId: PuzzleObjectId, direction: string){
-		this.objectId = objectId
-		this.direction = direction
+class Instruction {
+	static goForward(objectId: string): GameInstruction {
+		return {
+			objectId: objectId,
+			name: "goforward",
+		}
 	}
-}
-
-class JumpTo implements IGameInstruction{
-	objectId: PuzzleObjectId
-	x: number
-	y: number
-	constructor(objectId: PuzzleObjectId, x: number, y: number){
-		this.objectId = objectId
-		this.x = x
-		this.y = y
+	static jump(objectId: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "jump"
+		}
 	}
-}
-
-class Say implements IGameInstruction{
-	objectId: PuzzleObjectId
-	message: string
-	constructor(objectId: PuzzleObjectId, message: string){
-		this.objectId = objectId
-		this.message = message
+	static turn(objectId: string, direction: "left" | "right"): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "turn",
+			side: direction
+		}
 	}
-}
-
-class ChangeCostume implements IGameInstruction{
-	objectId: PuzzleObjectId
-	costumeName: string
-	constructor(objectId: PuzzleObjectId, costumeName: string){
-		this.objectId = objectId
-		this.costumeName = costumeName
+	static setDirection(objectId: string, direction: "up" | "right" | "down" | "left"): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "setdirection",
+			direction: direction
+		}
 	}
-}
-
-class ChangeBackground implements IGameInstruction{
-	objectId: PuzzleObjectId
-	background: string
-	constructor(objectId: PuzzleObjectId, background: string){
-		this.objectId = objectId
-		this.background = background
+	static jumpTo(objectId: string, x: number, y: number): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "jumpto",
+			x:x,
+			y:y
+		}
 	}
-}
-
-class Show implements IGameInstruction{
-	objectId: PuzzleObjectId
-	constructor(objectId: PuzzleObjectId){
-		this.objectId = objectId
+	static say(objectId: string, message: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "say",
+			message: message
+		}
 	}
-}
-
-class Hide implements IGameInstruction{
-	objectId: PuzzleObjectId
-	constructor(objectId: PuzzleObjectId){
-		this.objectId = objectId
+	static changeCostume(objectId: string, costumeName: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "changecostume",
+			costumeName: costumeName
+		}
 	}
-}
-
-class SetLayer implements IGameInstruction{
-	objectId: PuzzleObjectId
-	layer: number
-	constructor(objectId: PuzzleObjectId, layer: number){
-		this.objectId = objectId
-		this.layer = layer
+	static changeBackground(objectId: string, backgroundName: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "changebackground",
+			backgroundName: backgroundName
+		}
 	}
-}
-
-class SendMessage implements IGameInstruction{
-	objectId: PuzzleObjectId
-	message: string
-	constructor(objectId: PuzzleObjectId, message: string){
-		this.objectId = objectId
-		this.message = message
+	static show(objectId: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "show"
+		}
 	}
-}
-
-class Wait implements IGameInstruction{
-	objectId: PuzzleObjectId
-	turnCount: number
-	constructor(objectId: PuzzleObjectId, turnCount: number){
-		this.objectId = objectId
-		this.turnCount = turnCount
+	static hide(objectId: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "hide"
+		}
 	}
-}
-
-class Win implements IGameInstruction{
-	objectId: PuzzleObjectId
-	message: string
-	constructor(objectId: PuzzleObjectId, message: string){
-		this.objectId = objectId
-		this.message = message
+	static setLayer(objectId: string, layer: number): GameInstruction {
+		return {
+			objectId: objectId,
+			name: "setlayer",
+			layer: layer
+		}
 	}
-}
-
-class GameOver implements IGameInstruction{
-	objectId: PuzzleObjectId
-	message: string
-	constructor(objectId: PuzzleObjectId, message: string){
-		this.objectId = objectId
-		this.message = message
+	static sendMessage(objectId: string, message: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name: "sendmessage",
+			message: message
+		}
+	}
+	static wait(objectId: string, roundAmount: number): GameInstruction{
+		return {
+			objectId: objectId,
+			name:"wait",
+			roundAmount: roundAmount
+		}
+	}
+	static win(objectId: string, message: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name:"win",
+			message: message
+		}
+	}
+	static gameOver(objectId: string, message: string): GameInstruction{
+		return {
+			objectId: objectId,
+			name:"gameover",
+			message: message
+		}
 	}
 }

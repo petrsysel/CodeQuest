@@ -1,9 +1,9 @@
 class GameRound{
-	private _instructions: IGameInstruction[]
-	constructor(instructions: IGameInstruction[] = []){
+	private _instructions: GameInstruction[]
+	constructor(instructions: GameInstruction[] = []){
 		this._instructions = instructions
 	}
-	addInstruction(instruction: IGameInstruction){
+	addInstruction(instruction: GameInstruction){
 		this._instructions.push(instruction)
 	}
 }

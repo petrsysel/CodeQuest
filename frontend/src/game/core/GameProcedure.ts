@@ -10,7 +10,7 @@ class GameProcedure{
 		this._rounds.push(new GameRound([]))
 	}
 
-	addInstruction(instruction: IGameInstruction){
+	addInstruction(instruction: GameInstruction){
 		this._rounds[this._rounds.length-1].addInstruction(instruction)
 	}
 
