@@ -2,6 +2,10 @@ type KonvaData = {
 	stage: any,
 	backgroundLayer: any,
 	objectLayer: any,
+	objects: {
+		konvaObject: any,
+		puzzleObject: PuzzleObject
+	}[]
 	width: number,
 	height: number,
 	shorterSide: number,
@@ -58,7 +62,6 @@ class KonvaBoardUI implements IBoardUI{
 		let width = w
       	let height = h
 
-		// Vypadá to, že bude potřeba přijímat celý puzzle
 		let sideWidth = size
 		let shorterSide = width - height < 0 ? width : height
 		let space = shorterSide/(size*8)
@@ -92,7 +95,8 @@ class KonvaBoardUI implements IBoardUI{
 			topOffset:topOffset,
 			boardSideSize: sideWidth,
 			startX: startX,
-			startY: startY
+			startY: startY,
+			objects: []
 		}
 		konvaData.stage.add(konvaData.backgroundLayer)
 		konvaData.stage.add(konvaData.objectLayer)
@@ -100,14 +104,8 @@ class KonvaBoardUI implements IBoardUI{
 	}
 
 	private _drawBackground(){
-		let width = this._konvaData.width
-		let height = this._konvaData.height
-
-		let shorterSide = this._konvaData.shorterSide
 		let space = this._konvaData.spaceWidth
 		let fieldSize = this._konvaData.squareWidth
-		let fieldsWidth = this._konvaData.innerBoardWidth
-
 		let leftOffset = this._konvaData.leftOffset
 		let topOffset = this._konvaData.topOffset
 		let sideWidth = this._konvaData.boardSideSize
@@ -128,93 +126,110 @@ class KonvaBoardUI implements IBoardUI{
 		}
 	}
 
-	render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]): void {
+	render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]) {
 		if(puzzleSettings.sideWidth != this._konvaData.boardSideSize){
 
 			this._konvaData = this._initKonva(this._konvaData.width, this._konvaData.height, puzzleSettings.sideWidth)
 			this._drawBackground()
 		}
 		
-		let squareWidth = this._konvaData.squareWidth
-		let space = this._konvaData.spaceWidth
-
-		let startX = this._konvaData.leftOffset + squareWidth/2
-		let startY = this._konvaData.topOffset + squareWidth/2
-
-		let layer = this._konvaData.objectLayer
-		layer.removeChildren()
+		this._clearLayer()
 
 		let sortedObjects = objects.sort((a, b) => {
 			return a.settings.layer - b.settings.layer
 		})
 		
-		let that = this
-		sortedObjects.forEach(object => {
-			let angle = 0
-			if(object.settings.direction == "up") angle = 180
-			else if(object.settings.direction == "right") angle = -90
-			else if(object.settings.direction == "down") angle = 0
-			else angle = 90
+		sortedObjects.forEach(async object => {
+			const objInst = await this._createInstance(object)
+			this._addObjectToLayer(objInst, object)
+			this._setDragBehaviour(objInst, object)
+		})
+	}
 
-			let path = object.settings.costume.path
+	private _clearLayer(){
+		this._konvaData.objectLayer.removeChildren()
+		this._konvaData.objects = []
+	}
+	private _addObjectToLayer(konvaObject:any, puzzleObject: PuzzleObject){
+		const contain = this._konvaData.objects.some(o => o.puzzleObject.id == puzzleObject.id)
+		if(!contain){
+			this._konvaData.objectLayer.add(this._setImage(konvaObject, puzzleObject))
+			this._konvaData.objects = [...this._konvaData.objects, {
+				puzzleObject: puzzleObject,
+				konvaObject: konvaObject
+			}]
+		}
+	}
 
+	private _setImage(image: any, object: PuzzleObject){
+		console.log("setting image")
+		const startX = this._konvaData.startX
+		const startY = this._konvaData.startY
+		const squareWidth = this._konvaData.squareWidth
+		const space = this._konvaData.spaceWidth
+		image.setAttrs({
+			x: startX + (object.settings.X * (squareWidth + space)),
+			y: startY + (object.settings.Y * (squareWidth + space)),
+			width: squareWidth,
+			height: squareWidth,
+			offset:{
+				x:squareWidth/2,
+				y:squareWidth/2
+			},
+			draggable:this._options.draggable,
+			rotation: this._getAngle(object),
+			shadowColor: 'blue',
+			shadowBlur: 10,
+			shadowOffset: { x: 0, y: 0 },
+			shadowOpacity: object.id == this._selectedObject?1:0,
+			visible: object.settings.visible
+		})
+		return image
+	}
+
+	private _getAngle(object: PuzzleObject){
+		let angle = 0
+		if(object.settings.direction == "up") angle = 180
+		else if(object.settings.direction == "right") angle = -90
+		else if(object.settings.direction == "down") angle = 0
+		else angle = 90
+		return angle
+	}
+
+	private _createInstance(object: PuzzleObject){
+		const path = object.settings.costume.path
+		return new Promise<any>((resolve, reject) => {
 			if(!this._loadedCostumes.some(c => c.path == path)){
-				Konva.Image.fromURL(path, function (image:any) {
-					that._loadedCostumes.push({path:path,image: image})
-					createInstance()
+				Konva.Image.fromURL(path, (image:any) => {
+					const newImg = {path:path,image: image}
+					this._loadedCostumes.push(newImg)
+					resolve(newImg.image)
 				})
 			}
 			else{
-				createInstance()
+				let image = this._loadedCostumes.find(c => c.path == path)?.image
+				resolve(image.clone())
 			}
+		})
+	}
+
+	private _setDragBehaviour(konvaObject: any, puzzleObject: PuzzleObject){
+		konvaObject.on('mouseup touchend dragend', () => {
+			const offsetX = this._konvaData.startX
+			const offsetY = this._konvaData.startY
+			const squareW = this._konvaData.squareWidth
+			const spaceW = this._konvaData.spaceWidth
+			const x = Math.round((konvaObject.x() - offsetX)/(squareW+spaceW))
+			const y = Math.round((konvaObject.y() - offsetY)/(squareW+spaceW))
 			
+			if(this._options.draggable) this._emit("object-moved", {objectId:puzzleObject.id,x:x, y:y})
 
-			function createInstance(){
-				let image = that._loadedCostumes.find(c => c.path == path)?.image
-				let newobject = image.clone()
-				setImage(newobject)
-				newobject.on('mouseup touchend dragend', function () {
-					let offsetX = that._konvaData.startX
-					let offsetY = that._konvaData.startY
-					let squareW = that._konvaData.squareWidth
-					let spaceW = that._konvaData.spaceWidth
-					let x = Math.round((newobject.x() - offsetX)/(squareW+spaceW))
-					let y = Math.round((newobject.y() - offsetY)/(squareW+spaceW))
-					
-					if(that._options.draggable) that._emit("object-moved", {objectId:object.id,x:x, y:y})
-
-					if(that._options.selectable == 'player'){
-						if(object.settings.playerEdit) that._emit('object-selected', {
-							x: x,
-							y: y,
-							objectId: object.id
-						})
-					}
+			if(this._options.selectable == 'player'){
+				if(puzzleObject.settings.playerEdit) this._emit('object-selected', {
+					x: x,
+					y: y,
+					objectId: puzzleObject.id
 				})
-			}
-
-			function setImage(image: any){
-				image.setAttrs({
-					x: startX + (object.settings.X * (squareWidth + space)),
-					y: startY + (object.settings.Y * (squareWidth + space)),
-					width: squareWidth,
-					height: squareWidth,
-					offset:{
-						x:squareWidth/2,
-						y:squareWidth/2
-					},
-					draggable:that._options.draggable,
-					rotation:angle,
-				//   cornerRadius: 20,
-				  	shadowColor: 'blue',
-					shadowBlur: 10,
-					shadowOffset: { x: 0, y: 0 },
-					shadowOpacity: object.id == that._selectedObject?1:0,
-					visible: object.settings.visible
-				})
-				layer.add(image);
-
-				
 			}
 		})
 	}
