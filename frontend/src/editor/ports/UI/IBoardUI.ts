@@ -9,4 +9,5 @@ interface IBoardUI {
     setSelected(objectId: PuzzleObjectId): void
     render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]): void
     on(event: BoardUIEvents, callback: (data: BoardUIData) => void): void
+    animate(puzzleSettings: PuzzleSettings, objects: PuzzleObject[], instructions: GameInstruction[]): Promise<unknown>
 }

@@ -43,9 +43,19 @@ class Game{
 			gameLauncher.play(this._puzzle)
 		})
 
-		gameLauncher.on("done", data => {
+		gameLauncher.on("done", async data => {
 			console.log("DATA FROM LAUNCHER")
 			console.log(data)
+			let workPuzzle = this._puzzle.clone()
+			for(const round of data){
+				await boardUI.animate(workPuzzle.getSettings(),workPuzzle.getObjectList(),round)
+
+				// Provést akce fyzicky
+				round.forEach(i =>{
+					if(i.name == "goforward") workPuzzle.commands.goForward(i.objectId)
+					else if(i.name == "turn") workPuzzle.commands.turn(i.objectId, (i as {side:string}).side)
+				})
+			}
 		})
 		
 

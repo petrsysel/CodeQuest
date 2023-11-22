@@ -126,7 +126,7 @@ class KonvaBoardUI implements IBoardUI{
 		}
 	}
 
-	render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]) {
+	async render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]) {
 		if(puzzleSettings.sideWidth != this._konvaData.boardSideSize){
 
 			this._konvaData = this._initKonva(this._konvaData.width, this._konvaData.height, puzzleSettings.sideWidth)
@@ -139,11 +139,68 @@ class KonvaBoardUI implements IBoardUI{
 			return a.settings.layer - b.settings.layer
 		})
 		
-		sortedObjects.forEach(async object => {
+		await sortedObjects.forEach(async object => {
 			const objInst = await this._createInstance(object)
 			this._addObjectToLayer(objInst, object)
 			this._setDragBehaviour(objInst, object)
 		})
+	}
+
+	async animate(puzzleSettings: PuzzleSettings, objects: PuzzleObject[], instructions: GameInstruction[]){
+		await this.render(puzzleSettings, objects)
+		return new Promise<unknown>((resolve, reject) => {
+			let finnished = 0
+			
+			const animations = instructions.map(i => {
+				return this._prepareAnimation(i, () => {
+					finnished++
+					test()
+				})
+			})
+			const valid = animations.filter(a => a != null)
+			valid.forEach(t => t.play())
+
+			const test = () => {
+				if(finnished == valid.length) resolve("konec")
+			}
+		})
+	}
+
+	private _prepareAnimation(instruction: GameInstruction, onFinish: () => void){
+		const obj = this._konvaData.objects.find(o => o.puzzleObject.id == instruction.objectId)
+		if(!obj) return null
+		if(instruction.name == "goforward"){
+			const direction = obj.puzzleObject.settings.direction
+			const yaxis = direction == "up" || direction == "down"?1:0
+			const xaxis = 1 - yaxis
+			const sx = obj.konvaObject.x()
+			const sy = obj.konvaObject.y()
+			const reversed = direction == "left" || direction == "up"? -1:1
+			const distance = this._konvaData.squareWidth + this._konvaData.spaceWidth
+			var tween = new Konva.Tween({
+				node: obj.konvaObject,
+				duration: 1,
+				easing: Konva.Easings.EaseInOut,
+				x: sx + distance * xaxis * reversed,
+				y: sy + distance * yaxis * reversed,
+				onFinish: onFinish
+			})
+			return tween
+		}
+		else if(instruction.name == "turn"){
+			const side = (instruction as {side:"right"|"left"}).side
+			console.log("Rotuju!")
+			const rotation = obj.konvaObject.rotation()
+			const reversed = side == "left"? -1:1
+			var tween = new Konva.Tween({
+				node: obj.konvaObject,
+				duration: 1,
+				easing: Konva.Easings.EaseInOut,
+				rotation: rotation + 90 *reversed,
+				onFinish: onFinish
+			})
+			return tween
+		}
 	}
 
 	private _clearLayer(){
