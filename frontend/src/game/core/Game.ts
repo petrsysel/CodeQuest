@@ -48,12 +48,14 @@ class Game{
 			console.log(data)
 			let workPuzzle = this._puzzle.clone()
 			for(const round of data){
+				Instruction.instant(round).forEach(i =>{
+					Instruction.performOnPuzzle(i, workPuzzle)
+				})
 				await boardUI.animate(workPuzzle.getSettings(),workPuzzle.getObjectList(),round)
 
 				// Provést akce fyzicky
-				round.forEach(i =>{
-					if(i.name == "goforward") workPuzzle.commands.goForward(i.objectId)
-					else if(i.name == "turn") workPuzzle.commands.turn(i.objectId, (i as {side:string}).side)
+				Instruction.takeTime(round).forEach(i =>{
+					Instruction.performOnPuzzle(i, workPuzzle)
 				})
 			}
 		})

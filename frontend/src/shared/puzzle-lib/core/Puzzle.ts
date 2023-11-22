@@ -180,6 +180,7 @@ class Puzzle implements IPuzzle{
         object.settings.direction = direction
     }
     private _commandJumpTo(objectId: PuzzleObjectId, x: number, y: number){
+        console.log(`Jumping to ${x} ${y}`)
         let object = this.getObject(objectId)
         if(!object) return
         object.settings.X = x
@@ -243,6 +244,12 @@ class Puzzle implements IPuzzle{
         if(distances.length == 0) return -1
         return Math.min(...distances)
     }
+    private _commandSetLayer(objectId: PuzzleObjectId, layer: number){
+        let object = this.getObject(objectId)
+        if(!object) return 
+
+        object.settings.layer = layer
+    }
 
     commands = {
         goForward: this._commandGoForward.bind(this),
@@ -257,7 +264,8 @@ class Puzzle implements IPuzzle{
         hide: this._commandHide.bind(this),
         isTouch: this._commandIsTouch.bind(this),
         isInFrontOfMe: this._commandIsInFrontOfMe.bind(this),
-        distanceTo: this._commandDistanceTo.bind(this)
+        distanceTo: this._commandDistanceTo.bind(this),
+        setLayer: this._commandSetLayer.bind(this)
     }
 
     clone(){

@@ -147,8 +147,9 @@ class GameResolver{
 			};
 			${mark}();`
 			console.log(func)
-			const f = new Function('actor','goForward', 'turn', func)
-			f(actor, goForward, turn)
+			const f = new Function('actor','goForward', 'turn', "jump", "setDirection", "jumpTo", "getX", "getY", "getDirection", "say", "changeCostume", "changeBackground", "show", "hide", "setLayer", "wait", "win", "gameOver", "isTouch", "isInFrontOfMe", "distanceTo", func)
+			
+			f(actor, goForward, turn, jump, setDirection, jumpTo, getX, getY, getDirection, say, changeCostume, changeBackground, show, hide, setLayer, wait, win, gameOver, isTouch, isInFrontOfMe, distanceTo)
 		})
 	}
 }

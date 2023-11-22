@@ -170,29 +170,16 @@ class KonvaBoardUI implements IBoardUI{
 		const obj = this._konvaData.objects.find(o => o.puzzleObject.id == instruction.objectId)
 		if(!obj) return null
 		if(instruction.name == "goforward"){
-			const direction = obj.puzzleObject.settings.direction
-			const yaxis = direction == "up" || direction == "down"?1:0
-			const xaxis = 1 - yaxis
-			const sx = obj.konvaObject.x()
-			const sy = obj.konvaObject.y()
-			const reversed = direction == "left" || direction == "up"? -1:1
-			const distance = this._konvaData.squareWidth + this._konvaData.spaceWidth
-			var tween = new Konva.Tween({
-				node: obj.konvaObject,
-				duration: 1,
-				easing: Konva.Easings.EaseInOut,
-				x: sx + distance * xaxis * reversed,
-				y: sy + distance * yaxis * reversed,
-				onFinish: onFinish
-			})
-			return tween
+			return this._createMoveAnimation(obj, onFinish, 1)
+		}
+		else if(instruction.name == "jump"){
+			return this._createMoveAnimation(obj, onFinish, 2)
 		}
 		else if(instruction.name == "turn"){
 			const side = (instruction as {side:"right"|"left"}).side
-			console.log("Rotuju!")
 			const rotation = obj.konvaObject.rotation()
 			const reversed = side == "left"? -1:1
-			var tween = new Konva.Tween({
+			const tween = new Konva.Tween({
 				node: obj.konvaObject,
 				duration: 1,
 				easing: Konva.Easings.EaseInOut,
@@ -201,6 +188,25 @@ class KonvaBoardUI implements IBoardUI{
 			})
 			return tween
 		}
+	}
+
+	private _createMoveAnimation(object: {konvaObject: any, puzzleObject: PuzzleObject}, onFinish: () => void, squareAmount: number){
+		const direction = object.puzzleObject.settings.direction
+		const yaxis = direction == "up" || direction == "down"?1:0
+		const xaxis = 1 - yaxis
+		const sx = object.konvaObject.x()
+		const sy = object.konvaObject.y()
+		const reversed = direction == "left" || direction == "up"? -1:1
+		const distance = (this._konvaData.squareWidth + this._konvaData.spaceWidth) * squareAmount
+		const tween = new Konva.Tween({
+			node: object.konvaObject,
+			duration: 1,
+			easing: Konva.Easings.EaseInOut,
+			x: sx + distance * xaxis * reversed,
+			y: sy + distance * yaxis * reversed,
+			onFinish: onFinish
+		})
+		return tween
 	}
 
 	private _clearLayer(){
@@ -219,7 +225,6 @@ class KonvaBoardUI implements IBoardUI{
 	}
 
 	private _setImage(image: any, object: PuzzleObject){
-		console.log("setting image")
 		const startX = this._konvaData.startX
 		const startY = this._konvaData.startY
 		const squareWidth = this._konvaData.squareWidth
