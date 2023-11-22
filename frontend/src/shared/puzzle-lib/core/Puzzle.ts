@@ -259,4 +259,8 @@ class Puzzle implements IPuzzle{
         isInFrontOfMe: this._commandIsInFrontOfMe.bind(this),
         distanceTo: this._commandDistanceTo.bind(this)
     }
+
+    clone(){
+        return new Puzzle({...this._primitive})
+    }
 }
