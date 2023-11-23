@@ -213,4 +213,13 @@ class Instruction {
 	static takeTime(instructions: GameInstruction[]){
 		return instructions.filter(i => !this.instantInstructions.includes(i.name))
 	}
+
+	static async withNotification(instructions: GameInstruction[], notificationUI: INotificationUI){
+		for(const i of instructions){
+			if(i.name == "say"){
+				const message = i.message as string
+				await notificationUI.notify(message)
+			}
+		}
+	}
 }

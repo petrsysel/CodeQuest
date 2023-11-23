@@ -45,17 +45,18 @@ class Game{
 		})
 
 		gameLauncher.on("done", async data => {
-			await notificationUI.notify("Kód je připraven ke spuštění! :)")
 			console.log("DATA FROM LAUNCHER")
 			console.log(data)
 			let workPuzzle = this._puzzle.clone()
 			for(const round of data){
+				//Provést okamžité akce
 				Instruction.instant(round).forEach(i =>{
 					Instruction.performOnPuzzle(i, workPuzzle)
 				})
+				await Instruction.withNotification(round, notificationUI)
 				await boardUI.animate(workPuzzle.getSettings(),workPuzzle.getObjectList(),round)
 
-				// Provést akce fyzicky
+				// Provést akce které potřebují čas
 				Instruction.takeTime(round).forEach(i =>{
 					Instruction.performOnPuzzle(i, workPuzzle)
 				})
