@@ -233,12 +233,15 @@ class BlocklyBlockDefinitionContainer{
 	  },
 	  {
 		"type": "rule_check",
-		"message0": "Kontrola pravidel %1",
+		"message0": "Kontrola pravidel %1 %2",
 		"args0": [
-		  {
-			"type": "input_statement",
-			"name": "rule_check_body"
-		  }
+			{
+				"type": "input_dummy"
+			},
+			{
+				"type": "input_statement",
+				"name": "rule_check_body"
+			}
 		],
 		"colour": 330,
 		"tooltip": "Obsah tohoto bloku je volán na konci každého kola. Může definovat pravidla úlohy a podmínky jejího splnění.",

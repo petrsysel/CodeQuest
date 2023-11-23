@@ -192,7 +192,7 @@ class BlocklyToolboxContainer{
     </block>
   </category>
   <category name="Události" colour="#a5745b">
-    <block type="on_start" deletable="true" movable="true" editable="true"></block>
+    
     <block type="send_message" deletable="true" movable="true" editable="true"></block>
     <block type="on_message_recieve" deletable="true" movable="true" editable="true"></block>
     <block type="win" deletable="true" movable="true" editable="true"></block>
