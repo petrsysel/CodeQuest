@@ -8,7 +8,8 @@ class Game{
 		boardUI: IBoardUI,
 		controlPanelUI: IControlPanelUI,
 		objectList: IObjectPanelUI,
-		gameLauncher: IGameLauncher
+		gameLauncher: IGameLauncher,
+		notificationUI: INotificationUI
 		){
 		
 		this._puzzle = new Puzzle()
@@ -44,6 +45,7 @@ class Game{
 		})
 
 		gameLauncher.on("done", async data => {
+			await notificationUI.notify("Kód je připraven ke spuštění! :)")
 			console.log("DATA FROM LAUNCHER")
 			console.log(data)
 			let workPuzzle = this._puzzle.clone()

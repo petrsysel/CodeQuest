@@ -22,6 +22,8 @@ function main(){
 
     const gameLauncher = new GameLauncher(1000)
 
-    const game = new Game(gameBlockly, gameBoard, gameControlPanel, gameObjectList, gameLauncher)
+    const notificationUI = new NotificationUI()
+
+    const game = new Game(gameBlockly, gameBoard, gameControlPanel, gameObjectList, gameLauncher, notificationUI)
     
 }

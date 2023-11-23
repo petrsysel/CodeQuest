@@ -17,6 +17,8 @@
     --medium-main-color: rgb(189, 202, 225);
     --dark-text: black;
     --light-text: white;
+
+    --transparent-bg: rgba(0, 0, 0, 0.573);
 }
 
 body{
@@ -176,7 +178,7 @@ body{
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.573);
+    background-color: var(--transparent-bg);
     width: 100%;
     height: 100%;
     z-index: 200;
@@ -344,4 +346,70 @@ a{
     margin: 0 1em;
     height: 100%;
     filter: drop-shadow(0 0 4px blue);
+}
+
+/* ======================= NOTIFICATIONS ======================= */
+
+.notif-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--transparent-bg);
+    z-index: 100;
+}
+
+.notif-window{
+    width: 60%;
+    height: 20rem;
+    background-color: var(--light-main-color);
+    margin: 20vh auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-header{
+    flex: 1;
+    background-color: var(--dark-main-color);
+    display: flex;
+    flex-direction: row-reverse;
+}
+.notif-header img{
+    height: 2.5rem;
+    margin: auto;
+}
+.notif-message-container{
+    flex: 4;
+    display: flex;
+    align-items: center;
+    margin: 2rem;
+    text-align: center;
+}
+.notif-color{
+    flex: 0.1;
+    background-color: red;
+}
+.notif-button-container{
+    flex: 1;
+    background-color: var(--dark-main-color);
+    display: flex;
+    justify-content: space-around;
+    padding: 0 10rem;
+    align-items: center;
+}
+
+.notif-button{
+    border: none;
+    border-radius: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: var(--light-main-color);
+    cursor: pointer;
+}
+/* #notif-placeholder{
+
+} */
+.notif-button:hover{
+    background-color: var(--light-blue);
 }
