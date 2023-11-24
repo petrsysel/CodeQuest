@@ -141,11 +141,21 @@ class GameResolver{
 			let id = actor.getObject().id
 			let mark = 'fn' + id.split('-').join('_')
 			let code = actor.getCode()
+			
+			code = code.replaceAll("function", "async function")
+			const regexMatch = code.match(/function\s+(\w+)\s*\(/)
+			if(regexMatch != null){
+				const funcName = regexMatch[1]
+				const functionRegex = new RegExp(`(?<!function\\s+)\\b${funcName}\\(`, "g");
+				code = code.replaceAll(functionRegex, `await ${funcName}(`)
+			}
+
 			let func = `async function ${mark}(){
 				${code};
-				await console.log('end of code ${id}')
 			};
 			${mark}();`
+
+			console.log("KÓD KE SPUŠTĚNÍ:")
 			console.log(func)
 			const f = new Function('actor','goForward', 'turn', "jump", "setDirection", "jumpTo", "getX", "getY", "getDirection", "say", "changeCostume", "changeBackground", "show", "hide", "setLayer", "wait", "win", "gameOver", "isTouch", "isInFrontOfMe", "distanceTo", func)
 			
