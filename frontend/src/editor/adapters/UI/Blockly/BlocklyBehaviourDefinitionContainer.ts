@@ -120,7 +120,12 @@ class BlocklyBehaviourDefinitionContainer {
 		
 		Blockly.JavaScript.forBlock['wait'] = function(block: any, generator: any) {
 			var value_turn_count = generator.valueToCode(block, 'turn_count', javascript.Order.ATOMIC);
-			var code = `await wait(actor, ${value_turn_count})\n`;
+			var code = `
+			const limited = ${value_turn_count} > 50? 1 : ${value_turn_count};
+			for(let i = 0; i < limited; i++){
+				await wait(actor, ${value_turn_count});
+			}\n
+			`;
 			return code;
 		};
 		

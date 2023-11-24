@@ -115,7 +115,8 @@ class GameResolver{
 
 		let wait = async (actor: GameActor, turnCount: number) => {
 			return createAction(actor, () => {
-
+				const instr = Instruction.wait(actor.id(), turnCount)
+				procedure.addInstruction(Instruction.wait(actor.id(), 1))
 			})
 		}
 		let win = async (actor: GameActor, message: string) => {

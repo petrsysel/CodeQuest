@@ -188,6 +188,19 @@ class KonvaBoardUI implements IBoardUI{
 			})
 			return tween
 		}
+		else if(instruction.name == "wait"){
+			const roundAmount = instruction.roundAmount as number
+			
+			const tweenMock = {
+				play: () => {
+					setTimeout(() => {
+						onFinish()
+					}, 1000) // Timeout nahradit rychlostí přehrávání
+				}
+			}
+			return tweenMock
+		}
+		
 	}
 
 	private _createMoveAnimation(object: {konvaObject: any, puzzleObject: PuzzleObject}, onFinish: () => void, squareAmount: number){

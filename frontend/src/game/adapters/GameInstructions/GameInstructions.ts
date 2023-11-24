@@ -20,6 +20,11 @@ type GameInstruction = {
 	objectId: string
 } & Parameter
 
+type QueuedInstruction = {
+	instruction: GameInstruction,
+	roundAmount: number
+}
+
 type Parameter = {
 	side?: "right" | "left",
 	direction?: "up" | "right"| "down" | "left",
