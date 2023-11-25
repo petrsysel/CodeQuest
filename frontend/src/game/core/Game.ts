@@ -48,6 +48,7 @@ class Game{
 
 		controlPanelUI.on('stop-puzzle', () => {
 			visualizationPlayer.stop()
+			controlPanelUI.setState("loading")
 		})
 		visualizationPlayer.on("stoped", () => {
 			controlPanelUI.setState("stoped")
