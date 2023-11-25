@@ -269,6 +269,7 @@ class Puzzle implements IPuzzle{
     }
 
     clone(){
-        return new Puzzle({...this._primitive})
+        // return new Puzzle({...this._primitive})
+        return new Puzzle(JSON.parse(JSON.stringify(this._primitive)))
     }
 }

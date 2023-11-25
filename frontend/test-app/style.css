@@ -413,3 +413,12 @@ a{
 .notif-button:hover{
     background-color: var(--light-blue);
 }
+
+
+#loading-puzzle-element{
+    animation: spin 3s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

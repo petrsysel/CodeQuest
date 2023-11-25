@@ -6,10 +6,11 @@ class Game{
 	constructor(
 		codeUI: ICodeEditorUI,
 		boardUI: IBoardUI,
-		controlPanelUI: IControlPanelUI,
+		controlPanelUI: IControlPanelUI&IVisualizerControlPanel,
 		objectList: IObjectPanelUI,
 		gameLauncher: IGameLauncher,
-		notificationUI: INotificationUI
+		notificationUI: INotificationUI,
+		visualizationPlayer: IVisualizationPlayer
 		){
 		
 		this._puzzle = new Puzzle()
@@ -42,25 +43,22 @@ class Game{
 			let code = codeUI.getCode()
 			
 			gameLauncher.play(this._puzzle)
+			controlPanelUI.setState("loading")
+		})
+
+		controlPanelUI.on('stop-puzzle', () => {
+			visualizationPlayer.stop()
+		})
+		visualizationPlayer.on("stoped", () => {
+			controlPanelUI.setState("stoped")
+			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
 		})
 
 		gameLauncher.on("done", async data => {
-			console.log("DATA FROM LAUNCHER")
-			console.log(data)
+			controlPanelUI.setState("playing")
 			let workPuzzle = this._puzzle.clone()
-			for(const round of data){
-				//Provést okamžité akce
-				Instruction.instant(round).forEach(i =>{
-					Instruction.performOnPuzzle(i, workPuzzle)
-				})
-				await Instruction.withNotification(round, notificationUI)
-				await boardUI.animate(workPuzzle.getSettings(),workPuzzle.getObjectList(),round)
-
-				// Provést akce které potřebují čas
-				Instruction.takeTime(round).forEach(i =>{
-					Instruction.performOnPuzzle(i, workPuzzle)
-				})
-			}
+			visualizationPlayer.play(data, workPuzzle)
+			//visualizationPlayer.stop()
 		})
 		
 
