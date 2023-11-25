@@ -6,4 +6,8 @@ class Utility{
         button.innerHTML =  `<img src="${iconSrc}">`
         return button
     }
+
+    static getRuleCheckCode(){
+        return `if(typeof checkRule === "function") await checkRule();\n`
+    }
 }

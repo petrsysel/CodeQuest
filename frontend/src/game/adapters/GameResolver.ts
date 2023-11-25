@@ -143,7 +143,7 @@ class GameResolver{
 			let mark = 'fn' + id.split('-').join('_')
 			let code = actor.getCode()
 			
-			code = code.replaceAll("function", "async function")
+			code = code.replaceAll("function ", "async function ")
 			const regexMatch = code.match(/function\s+(\w+)\s*\(/)
 			if(regexMatch != null){
 				const funcName = regexMatch[1]
@@ -151,9 +151,14 @@ class GameResolver{
 				code = code.replaceAll(functionRegex, `await ${funcName}(`)
 			}
 
-			let func = `async function ${mark}(){
-				${code};
-			};
+			let func = `async function ${mark}(){\n
+				${code};\n
+				// for(let i = 0; i < 100; i++){
+				while(true){\n
+					${Utility.getRuleCheckCode()};\n
+					await wait(actor, 1);\n
+				};\n
+			};\n
 			${mark}();`
 
 			console.log("KÓD KE SPUŠTĚNÍ:")

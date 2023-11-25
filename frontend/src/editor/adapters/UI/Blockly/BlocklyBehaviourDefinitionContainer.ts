@@ -2,24 +2,29 @@ declare const javascript: any
 class BlocklyBehaviourDefinitionContainer {
 
 	static init(){
-		//@ts-ignore
-		// window.LoopTrap = 1000
-		// Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if(--window.LoopTrap == 0) throw "Infinite loop.";\n';
+		const ruleCheckCode = Utility.getRuleCheckCode()
 		
 		Blockly.JavaScript.forBlock['go_forward'] = function(block: any, generator: any) {
-			var code = `await goForward(actor)\n`;
+			var code = `
+			await goForward(actor);\n
+			${ruleCheckCode}
+			`;
 			return code;
 		}
 		  
 		Blockly.JavaScript.forBlock['jump'] = function(block: any, generator: any) {
-			var code = `await jump(actor)\n`;
+			var code = `await jump(actor);\n
+			${ruleCheckCode}
+			`;
 			return code;
 		};
 		
 		Blockly.JavaScript.forBlock['turn'] = function(block: any, generator: any) {
 			var dropdown_turn_side = block.getFieldValue('turn_side');
 			let direction = `"${dropdown_turn_side}"`
-			var code = `await turn(actor, ${direction})\n`;
+			var code = `await turn(actor, ${direction});\n
+			${ruleCheckCode}
+			`;
 			return code;
 		};
 		
@@ -100,7 +105,7 @@ class BlocklyBehaviourDefinitionContainer {
 		
 		Blockly.JavaScript.forBlock['rule_check'] = function(block: any, generator: any) {
 			var statements_rule_check_body = generator.statementToCode(block, 'rule_check_body');
-			var code = `async function checkRule(){
+			var code = `function checkRule(){
 				${statements_rule_check_body}\n
 			}`;
 			return code;
@@ -122,8 +127,9 @@ class BlocklyBehaviourDefinitionContainer {
 			var value_turn_count = generator.valueToCode(block, 'turn_count', javascript.Order.ATOMIC);
 			var code = `
 			const limited = ${value_turn_count} > 50? 1 : ${value_turn_count};
-			for(let i = 0; i < limited; i++){
-				await wait(actor, ${value_turn_count});
+			for(let i = 0; i < limited; i++){\n
+				await wait(actor, ${value_turn_count});\n
+				${ruleCheckCode}\n
 			}\n
 			`;
 			return code;
