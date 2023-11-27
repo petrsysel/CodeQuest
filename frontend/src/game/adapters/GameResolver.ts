@@ -5,6 +5,8 @@ class GameResolver{
 	private _puzzle
 	private _actors
 
+	private _callbacks: GameMessageCallback[] = []
+
 	constructor(puzzle: Puzzle, actors: GameActor[], onRoundAdded: () => void){
 		this._puzzle = puzzle
 		this._actors = actors
@@ -24,7 +26,6 @@ class GameResolver{
 		synchronizer.on('round-end', () => {
 			procedure.next()
 			onRoundAdded()
-			// console.log(procedure.getRounds())
 		})
 
 		const createAction = async (actor: GameActor, action: () => void) => {
@@ -107,11 +108,21 @@ class GameResolver{
 			procedure.addInstruction(instr)
 		}
 		
-		// `async function checkRule(){
-		// 		${statements_rule_check_body}\n
-		// 	}`;
-		// `await sendMessage(actor, ${value_message_name})\n`;
-		// `async function onMessageRecieve(){}// tohle si musím ještě promyslet\n`;
+		let registerMessageCallback = async (actor: GameActor, message: string, callback: () => void) => {
+			this._callbacks.push({
+				id: actor.id(),
+				message: message,
+				callback: callback
+			})
+		}
+
+		let sendMessage = async (actor: GameActor, message: string) => {
+			const queue = [...this._callbacks.filter(c => c.message == message)]
+			for(const c of queue){
+				queue.splice(queue.indexOf(c),1)
+				await c.callback()
+			}
+		}
 
 		let wait = async (actor: GameActor, turnCount: number) => {
 			return createAction(actor, () => {
@@ -163,9 +174,10 @@ class GameResolver{
 
 			console.log("KÓD KE SPUŠTĚNÍ:")
 			console.log(func)
-			const f = new Function('actor','goForward', 'turn', "jump", "setDirection", "jumpTo", "getX", "getY", "getDirection", "say", "changeCostume", "changeBackground", "show", "hide", "setLayer", "wait", "win", "gameOver", "isTouch", "isInFrontOfMe", "distanceTo", func)
+			const f = new Function('actor','goForward', 'turn', "jump", "setDirection", "jumpTo", "getX", "getY", "getDirection", "say", "changeCostume", "changeBackground", "show", "hide", "setLayer", "wait", "win", "gameOver", "isTouch", "isInFrontOfMe", "distanceTo", "registerMessageCallback", "sendMessage", func)
 			
-			f(actor, goForward, turn, jump, setDirection, jumpTo, getX, getY, getDirection, say, changeCostume, changeBackground, show, hide, setLayer, wait, win, gameOver, isTouch, isInFrontOfMe, distanceTo)
+			f(actor, goForward, turn, jump, setDirection, jumpTo, getX, getY, getDirection, say, changeCostume, changeBackground, show, hide, setLayer, wait, win, gameOver, isTouch, isInFrontOfMe, distanceTo,
+				registerMessageCallback, sendMessage)
 		})
 	}
 }
