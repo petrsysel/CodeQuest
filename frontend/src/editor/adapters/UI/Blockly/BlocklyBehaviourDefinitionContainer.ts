@@ -119,6 +119,7 @@ class BlocklyBehaviourDefinitionContainer {
 		
 		Blockly.JavaScript.forBlock['on_message_recieve'] = function(block: any, generator: any) {
 			var value_message_name = generator.valueToCode(block, 'message_name', javascript.Order.ATOMIC);
+			var on_message_body = generator.statementToCode(block, 'on_message_body');
 			var code = `// tohle si musím ještě promyslet\n`;
 			return code;
 		};

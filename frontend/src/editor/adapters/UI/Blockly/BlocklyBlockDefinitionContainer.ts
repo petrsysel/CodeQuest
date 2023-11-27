@@ -265,15 +265,18 @@ class BlocklyBlockDefinitionContainer{
 	  },
 	  {
 		"type": "on_message_recieve",
-		"message0": "Po obdržení zprávy %1",
+		"message0": "Po obdržení zprávy %1 %2",
 		"args0": [
 		  {
 			"type": "input_value",
 			"name": "message_name",
 			"check": "String"
-		  }
+		  },
+		  {
+			"type": "input_statement",
+			"name": "on_message_body"
+			}
 		],
-		"nextStatement": null,
 		"colour": 330,
 		"tooltip": "Pokud obdrží zprávu s uvedeným názvem, vykoná se, co je pod tímto blokem",
 		"helpUrl": ""
