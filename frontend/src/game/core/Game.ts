@@ -14,7 +14,12 @@ class Game{
 		){
 		
 		this._puzzle = new Puzzle()
-		this._puzzle.loadFromString(puzzleMock.threeWizards())
+		const puzzleFromStorage = localStorage.getItem("cq-puzzle")
+		if(puzzleFromStorage){
+			this._puzzle.loadFromString(puzzleFromStorage)
+		}
+		else this._puzzle.loadFromString(puzzleMock.threeWizards())
+		
 		this._selectedObjectId = this._puzzle.getFirstPlayerObject()
 
 		objectList.render(this._puzzle.getObjectList())

@@ -11,6 +11,7 @@ class Editor{
     private objectSettingsUI: IObjectSettingsUI
     private costumePickerUI: ICostumePickerUI
     private puzzleSettingsUI: IPuzzleSettingsUI
+    private notificationUI: INotificationUI
 
     constructor(
         boardUI: IBoardUI,
@@ -19,7 +20,8 @@ class Editor{
         objectPanelUI: IObjectPanelUI,
         objectSettingsUI: IObjectSettingsUI,
         costumePickerUI: ICostumePickerUI,
-        puzzleSettingsUI: IPuzzleSettingsUI
+        puzzleSettingsUI: IPuzzleSettingsUI,
+        notificationUI: INotificationUI
         ){
         this.codeUI = codeUI
 
@@ -31,7 +33,7 @@ class Editor{
             blocks: codeUI.getBlocks()
         })
 
-        this._mockupPuzzle.loadFromString(puzzleMock.twoKeys())
+        // this._mockupPuzzle.loadFromString(puzzleMock.twoKeys())
 
         this.boardUI = boardUI
         
@@ -40,6 +42,7 @@ class Editor{
         this.objectSettingsUI = objectSettingsUI
         this.costumePickerUI = costumePickerUI
         this.puzzleSettingsUI = puzzleSettingsUI
+        this.notificationUI = notificationUI
 
         codeUI.on('code-change', (data) => {
             this._mockupPuzzle.changeObjectCode(this._selectedObjectId, data)
@@ -110,9 +113,13 @@ class Editor{
             this.puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), blocks)
         })
 
-        controlPanelUI.on('play-puzzle', () => {
+        controlPanelUI.on('play-puzzle', async () => {
             let puzzle = this._mockupPuzzle.stringify()
             console.log(puzzle)
+            localStorage.setItem("cq-puzzle", puzzle)
+            await notificationUI.notify(`
+            Úloha byla uložena do místního úložiště prohlížeče. Pro vyzkoušení úlohy prosím navštivte okno <a href="/game.html" target="_blank">hry</a>
+            `)
         })
         
         this._renderAll()

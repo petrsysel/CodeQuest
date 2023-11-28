@@ -10,7 +10,9 @@ function main(){
     const controlPanel = new ControlPanelUI('control-panel')
     const puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
 
-    const editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings)
+    const editorNotificationUI = new NotificationUI()
+
+    const editor = new Editor(board, blocklyEditor, controlPanel, objectPanel, objectSettings, costumePicker, puzzleSettings, editorNotificationUI)
     
     const gameBlockly = new BlocklyEditor('game-blockly-placeholder')
     const gameBoard = new KonvaBoardUI('game-board-container', {
