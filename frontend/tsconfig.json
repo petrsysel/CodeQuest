@@ -1,16 +1,23 @@
 {
   "compilerOptions": {
     "target": "ES2021",
-    "module": "system",
+    "module": "ESNext",
     "esModuleInterop": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "useDefineForClassFields": true,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "composite": true,
-    "outFile": "./dist/code-quest.bundle.js",
     "rootDir": "./src"
   },
-  // "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist/**/*"]
-  // "lit-html.tags":
+  "include": ["src/**/*"]
 }

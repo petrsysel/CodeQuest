@@ -1,4 +1,4 @@
-function main(){
+function main_deprecated(){
     const blocklyEditor = new BlocklyEditor('blockly-placeholder')
     const objectPanel = new ObjectPanelUI('object-panel')
     const objectSettings = new ObjectSettingsUI('object-settings')
