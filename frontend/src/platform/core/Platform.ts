@@ -8,7 +8,11 @@ export class Platforms{
         serverApi: IServerAPI,
         sideBar: ISidebar,
         navBar: INavBar,
-        puzzleList: IPuzzleListUI
+        puzzleList: IPuzzleListUI,
+        loginForm: INotificationUI,
+        registerForm: INotificationUI,
+        insertPuzzleCode: INotificationUI,
+        
     ){
 
     }
