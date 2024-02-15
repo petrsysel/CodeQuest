@@ -1,0 +1,32 @@
+{
+  "name": "codequest",
+  "version": "1.0.0",
+  "description": "Support app for ICT education",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petrsysel/CodeQuest.git"
+  },
+  "keywords": [
+    "education",
+    "programming",
+    "ict",
+    "algorithmization"
+  ],
+  "author": "Petr Sysel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/petrsysel/CodeQuest/issues"
+  },
+  "homepage": "https://github.com/petrsysel/CodeQuest#readme",
+  
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.1.1"
+  }
+}
