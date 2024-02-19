@@ -10,6 +10,11 @@ export type RegisterResponse = ServerAction
 export type LoginResponse = ServerAction
 export type SavePuzzleResponse = ServerAction
 
+export type LoginData = {
+    username: string,
+    password: string
+}
+
 export type StoredPuzzleInfo = {
     name: string,
     author: string,

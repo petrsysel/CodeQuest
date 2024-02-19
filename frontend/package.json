@@ -24,9 +24,13 @@
     "url": "https://github.com/petrsysel/CodeQuest/issues"
   },
   "homepage": "https://github.com/petrsysel/CodeQuest#readme",
-  
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.1.1"
+  },
+  "dependencies": {
+    "@types/hyperscript": "^0.0.7",
+    "easybox": "git://github.com/petrsysel/easybox.git#v0.1.4",
+    "hyperscript": "^2.0.2"
   }
 }
