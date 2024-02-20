@@ -1,7 +1,7 @@
 import { Ajax, DomHelper, Signal } from "easybox";
-import { INavBar, NavBarEvent, NavBarOptions } from "../core/INavBar";
-import { navbar } from "../templates/navbar.tmpl";
-import { User } from "../core/User";
+import { INavBar, NavBarEvent, NavBarOptions } from "../../core/INavBar";
+import { navbar } from "./navbar.tmpl";
+import { User } from "../../core/User";
 
 export class Navbar implements INavBar {
     private navbarElement: HTMLElement

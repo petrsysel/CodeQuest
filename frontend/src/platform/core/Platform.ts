@@ -23,6 +23,9 @@ export class Platform{
                 loggedUser: logged,
                 user: user
             })
+            sideBar.render({
+                loggedUser: logged
+            })
         })
 
         navBar.on('log-in-request', () => {
@@ -49,6 +52,10 @@ export class Platform{
                 }
             }
             showRegisterDialogueRec()
+        })
+
+        sideBar.on('insert-code-request', async () => {
+            const response = await insertPuzzleCode.show()
         })
     }
 }
