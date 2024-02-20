@@ -63,7 +63,7 @@ export class RegisterDialogue extends DialogueWindow<RegisterData>{
 
     validate(data: RegisterData): { isValid: boolean; error?: string | undefined; } {
         function containsUppercase(s: string){
-            return s.split('').some(ch => ch == ch.toUpperCase())
+            return s.split('').filter(ch => !containsNumbers(ch)).some(ch => ch == ch.toUpperCase())
         }
         function containsNumbers(s: string) {
             return /[0-9]/.test(s);
