@@ -15,6 +15,14 @@ export type LoginData = {
     password: string
 }
 
+export type RegisterData = {
+    username: string,
+    fullname: string,
+    email: string,
+    password: string,
+    passwordAgain: string
+}
+
 export type StoredPuzzleInfo = {
     name: string,
     author: string,

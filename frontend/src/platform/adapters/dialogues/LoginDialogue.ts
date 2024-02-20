@@ -34,6 +34,7 @@ export class LoginDialogue extends DialogueWindow<LoginData>{
                     username: this.usernameElement.value,
                     password: this.passwordElement.value
                 })
+                this.hide()
             }
         })
     }

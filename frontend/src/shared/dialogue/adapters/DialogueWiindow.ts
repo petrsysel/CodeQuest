@@ -1,6 +1,6 @@
 import { DomHelper } from "easybox";
 import { IDialogue } from "../core/IDialogue";
-import { dialogueWindowTmpl } from "./dialogueWindow.tmpl";
+import { getDialogueWindowTmpl } from "./dialogueWindow.tmpl";
 
 export abstract class DialogueWindow<T> implements IDialogue<T>{
     protected windowElement: HTMLElement
@@ -12,7 +12,7 @@ export abstract class DialogueWindow<T> implements IDialogue<T>{
 
     constructor(){
         this.windowElement = DomHelper.makeDiv()
-        this.windowElement.appendChild(dialogueWindowTmpl)
+        this.windowElement.appendChild(getDialogueWindowTmpl())
         DomHelper.appentToBody(this.windowElement)
 
         this.bodyElement = this.windowElement.getElementsByClassName('dialogue-body').item(0)! as HTMLElement

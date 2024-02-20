@@ -506,6 +506,14 @@ a{
     padding: 0.5rem;
     background-color: var(--light-main-color);
 }
+.dialogue-body p {
+    margin-bottom: 1rem;
+}
+.dialogue-body input {
+    border-radius: 100rem;
+    border: none;
+    padding: 0.4rem;
+}
 .dialogue-footer{
     background-color: var(--dark-main-color);
     display: flex;
