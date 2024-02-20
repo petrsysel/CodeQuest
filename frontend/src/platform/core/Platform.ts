@@ -29,8 +29,26 @@ export class Platform{
             loginForm.show()
         })
 
-        navBar.on('register-request', () => {
-            registerForm.show("Hesla se neshodují")
+        navBar.on('register-request', async () => {
+            async function showRegisterDialogueRec(error?: string, preFill?: RegisterData){
+                const response = await registerForm.show(error, preFill)
+                if(!response) return
+                const validationResponse = registerForm.validate(response)
+                if(!validationResponse.isValid) showRegisterDialogueRec(validationResponse.error, response)
+                else {
+                    console.log("Registration form is valid")
+                    serverApi.registerRequest(
+                        'afjwefiojwa',
+                        {
+                            email: response.email,
+                            fullname: response.fullname,
+                            username: response.username
+                        },
+                        response.password
+                    )
+                }
+            }
+            showRegisterDialogueRec()
         })
     }
 }

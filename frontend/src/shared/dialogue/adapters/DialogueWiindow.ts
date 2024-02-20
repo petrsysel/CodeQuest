@@ -25,7 +25,7 @@ export abstract class DialogueWindow<T> implements IDialogue<T>{
         this.hide()
     }
 
-    show(errorMsg?: string): Promise<T | undefined> {
+    show(errorMsg?: string, preFill?: T): Promise<T | undefined> {
         this.showUp()
         return new Promise((resolve, reject) => {
             reject('Not implemented yet...')
@@ -47,5 +47,8 @@ export abstract class DialogueWindow<T> implements IDialogue<T>{
     protected hideError(){
         this.errorElement.style.display = 'none'
         this.errorElement.innerHTML = ''
+    }
+    validate(data: T): { isValid: boolean; error?: string | undefined; } {
+        throw new Error("Unimplemented data validation.")
     }
 }

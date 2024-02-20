@@ -18,7 +18,7 @@ export class LoginDialogue extends DialogueWindow<LoginData>{
         this.passwordElement = DomHelper.get('platform-login-password') as HTMLInputElement
     }
 
-    show(errorMsg?: string): Promise<LoginData | undefined> {
+    show(errorMsg?: string, preFill?: LoginData | undefined): Promise<LoginData | undefined> {
         this.hideError()
         if(errorMsg) this.showError(errorMsg)
         this.showUp()
