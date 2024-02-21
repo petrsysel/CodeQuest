@@ -1,6 +1,7 @@
 import { ClientID } from "../core/ClientID";
 import { IServerAPI, LoginResponse, RegisterResponse, SavePuzzleResponse, StoredPuzzleInfo } from "../core/IServerAPI";
 import { User } from "../core/User";
+import { getQuestionMarkImg } from "./getQuestionmarkImg";
 
 const MockSavedPuzzles: StoredPuzzleInfo[] = [
     {
@@ -8,28 +9,32 @@ const MockSavedPuzzles: StoredPuzzleInfo[] = [
         author: "Petr Sysel",
         name: "Hledání klíče",
         rating: '5',
-        code: 'AE5TL9'
+        code: 'AE5TL9',
+        img: getQuestionMarkImg()
     },
     {
         id: "a6a09584-3f01-4c2c-9ce6-4469cf0ba37f" ,
         author: "Petr Sysel",
         name: "Najdi cestu z bludiště",
         rating: '5',
-        code: '5TZ6UV'
+        code: '5TZ6UV',
+        img: getQuestionMarkImg()
     },
     {
         id: "6ab63a21-1f55-450b-85c9-616a4399b90b" ,
         author: "Petr Sysel",
         name: "Tři klíče a dvoje dveře",
         rating: '5',
-        code: 'PVU1W2'
+        code: 'PVU1W2',
+        img: getQuestionMarkImg()
     },
     {
         id: "2096c063-93ab-46b9-9e66-52117bb0fd5c" ,
         author: "Petr Sysel",
         name: "Kouzelník a jáma",
         rating: '5',
-        code: 'PVU1W2'
+        code: 'PVU1W2',
+        img: getQuestionMarkImg()
     }
 ]
 

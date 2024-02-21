@@ -28,7 +28,8 @@ export type StoredPuzzleInfo = {
     author: string,
     rating: string,
     id: PuzzleId
-    code?: string
+    code?: string,
+    img: string
 }
 
 export interface IServerAPI {
