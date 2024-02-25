@@ -509,7 +509,7 @@ a{
 .dialogue-body p {
     margin-bottom: 1rem;
 }
-.dialogue-body input {
+input {
     border-radius: 100rem;
     border: none;
     padding: 0.4rem;
@@ -539,4 +539,49 @@ a{
     background-color: var(--dark-main-color);
     color: var(--light-blue);
     outline: solid 2px var(--light-main-color);
+}
+
+.puzzle-list-container{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 100%;
+}
+.puzzle-list-header *{
+    float:right;
+}
+.puzzle-list-header input{
+    width: 100%;
+}
+.puzzle-list-body-container{
+    flex: 1;
+}
+
+.puzzle-list-item{
+    background-color: var(--medium-main-color);
+    display: flex;
+}
+.puzzle-list-item img{
+    height: 9rem;
+}
+.puzzle-list-item-action-bar{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dark-main-color);
+    justify-content: space-between;
+}
+.puzzle-list-item-action-bar img{
+    width: 2rem;
+    cursor: pointer;
+}
+.puzzle-list-preview-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+}
+.puzzle-list-item-info{
+    padding: 0.5rem;
+    min-width: 15rem;
 }

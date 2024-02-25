@@ -9,12 +9,13 @@ import { MockServerAPI } from "./platform/mocks/MockServerAPI"
 import { IDialogue } from "./shared/dialogue/core/IDialogue"
 import { Sidebar } from "./platform/adapters/sidebar/Sidebar"
 import { InsetCodeDialogue } from "./platform/adapters/dialogues/InsertCodeDialogue"
+import { PuzzleListUI } from "./platform/adapters/puzzleList/PuzzleListUI"
 
 function main(){
     const serverApi = new MockServerAPI()
     const sideBar = new Sidebar('platform-sidebar')
     const navBar = new Navbar('platform-navbar')
-    const puzzleList = {} as IPuzzleListUI
+    const puzzleList = new PuzzleListUI('platform-puzzle-list')
     const loginForm = new LoginDialogue()
     const registerForm = new RegisterDialogue()
     const insertPuzzleCodeForm = new InsetCodeDialogue()
