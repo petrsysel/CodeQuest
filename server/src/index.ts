@@ -1,16 +1,21 @@
-// src/index.js
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import express, { Express, Request, Response } from "express"
+import dotenv from "dotenv"
+import { Server } from "./core/Server"
+import { IUserRepository } from "./core/IUserRepository"
+import { IPuzzleRepository } from "./core/IPuzzleRepository"
+import { ISessionManager } from "./core/ISessionManager"
 
-dotenv.config();
+dotenv.config()
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+const api: Express = express()
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+const userRepository = {} as IUserRepository
+const puzzleRepository = {} as IPuzzleRepository
+const sessionManager = {} as ISessionManager
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+new Server(
+  userRepository,
+  puzzleRepository,
+  sessionManager,
+  api
+)
