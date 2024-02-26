@@ -540,40 +540,73 @@ input {
     color: var(--light-blue);
     outline: solid 2px var(--light-main-color);
 }
-
+#platform-puzzle-list{
+    display: flex;
+    justify-content: center;
+}
 .puzzle-list-container{
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
     align-items: center;
     height: 100%;
+    width: fit-content;
+}
+.puzzle-list-header{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.align-right{
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+.align-center{
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
 .puzzle-list-header *{
-    float:right;
+    /* float:right; */
+    margin-top: 0.5rem;
 }
 .puzzle-list-header input{
-    width: 100%;
+    outline: 2px solid var(--dark-main-color);
 }
+.puzzle-list-load-more-btn{
+    margin-top: 0.5rem;
+}
+/* .puzzle-list-create-btn{
+    width:fit-content;
+} */
 .puzzle-list-body-container{
     flex: 1;
 }
 
 .puzzle-list-item{
-    background-color: var(--medium-main-color);
+    background-color: var(--dark-main-color);
+    color: var(--light-main-color);
     display: flex;
+    border-radius: 1rem;
+    margin-top: 1rem;
 }
 .puzzle-list-item img{
-    height: 9rem;
+    height: 8rem;
+    border-radius: 1rem;
 }
 .puzzle-list-item-action-bar{
     display: flex;
     flex-direction: column;
-    background-color: var(--dark-main-color);
-    justify-content: space-between;
+    /* background-color: var(--dark-main-color); */
+    justify-content: center;
+    margin-right: 0.5rem;
 }
 .puzzle-list-item-action-bar img{
-    width: 2rem;
+    height: 2.5rem;
     cursor: pointer;
+    margin: 0.1rem;
 }
 .puzzle-list-preview-img{
     display: flex;
@@ -584,4 +617,29 @@ input {
 .puzzle-list-item-info{
     padding: 0.5rem;
     min-width: 15rem;
+}
+.puzzle-list-item-info p {
+    margin: 0.2rem;
+}
+.puzzle-list-empty-label{
+    padding: 1rem;
+    background-color: var(--dark-main-color);
+    border-radius: 1rem;
+    color: var(--light-main-color);
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+}
+.puzzle-list-item-name{
+    font-size: 1.5rem;
+}
+
+.dark-btn{
+    background-color: var(--dark-main-color);
+    color: var(--light-main-color);
+}
+.dark-btn:hover{
+    background-color: var(--light-main-color);
+    color: var(--dark-main-color);
+    outline: 2px solid var(--dark-main-color);
 }
