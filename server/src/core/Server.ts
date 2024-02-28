@@ -28,7 +28,7 @@ export class Server{
 			// res.redirect('http://localhost:5173')
 			res.send('hello')
 		})
-		express.post('/api/login', async (req, res) => {
+		express.post('/api/users/login', async (req, res) => {
 			const username = req.body.username
 			const password = req.body.password
 			const clientid = req.body.clientid
@@ -51,7 +51,7 @@ export class Server{
 				else fail()
 			}
 		})
-		express.post('/api/register', async (req, res) => {
+		express.post('/api/users/register', async (req, res) => {
 			const clientid = req.body.clientid
 
 			const user = await UserUtils.create(req.body)
@@ -78,12 +78,12 @@ export class Server{
 				})
 			}
 		})
-		express.post('/api/logout', (req, res) => {
+		express.post('/api/users/logout', (req, res) => {
 			const clientid = req.body.clientid
 			sessionManager.logOut(clientid)
 			res.send({result: "ok"})
 		})
-		express.post('/api/islogged', (req, res) => {
+		express.post('/api/users/islogged', (req, res) => {
 			const clientid = req.body.clientid
 			const user = sessionManager.isLogged(clientid)
 			if(!user) res.send({result: false})
