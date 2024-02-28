@@ -24,8 +24,12 @@
   },
   "homepage": "https://github.com/petrsysel/CodeQuest#readme",
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^3.9.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
