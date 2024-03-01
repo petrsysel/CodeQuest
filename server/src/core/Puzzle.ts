@@ -12,3 +12,12 @@ export type PuzzleInfo = {
     code?: string,
     img: string
 }
+export type FullPuzzle = {
+    id: string,
+	name: string,
+	author: string,
+	authorid: string,
+	content: string,
+	image?: string,
+	code?: string,
+}
