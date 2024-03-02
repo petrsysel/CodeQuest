@@ -19,7 +19,7 @@ export class MysqlUserRepository implements IUserRepository{
 	}
 	init(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			readFile('./src/adapters/MysqlUserRepo/model/user.sql', (err, data) => {
+			readFile('./assets/user.sql', (err, data) => {
 				if(err) return
 				this.connection.query(data.toString(), (err, result) => {
 					if(err) console.log(err)

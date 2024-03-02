@@ -26,8 +26,10 @@ export class Server{
 		})
 
 		express.get('/', (req, res) => {
-			// res.redirect('http://localhost:5173')
-			res.send('hello')
+			res.redirect('http://localhost:5173')	// platform page
+		})
+		express.get('/api', (req, res) => {
+			res.send("Here will be API documentation.")
 		})
 		express.post('/api/users/login', async (req, res) => {
 			const username = req.body.username

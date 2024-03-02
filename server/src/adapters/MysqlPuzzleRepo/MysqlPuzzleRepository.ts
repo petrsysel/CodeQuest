@@ -14,7 +14,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 
 	init(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			readFile('./src/adapters/MysqlPuzzleRepo/model/puzzle.sql', (err, data) => {
+			readFile('./assets/puzzle.sql', (err, data) => {
 				if(err) return
 				this.connection.query(data.toString(), (err, result) => {
 					if(err) console.log(err)
