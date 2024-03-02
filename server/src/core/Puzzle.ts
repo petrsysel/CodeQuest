@@ -1,3 +1,4 @@
+import { randomInt } from "crypto"
 import { UserId } from "./ServerTypes"
 
 export type PuzzleId = string
@@ -20,4 +21,14 @@ export type FullPuzzle = {
 	content: string,
 	image?: string,
 	code?: string,
+}
+
+const charcters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+export function generateCode(){
+    const code = "xxxxxx".split('')
+        .map(c => charcters[
+            randomInt(charcters.length-1)
+        ]).join('')
+
+    return code
 }

@@ -7,6 +7,7 @@ import { randomUUID } from "crypto";
 import { UserUtils } from "./UserUtils";
 import { send } from "process";
 import bodyParser from "body-parser"
+import { FullPuzzle, generateCode } from "./Puzzle";
 
 export class Server{
 	constructor(
@@ -95,6 +96,112 @@ export class Server{
 					fullname: user.fullname,
 					id: user.id
 				}
+			})
+		})
+		
+		express.post('/api/puzzles/save', (req, res) => {
+			const clientId = req.body.clientid
+			const user = sessionManager.isLogged(clientId)
+
+			const puzzle: FullPuzzle = {
+				id: 		req.body.id,
+				name: 		req.body.name,
+				author: 	req.body.author,
+				authorid: 	req.body.authorid,
+				content: 	req.body.content,
+				image: 		req.body.image,
+				code: 		req.body.code
+			}
+
+			if(!user || user.id !== puzzle.authorid){
+				res.send({
+					error: "User not logged in."
+				})
+				return
+			}
+			
+			puzzleRepository.save(puzzle).then(() => {
+				res.send({
+					result: "ok"
+				})
+			}).catch(err => {
+				res.send({
+					error: err
+				})
+			})
+		})
+		express.post('/api/puzzles/find', (req, res) => {
+			const clientid = 	req.body.clientid
+			const query = 		req.body.query
+			const limit = 		req.body.limit
+			const offset = 		req.body.offset
+			const access = 		req.body.access //public/private
+
+			const user = access === 'private' ? sessionManager.isLogged(clientid) : undefined
+
+			puzzleRepository.find(query, offset, limit, user?.id).then(result => {
+				res.send(result)
+			})
+			.catch(err => {
+				res.send({
+					error: err
+				})
+			})
+		})
+		express.post('/api/puzzles/content', async (req, res) => {
+			const id = req.body.id
+			const puzzle = await puzzleRepository.getById(id)
+			if(!puzzle){
+				res.send({
+					error: "Puzzle doesnt exist"
+				})
+				return
+			}
+			const isPrivate = puzzle.code === undefined
+			const clientid = req.body.clientid
+			const user = sessionManager.isLogged(clientid)
+			if(isPrivate && (!user || user.id !== puzzle.authorid)){
+				res.send({
+					error: "Access denied."
+				})
+				return
+			}
+			else{
+				res.send({
+					result: puzzle.content
+				})
+			}
+		})
+		express.post('/api/puzzles/publish', async (req, res) => {
+			const clientid = req.body.clientid
+			const id = req.body.id
+			const isPublic = req.body.public
+
+			const user = sessionManager.isLogged(clientid)
+			const puzzle = await puzzleRepository.getById(id)
+
+			if(!puzzle || !user || puzzle.authorid !== user.id){
+				res.send({
+					error: "Access denied."
+				})
+				return
+			}
+			const code = isPublic ? generateCode() : undefined
+			puzzleRepository.publish(puzzle.id, code)
+		})
+		express.post('/api/puzzles/code', (req, res) => {
+			const code = req.body.code
+
+			puzzleRepository.getByCode(code)
+			.then(result => {
+				res.send({
+					result: result
+				})
+			})
+			.catch(err => {
+				res.send({
+					error: err
+				})
 			})
 		})
 	}

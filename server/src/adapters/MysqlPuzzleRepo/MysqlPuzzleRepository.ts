@@ -22,14 +22,14 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 			})
 		})
 	}
-	async save(info: PuzzleInfo, data: string): Promise<void> {
-		const existing = await this.getById(info.id)
+	async save(puzzle: FullPuzzle): Promise<void> {
+		const existing = await this.getById(puzzle.id)
 
 		return new Promise((resolve, reject) => {
 			if(existing){
 				this.connection.query(
 					`UPDATE puzzles SET name=?, content=?,image=?`,
-					[info.name, data, info.img],
+					[puzzle.name, puzzle, puzzle.image],
 					(err, result) => {
 						if(err) reject(err)
 						else resolve()
@@ -40,13 +40,13 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 				this.connection.query<ResultSetHeader>(
 					`INSERT INTO puzzles (id, name, author, authorid, content, image, code) VALUES(?,?,?,?,?,?,?)`,
 					[
-						info.id,
-						info.name,
-						info.author,
-						info.authorId,
-						data,
-						info.img,
-						info.code
+						puzzle.id,
+						puzzle.name,
+						puzzle.author,
+						puzzle.authorid,
+						puzzle.content,
+						puzzle.image,
+						puzzle.code
 					],
 					(err, result) => {
 						if(err) reject(err)
@@ -60,7 +60,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 
 	find(query: string, offset: number, limit: number, authorId?: string): Promise<PuzzleInfo[]> {
 		return new Promise((resolve, reject) => {
-			const filter = authorId ? `WHERE authorid=?`:'1=1'
+			const filter = authorId ? `authorid=?`:'code IS NOT NULL'
 			const values = authorId ? [authorId, query, query, limit, offset] : [query, query, limit, offset]
 			this.connection.query<PuzzleModel[]>(
 				`SELECT * FROM puzzles WHERE ${filter} AND (name LIKE %?% OR author LIKE %?%) ORDER BY date DESC LIMIT ? OFFSET ?`,
@@ -141,7 +141,16 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 		})
 	}
 
-	// private modelToInfo(model: PuzzleModel): PuzzleInfo{
-	// 	return 
-	// }
+	publish(id: string, code?: string | undefined): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`UPDATE puzzles SET code=? WHERE id=?`,
+				[code, id],
+				(err, result) => {
+					if(err) reject(err)
+					else resolve()
+				}
+			)
+		})
+	}
 }
