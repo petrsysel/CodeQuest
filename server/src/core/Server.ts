@@ -112,7 +112,7 @@ export class Server{
 				image: 		req.body.image,
 				code: 		req.body.code
 			}
-
+			
 			if(!user || user.id !== puzzle.authorid){
 				res.send({
 					error: "User not logged in."
@@ -150,6 +150,8 @@ export class Server{
 		})
 		express.post('/api/puzzles/content', async (req, res) => {
 			const id = req.body.id
+			const clientid = req.body.clientid
+
 			const puzzle = await puzzleRepository.getById(id)
 			if(!puzzle){
 				res.send({
@@ -157,8 +159,9 @@ export class Server{
 				})
 				return
 			}
-			const isPrivate = puzzle.code === undefined
-			const clientid = req.body.clientid
+			const isPrivate = puzzle.code == undefined
+			console.log(`code ${puzzle.code}`)
+			
 			const user = sessionManager.isLogged(clientid)
 			if(isPrivate && (!user || user.id !== puzzle.authorid)){
 				res.send({
@@ -188,6 +191,9 @@ export class Server{
 			}
 			const code = isPublic ? generateCode() : undefined
 			puzzleRepository.publish(puzzle.id, code)
+			res.send({
+				result: "ok"
+			})
 		})
 		express.post('/api/puzzles/code', (req, res) => {
 			const code = req.body.code

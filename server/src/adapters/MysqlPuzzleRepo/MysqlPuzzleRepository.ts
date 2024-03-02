@@ -9,6 +9,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 
 	constructor(connection: Connection){
 		this.connection = connection
+		this.init()
 	}
 
 	init(): Promise<void> {
@@ -37,6 +38,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 				)
 			}
 			else{
+				console.log(puzzle)
 				this.connection.query<ResultSetHeader>(
 					`INSERT INTO puzzles (id, name, author, authorid, content, image, code) VALUES(?,?,?,?,?,?,?)`,
 					[
@@ -61,9 +63,11 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 	find(query: string, offset: number, limit: number, authorId?: string): Promise<PuzzleInfo[]> {
 		return new Promise((resolve, reject) => {
 			const filter = authorId ? `authorid=?`:'code IS NOT NULL'
-			const values = authorId ? [authorId, query, query, limit, offset] : [query, query, limit, offset]
+			const queryString = `%${query}%`
+			const values = authorId ? [authorId, queryString, queryString, limit, offset] : [queryString, queryString, limit, offset]
+			console.log(values)
 			this.connection.query<PuzzleModel[]>(
-				`SELECT * FROM puzzles WHERE ${filter} AND (name LIKE %?% OR author LIKE %?%) ORDER BY date DESC LIMIT ? OFFSET ?`,
+				`SELECT * FROM puzzles WHERE ${filter} AND (LOWER(name) LIKE LOWER(?) OR LOWER(author) LIKE LOWER(?)) ORDER BY date DESC LIMIT ? OFFSET ?`,
 				values,
 				(err, result) => {
 					if(err) reject(err)
@@ -89,7 +93,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 	getByCode(code: string): Promise<PuzzleInfo | undefined> {
 		return new Promise((resolve, reject) => {
 			this.connection.query<PuzzleModel[]>(
-				`SELECT * from puzzles WHERE code=?`,
+				`SELECT * from puzzles WHERE LOWER(code)=LOWER(?)`,
 				[code],
 				(err, result) => {
 					if(err) reject(err)
