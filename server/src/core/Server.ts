@@ -8,6 +8,7 @@ import { UserUtils } from "./UserUtils";
 import { send } from "process";
 import bodyParser from "body-parser"
 import { FullPuzzle, generateCode } from "./Puzzle";
+import { readFile } from "fs";
 
 export class Server{
 	constructor(
@@ -29,7 +30,14 @@ export class Server{
 			res.redirect('http://localhost:5173')	// platform page
 		})
 		express.get('/api', (req, res) => {
-			res.send("Here will be API documentation.")
+			readFile('./assets/api.html', (err, data) => {
+				if(err) {
+					res.send(err)
+				}
+				else{
+					res.send(data.toString())
+				}
+			})
 		})
 		express.post('/api/users/login', async (req, res) => {
 			const username = req.body.username

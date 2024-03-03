@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>API Documentation</title>
+	<script type="module" src="https://md-block.verou.me/md-block.js"></script>
+	<style>
+		body{
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			margin-left: 5rem;
+			background-color: rgb(87, 89, 91);
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<md-block>
+		# API Documentation
+		## Users
+		### POST: /api/users/login
+		#### Request:
+		```
+		{
+			username: string,
+			password: string,
+			clientid: string
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: "ok"
+		}
+		or
+		{
+			error: "Nesprávné přihlšovací údaje"
+		}
+		```
+
+		### POST: /api/users/register
+		#### Request:
+		```
+		{
+			clientid: string,
+			username: string,
+			email: string,
+			fullname: string
+			password: string
+		}
+		```
+
+		#### Response:
+		```
+		{
+			error: string
+		}
+		or
+		{
+			result: "ok"
+		}
+		```
+		
+		### POST /api/users/logout
+		#### Request:
+		```
+		{
+			clientid: string
+		}
+		```
+		#### Response:
+		```
+		{
+			result: "ok"
+		}
+		```
+
+		### POST /api/users/islogged
+		#### Request:
+		```
+		{
+			clientid: string
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: boolean
+			user?: {
+				username: string,
+				email: string,
+				fullname: string,
+				id: string
+			}
+		}
+		```
+
+		## Puzzles
+
+		### POST /api/puzzles/save
+		#### Request:
+		```
+		{
+			clientid: string,
+			id: string,
+			name: string,
+			author: string,
+			authorid: string,
+			content: string,
+			image: string,
+			code?: string
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: "ok"
+		}
+		or
+		{
+			error: string
+		}
+		```
+
+		### POST /api/puzzles/find
+		#### Request:
+		```
+		{
+			clientid: string,
+			query: string,
+			limit: number,
+			offset: number,
+			access: "public" | "private"
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: {
+				name: string,
+				author: string,
+				authorId: string
+				rating: string,
+				id: string
+				code?: string,
+				img: string
+			}[]
+		}
+		or
+		{
+			error: string
+		}
+		```
+
+		### POST /api/puzzles/content
+		#### Request:
+		```
+		{
+			clientid: string,
+			id: string
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: string
+		}
+		or
+		{
+			error: string
+		}
+		```
+
+		### POST /api/puzzles/publish
+		#### Request:
+		```
+		{
+			clientid: string,
+			id: string,
+			public: boolean
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: "ok"
+		}
+		or
+		{
+			error: string
+		}
+		```
+
+		### POST /api/puzzles/code
+		#### Request:
+		```
+		{
+			code: string
+		}
+		```
+
+		#### Response:
+		```
+		{
+			result: {
+				name: string,
+				author: string,
+				authorId: string
+				rating: string,
+				id: string
+				code?: string,
+				img: string
+			}
+		}
+		or
+		{
+			error: string
+		}
+		```
+
+	</md-block>
+</body>
+</html>
