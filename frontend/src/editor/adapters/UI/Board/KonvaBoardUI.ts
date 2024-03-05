@@ -1,4 +1,9 @@
-type KonvaData = {
+import Konva from "konva"
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { BoardUIData, BoardUIEvents, IBoardUI } from "../../../ports/UI/IBoardUI"
+import { PuzzleObject, PuzzleSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+
+export type KonvaData = {
 	stage: any,
 	backgroundLayer: any,
 	objectLayer: any,
@@ -19,7 +24,7 @@ type KonvaData = {
 	startY: number
 }
 
-class KonvaBoardUI implements IBoardUI{
+export class KonvaBoardUI implements IBoardUI{
 	_eventBehaviour: EventBehaviour<BoardUIEvents, BoardUIData>
 
 	private _konvaContainer: HTMLElement
@@ -119,7 +124,7 @@ class KonvaBoardUI implements IBoardUI{
 					height: fieldSize,
 					fill: '#FFFFFF66',
 					cornerRadius: 25,
-					stroke: null,
+					stroke: undefined,
 				});
 				this._konvaData.backgroundLayer.add(box);
 			}
@@ -158,7 +163,7 @@ class KonvaBoardUI implements IBoardUI{
 				})
 			})
 			const valid = animations.filter(a => a != null)
-			valid.forEach(t => t.play())
+			valid.forEach(t => t?.play())
 
 			const test = () => {
 				if(finnished == valid.length) resolve("konec")

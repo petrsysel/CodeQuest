@@ -1,5 +1,8 @@
-class BlocklyGenerator{
-	private static _workspace: HTMLElement
+import Blockly, { Workspace } from 'blockly'
+import { BlocklyWorkspaceGenerator } from './BlocklyWorkspaceGenerator'
+import { PuzzleObject } from '../../../../shared/puzzle-lib/core/PuzzleTypes'
+export class BlocklyGenerator{
+	private static _workspace: Workspace
 
 	static getCodeFor(object: PuzzleObject): string{
 		if(!this._workspace) this._init()

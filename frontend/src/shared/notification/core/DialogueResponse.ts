@@ -1,1 +1,1 @@
-type DialogueResponse = "yes" | "no" | "cancel"
+export type DialogueResponse = "yes" | "no" | "cancel"

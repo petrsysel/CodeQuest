@@ -1,4 +1,4 @@
-type BlockOptions = {
+export type BlockOptions = {
 	movement?: BlockCatMovement,
 	appereance?: BlockCatAppereance,
 	cycles?: BlockCatCycles,

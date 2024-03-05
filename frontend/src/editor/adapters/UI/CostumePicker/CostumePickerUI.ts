@@ -1,4 +1,9 @@
-const CPTemplate = /*html*/`
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { CostumeData } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { Templater } from "../../../../shared/templater/Templater"
+import { CostumePickerData, CostumePickerEvent, ICostumePickerUI } from "../../../ports/UI/ICostumePickerUI"
+
+export const CPTemplate = /*html*/`
 <div id="cp-window-element" class="costume-picker-window">
     <div class="costume-picker-panel">
         <div class="costume-picker-control-bar">
@@ -11,7 +16,7 @@ const CPTemplate = /*html*/`
                 Vyhledat: <input type="text" class="costume-picker-filter" id="cp-filter-input">
             </div>
             <div class="costume-picker-control-bar-item costume-picker-close">
-                <a hfref="javascript:void(0)"  id="cp-close-button"><img src="/frontend/images/icons/cq-close.png"></a>
+                <a hfref="javascript:void(0)"  id="cp-close-button"><img src="/images/icons/cq-close.png"></a>
             </div>
         </div>
         <div class="costume-picker-costume-container" id="cp-costume-container">
@@ -20,7 +25,7 @@ const CPTemplate = /*html*/`
 </div>
 `
 
-class CostumePickerUI implements ICostumePickerUI {
+export class CostumePickerUI implements ICostumePickerUI {
     private _windowElement: HTMLElement
     private _filterInput: HTMLInputElement
     private _closeButton: HTMLAnchorElement

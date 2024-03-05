@@ -1,4 +1,4 @@
-class Utility{
+export class Utility{
     static createHTMLIconButton(iconSrc: string, id:string = ""){
         let button = document.createElement('a')
         if(id) button.id = id

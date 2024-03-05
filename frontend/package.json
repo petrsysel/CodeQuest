@@ -30,7 +30,9 @@
   },
   "dependencies": {
     "@types/hyperscript": "^0.0.7",
+    "blockly": "^10.4.2",
     "easybox": "git://github.com/petrsysel/easybox.git#v0.1.4",
-    "hyperscript": "^2.0.2"
+    "hyperscript": "^2.0.2",
+    "konva": "^9.3.5"
   }
 }

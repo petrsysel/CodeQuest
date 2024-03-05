@@ -1,4 +1,6 @@
-class BlocklyBlockDefinitionContainer{
+import Blockly from 'blockly'
+
+export class BlocklyBlockDefinitionContainer{
 	private static definitions = [{
 		"type": "go_forward",
 		"message0": "Jdi vpřed",

@@ -1,7 +1,9 @@
-type CostumePickerEvent = "costume-pick"
-type CostumePickerData = CostumeData
+import { CostumeData } from "../../../shared/puzzle-lib/core/PuzzleTypes"
 
-interface ICostumePickerUI {
+export type CostumePickerEvent = "costume-pick"
+export type CostumePickerData = CostumeData
+
+export interface ICostumePickerUI {
     render(costumes: CostumeData[]):void
     on(event: CostumePickerEvent, callback:(data: CostumePickerData) => void): void
 }

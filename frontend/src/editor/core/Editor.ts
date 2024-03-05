@@ -1,4 +1,18 @@
-class Editor{
+import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
+import { ObjectSettingsValidator } from "../../shared/puzzle-lib/core/ObjectSettingsValidator"
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { PuzzleSettingsValidator } from "../../shared/puzzle-lib/core/PuzzleSettingsValidator"
+import { PuzzleObjectId, PuzzleObjectSettings } from "../../shared/puzzle-lib/core/PuzzleTypes"
+import { getMockCostumes } from "../mock/costumeDataMock"
+import { IBoardUI } from "../ports/UI/IBoardUI"
+import { ICodeEditorUI } from "../ports/UI/ICodeEditorUI"
+import { IControlPanelUI } from "../ports/UI/IControlPanelUI"
+import { ICostumePickerUI } from "../ports/UI/ICostumePickerUI"
+import { IObjectPanelUI, OPDSelection } from "../ports/UI/IObjectPanelUI"
+import { IObjectSettingsUI } from "../ports/UI/IObjectSettingsUI"
+import { IPuzzleSettingsUI } from "../ports/UI/IPuzzleSettingsUI"
+
+export class Editor{
     private _mockupPuzzle: Puzzle
     private _mockupCostumes = getMockCostumes()
 

@@ -1,8 +1,13 @@
-const objectPanelTemplate = /*html*/`
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { PuzzleObject } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { Templater } from "../../../../shared/templater/Templater"
+import { IObjectPanelUI, ObjectPanelUIData, ObjectPanelUIEvents } from "../../../ports/UI/IObjectPanelUI"
+
+export const objectPanelTemplate = /*html*/`
     <div class="object-panel-controls">
-        <a href="javascript:void(0)" id="add-object-button-element"><img src="/frontend/images/icons/cq-add.png"></a>
-        <a href="javascript:void(0)" id="duplicate-object-button-element"><img src="/frontend/images/icons/cq-duplicate.png"></a>
-        <a href="javascript:void(0)" id="delete-object-button-element"><img src="/frontend/images/icons/cq-delete.png"></a>
+        <a href="javascript:void(0)" id="add-object-button-element"><img src="/images/icons/cq-add.png"></a>
+        <a href="javascript:void(0)" id="duplicate-object-button-element"><img src="/images/icons/cq-duplicate.png"></a>
+        <a href="javascript:void(0)" id="delete-object-button-element"><img src="/images/icons/cq-delete.png"></a>
     </div>
 
     <div class="objec-table-container">
@@ -11,7 +16,7 @@ const objectPanelTemplate = /*html*/`
     </div>
 `
 
-class ObjectPanelUI implements IObjectPanelUI{
+export class ObjectPanelUI implements IObjectPanelUI{
     private _panelElement: HTMLElement
     private _objectTableElement: HTMLElement
 
@@ -60,8 +65,8 @@ class ObjectPanelUI implements IObjectPanelUI{
             let inGameEdit = document.createElement('td')
             let objectName = document.createElement('td')
 
-            let codeImage = "<img src='/frontend/images/icons/cq-code.png'>"
-            let gameImage = "<img src='/frontend/images/icons/cq-game.png'>"
+            let codeImage = "<img src='/images/icons/cq-code.png'>"
+            let gameImage = "<img src='/images/icons/cq-game.png'>"
 
             row.appendChild(haveCode)
             row.appendChild(inGameEdit)

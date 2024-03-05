@@ -1,4 +1,9 @@
-class BlocklyWorkspaceGenerator{
+import Blockly from 'blockly'
+import { BlocklyBlockDefinitionContainer } from './BlocklyBlockDefinitionContainer'
+import { BlocklyBehaviourDefinitionContainer } from './BlocklyBehaviourDefinitionContainer'
+import { BlocklyToolboxContainer } from './BlocklyToolboxContainer'
+
+export class BlocklyWorkspaceGenerator{
 	private _workspace: any
 	private _destination: string
 
@@ -59,10 +64,10 @@ class BlocklyWorkspaceGenerator{
 			  'insertionMarkerColour': '#aaa',
 			  'insertionMarkerOpacity': 0.3,
 			  'scrollbarOpacity': 0.4,
-			  'cursorColour': '#d0d0d0',
-			  'blackBackground': '#333'
+			  'cursorColour': '#d0d0d0'
 			},
-			'fontStyle': font
+			'fontStyle': font,
+			'name': "cq-theme"
 		})
 	}
 

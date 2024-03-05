@@ -1,4 +1,6 @@
-class PuzzleSettingsValidator {
+import { PuzzleSettings } from "./PuzzleTypes"
+
+export class PuzzleSettingsValidator {
     static validate(newSettings: PuzzleSettings, oldSettings: PuzzleSettings): PuzzleSettings {
         function boundValue(value:number, min:number, max:number){
             let result = value

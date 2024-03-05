@@ -1,4 +1,8 @@
-class PuzzleUtils{
+import { BlocklyGenerator } from "../../../editor/adapters/UI/Blockly/BlocklyGenerator"
+import { Puzzle } from "./Puzzle"
+import { Block, CostumeData, PuzzleObject, PuzzlePrimitive } from "./PuzzleTypes"
+
+export class PuzzleUtils{
     static createPuzzle(): PuzzlePrimitive{
         return {
             id: (crypto as any).randomUUID(),

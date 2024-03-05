@@ -1,11 +1,13 @@
-type BoardUIEvents = "object-selected"|"object-moved"
-type BoardUIData = {
+import { PuzzleObject, PuzzleObjectId, PuzzleSettings } from "../../../shared/puzzle-lib/core/PuzzleTypes"
+
+export type BoardUIEvents = "object-selected"|"object-moved"
+export type BoardUIData = {
     objectId: PuzzleObjectId,
     x: number,
     y: number
 }
 
-interface IBoardUI {
+export interface IBoardUI {
     setSelected(objectId: PuzzleObjectId): void
     render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]): void
     on(event: BoardUIEvents, callback: (data: BoardUIData) => void): void

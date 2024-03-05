@@ -1,4 +1,4 @@
-class BlockNameContainer{
+export class BlockNameContainer{
 	private static names = new Map([
 		["nazev_typu", "Jméno bloku"],
 		["go_forward", "Jdi vpřed"],

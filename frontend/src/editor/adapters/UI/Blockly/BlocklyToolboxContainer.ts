@@ -1,4 +1,6 @@
-class BlocklyToolboxContainer{
+import { Templater } from "../../../../shared/templater/Templater"
+
+export class BlocklyToolboxContainer{
 	private static _toolboxContent = /*html*/`
 	<category name="Pohyb" colour="#9fa55b">
     <block type="go_forward" deletable="true" movable="true" editable="true"></block>

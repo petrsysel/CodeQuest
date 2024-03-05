@@ -1,5 +1,8 @@
+import { ObjectSettingsValidator } from "./ObjectSettingsValidator"
+import { CostumeData, PuzzleObject, PuzzleObjectId, PuzzleObjectSettings, PuzzlePrimitive, PuzzleSettings } from "./PuzzleTypes"
+import { PuzzleUtils } from "./PuzzleUtils"
 
-class Puzzle implements IPuzzle{
+export class Puzzle implements IPuzzle{
     private _primitive: PuzzlePrimitive
     
     private _objectCounter = 1

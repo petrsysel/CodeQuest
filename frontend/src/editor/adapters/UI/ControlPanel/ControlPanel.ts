@@ -1,15 +1,20 @@
-const controlPanelTemplate = /*html*/`
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { PuzzleSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { Templater } from "../../../../shared/templater/Templater"
+import { ControlPanelUIData, ControlPanelUIEvents, IControlPanelUI } from "../../../ports/UI/IControlPanelUI"
+
+export const controlPanelTemplate = /*html*/`
 	<div class="control-panel-puzzle-name-container">
 	<div id="control-panel-puzzle-name">Název úlohy</div>
 	</div>
 	<div class="control-panel-controls">
-	<a href="javascript:void(0)" id="puzzle-settings-button-element"><img src="/frontend/images/icons/cq-settings.png"></a>
-	<a href="javascript:void(0)" id="try-puzzle-button-element"><img src="/frontend/images/icons/cq-play.png"></a>
-	<a href="javascript:void(0)" id="save-puzzle-button-element"><img src="/frontend/images/icons/cq-save.png"></a>
+	<a href="javascript:void(0)" id="puzzle-settings-button-element"><img src="/images/icons/cq-settings.png"></a>
+	<a href="javascript:void(0)" id="try-puzzle-button-element"><img src="/images/icons/cq-play.png"></a>
+	<a href="javascript:void(0)" id="save-puzzle-button-element"><img src="/images/icons/cq-save.png"></a>
 	<div>
 `
 
-class ControlPanelUI implements IControlPanelUI{
+export class ControlPanelUI implements IControlPanelUI{
 	private _eventBehaviour: EventBehaviour<ControlPanelUIEvents, ControlPanelUIData>
 
 	private _panelElement: HTMLElement

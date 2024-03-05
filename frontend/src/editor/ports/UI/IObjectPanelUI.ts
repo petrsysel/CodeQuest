@@ -1,12 +1,14 @@
-type ObjectPanelUIEvents = "object-removed"|"object-added"|"object-duplicated"|"object-selected" 
+import { PuzzleObject, PuzzleObjectId } from "../../../shared/puzzle-lib/core/PuzzleTypes"
+
+export type ObjectPanelUIEvents = "object-removed"|"object-added"|"object-duplicated"|"object-selected" 
 
 // ObjectPanelDataSelection
-type OPDSelection = {
+export type OPDSelection = {
     id: string
 }
-type ObjectPanelUIData = OPDSelection | null
+export type ObjectPanelUIData = OPDSelection | null
 
-interface IObjectPanelUI {
+export interface IObjectPanelUI {
     render(objects: PuzzleObject[]):void
     setSelected(objectId: PuzzleObjectId): void
     on(event: ObjectPanelUIEvents, callback: (data: ObjectPanelUIData) => void): void

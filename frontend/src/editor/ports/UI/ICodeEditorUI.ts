@@ -1,7 +1,9 @@
-type CodeEditorUIEvents = "code-change"
-type CodeEditorUIData = CodeEditorWorkspace
+import { Block } from "../../../shared/puzzle-lib/core/PuzzleTypes"
 
-interface ICodeEditorUI{
+export type CodeEditorUIEvents = "code-change"
+export type CodeEditorUIData = CodeEditorWorkspace
+
+export interface ICodeEditorUI{
     loadWorkspace(workspace:CodeEditorWorkspace):boolean
     getWorkspace():CodeEditorWorkspace
     on(event: CodeEditorUIEvents, callback: (data: CodeEditorUIData) => void): void
@@ -10,4 +12,4 @@ interface ICodeEditorUI{
     getCode(): string
 }
 
-type CodeEditorWorkspace = string
+export type CodeEditorWorkspace = string

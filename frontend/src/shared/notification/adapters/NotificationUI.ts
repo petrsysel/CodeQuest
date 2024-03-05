@@ -1,8 +1,12 @@
-const messageTemplate = /*html*/`
+import { Templater } from "../../templater/Templater"
+import { DialogueResponse } from "../core/DialogueResponse"
+import { INotificationUI } from "../ports/INotificationUI"
+
+export const messageTemplate = /*html*/`
 	<div class="notif-bg">
 		<div class="notif-window">
 			<div class="notif-header">
-				<a hfref="javascript:void(0)"  id="notif-close-button"><img src="/frontend/images/icons/cq-close.png"></a>
+				<a hfref="javascript:void(0)"  id="notif-close-button"><img src="/images/icons/cq-close.png"></a>
 			</div>
 			<div class="notif-color"></div>
 			<div class="notif-message-container">
@@ -18,7 +22,7 @@ const messageTemplate = /*html*/`
 		</div>
 	</div>
 `
-class NotificationUI implements INotificationUI{
+export class NotificationUI implements INotificationUI{
 	private _windowElement: HTMLElement
 	private _messagePlaceholder: HTMLElement
 	private _buttonYes: HTMLButtonElement

@@ -1,4 +1,10 @@
-const puzzleSettingsTemplate = /*html*/`
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { Block, CostumeData, PuzzleSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { PuzzleUtils } from "../../../../shared/puzzle-lib/core/PuzzleUtils"
+import { Templater } from "../../../../shared/templater/Templater"
+import { IPuzzleSettingsUI, PuzzleSettingsData, PuzzleSettingsEvent } from "../../../ports/UI/IPuzzleSettingsUI"
+
+export const puzzleSettingsTemplate = /*html*/`
 <div id="puzzle-settings-window-element" class="costume-picker-window">
     <div class="costume-picker-panel">
         <div class="costume-picker-control-bar">
@@ -9,7 +15,7 @@ const puzzleSettingsTemplate = /*html*/`
             </div>
             
             <div class="costume-picker-control-bar-item costume-picker-close">
-                <a hfref="javascript:void(0)"  id="puzzle-settings-close-button"><img src="/frontend/images/icons/cq-close.png"></a>
+                <a hfref="javascript:void(0)"  id="puzzle-settings-close-button"><img src="/images/icons/cq-close.png"></a>
             </div>
         </div>
         <div class="puzzle-settings-container" id="puzzle-settings-container">
@@ -35,7 +41,7 @@ const puzzleSettingsTemplate = /*html*/`
 </div>
 `
 
-class PuzzleSettingsUI implements IPuzzleSettingsUI {
+export class PuzzleSettingsUI implements IPuzzleSettingsUI {
     private _windowElement: HTMLElement
     private _closeButton: HTMLAnchorElement
 

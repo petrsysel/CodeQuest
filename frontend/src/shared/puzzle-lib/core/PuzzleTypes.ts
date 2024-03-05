@@ -1,12 +1,12 @@
-type PuzzleObjectId = string
-type PuzzleId = string
+export type PuzzleObjectId = string
+export type PuzzleId = string
 
-type PuzzleObject = {
+export type PuzzleObject = {
     id: PuzzleObjectId
     settings: PuzzleObjectSettings
 }
 
-type PuzzleObjectSettings = {
+export type PuzzleObjectSettings = {
     name: string,
     layer: number,
     playerEdit: boolean,
@@ -18,26 +18,26 @@ type PuzzleObjectSettings = {
     visible: boolean
 }
 
-type PuzzlePrimitive = {
+export type PuzzlePrimitive = {
     id: PuzzleId,
     version: number
     settings: PuzzleSettings,
     objects: PuzzleObject[]
 }
 
-type PuzzleSettings = {
+export type PuzzleSettings = {
     name: string,
     blocks:Block[],
     sideWidth: number
 }
 
-type CostumeData = {
+export type CostumeData = {
     name: string,
     path: string,
     tags: string[]
 }
 
-type Block = {
+export type Block = {
     type: string,
     name: string,
     category: string

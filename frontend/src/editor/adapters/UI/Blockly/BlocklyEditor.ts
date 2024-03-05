@@ -1,4 +1,11 @@
-class BlocklyEditor implements ICodeEditorUI {
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { CodeEditorUIData, CodeEditorUIEvents, CodeEditorWorkspace, ICodeEditorUI } from "../../../ports/UI/ICodeEditorUI"
+import Blockly from 'blockly'
+import { BlocklyWorkspaceGenerator } from "./BlocklyWorkspaceGenerator"
+import { BlockNameContainer } from "./BlockNameContainer"
+import { Block } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+
+export class BlocklyEditor implements ICodeEditorUI {
   private _workspace: any
   private _eventBehaviour: EventBehaviour<CodeEditorUIEvents, CodeEditorUIData>
   private _workspaceGenerator: BlocklyWorkspaceGenerator

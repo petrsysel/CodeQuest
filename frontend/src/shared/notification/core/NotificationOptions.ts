@@ -1,3 +1,3 @@
-type NotificationOption = {
+export type NotificationOption = {
 	color?: "error" | "warn" | "correct" | "info"
 }

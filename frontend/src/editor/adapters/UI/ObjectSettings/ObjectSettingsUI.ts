@@ -1,4 +1,10 @@
-const objectSettingsTemplate = /*html*/`
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { PuzzleObject, PuzzleObjectSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { PuzzleUtils } from "../../../../shared/puzzle-lib/core/PuzzleUtils"
+import { Templater } from "../../../../shared/templater/Templater"
+import { IObjectSettingsUI, ObjectSettingsUIData, ObjectSettingsUIEvents } from "../../../ports/UI/IObjectSettingsUI"
+
+export const objectSettingsTemplate = /*html*/`
     <div class="object-fields" id="object-fields-element">
         <input type="text" id="name-element" class="object-name-input">
         <table>
@@ -65,7 +71,7 @@ const objectSettingsTemplate = /*html*/`
     </div>
 `
 
-class ObjectSettingsUI implements IObjectSettingsUI{
+export class ObjectSettingsUI implements IObjectSettingsUI{
     private _eventBehaviour: EventBehaviour<ObjectSettingsUIEvents, ObjectSettingsUIData>
     private _puzzleSettingsElement: HTMLElement
 
