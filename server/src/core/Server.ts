@@ -22,6 +22,14 @@ export class Server{
 		const hostname = process.env.HOST || 'localhost'
 
 		express.use(bodyParser.json())
+		express.use((req, res, next) => {
+			res.socket?.setNoDelay(true)
+			res.append('Access-Control-Allow-Origin', ['*'])
+			res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+			res.append('Access-Control-Allow-Headers', 'Content-Type')
+			next()
+		});
+
 		express.listen(port, hostname, () => {
 			console.log(`Server is listening on http://${hostname}:${port}`)
 		})

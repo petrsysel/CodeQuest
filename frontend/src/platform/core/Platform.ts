@@ -1,4 +1,5 @@
 import { IDialogue } from "../../shared/dialogue/core/IDialogue";
+import { IClientIdManager } from "./IClientIdManager";
 import { INavBar } from "./INavBar";
 import { IPuzzleListUI } from "./IPuzzleListUI";
 import { IServerAPI, LoginData, RegisterData } from "./IServerAPI";
@@ -13,11 +14,14 @@ export class Platform{
         loginForm: IDialogue<LoginData>,
         registerForm: IDialogue<RegisterData>,
         insertPuzzleCode: IDialogue<string>,
-        
+        clientIdManager: IClientIdManager
     ){
+        const clientId = clientIdManager.get()
 
+        navBar.render({loggedUser: false})
+        sideBar.render({loggedUser: false})
 
-        serverApi.isLogged('mock-client-id').then(user => {
+        serverApi.isLogged(clientId).then(user => {
             const logged = user != undefined
             navBar.render({
                 loggedUser: logged,
@@ -28,20 +32,33 @@ export class Platform{
             })
         })
 
-        navBar.on('log-in-request', () => {
-            loginForm.show()
+        navBar.on('log-in-request', async () => {
+            async function showLoginForm(error?: string){
+                const data = await loginForm.show(error)
+                if(!data) return 
+                const apiResponse = await serverApi.loginRequest(clientId, data.username, data.password)
+                if(apiResponse.error) showLoginForm(apiResponse.error)
+                else location.reload()
+            }
+            showLoginForm()
+        })
+        navBar.on('log-out-request', async () => {
+            const result = await serverApi.logOut(clientId)
+            location.reload()
         })
 
         navBar.on('register-request', async () => {
             async function showRegisterDialogueRec(error?: string, preFill?: RegisterData){
                 const response = await registerForm.show(error, preFill)
+                console.log("REGISTRATION FORM")
+                console.log(response)
                 if(!response) return
                 const validationResponse = registerForm.validate(response)
                 if(!validationResponse.isValid) showRegisterDialogueRec(validationResponse.error, response)
                 else {
                     console.log("Registration form is valid")
-                    serverApi.registerRequest(
-                        'afjwefiojwa',
+                    const serverResponse = await serverApi.registerRequest(
+                        clientId,
                         {
                             email: response.email,
                             fullname: response.fullname,
@@ -49,6 +66,14 @@ export class Platform{
                         },
                         response.password
                     )
+                    if(serverResponse.error){
+                        showRegisterDialogueRec(serverResponse.error)
+                    }
+                    else{
+                        const loginResponse = await serverApi.loginRequest(clientId, response.username, response.password)
+
+                        location.reload()
+                    }
                 }
             }
             showRegisterDialogueRec()

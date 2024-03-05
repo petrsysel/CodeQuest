@@ -10,15 +10,18 @@ import { IDialogue } from "./shared/dialogue/core/IDialogue"
 import { Sidebar } from "./platform/adapters/sidebar/Sidebar"
 import { InsetCodeDialogue } from "./platform/adapters/dialogues/InsertCodeDialogue"
 import { PuzzleListUI } from "./platform/adapters/puzzleList/PuzzleListUI"
+import { ServerApi } from "./platform/ServerApi"
+import { ClientIdManager } from "./platform/adapters/ClientIdManager"
 
 function main(){
-    const serverApi = new MockServerAPI()
+    const serverApi = new ServerApi()
     const sideBar = new Sidebar('platform-sidebar')
     const navBar = new Navbar('platform-navbar')
     const puzzleList = new PuzzleListUI('platform-puzzle-list')
     const loginForm = new LoginDialogue()
     const registerForm = new RegisterDialogue()
     const insertPuzzleCodeForm = new InsetCodeDialogue()
+    const clientIdManager = new ClientIdManager()
     
     new Platform(
         serverApi,
@@ -27,7 +30,8 @@ function main(){
         puzzleList,
         loginForm,
         registerForm,
-        insertPuzzleCodeForm
+        insertPuzzleCodeForm,
+        clientIdManager
     )
 }
 
