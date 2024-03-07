@@ -1,4 +1,6 @@
-class GameProcedure{
+import { GameRound } from "./GameRound"
+
+export class GameProcedure{
 	private _rounds: GameRound[]
 
 	constructor(){

@@ -1,15 +1,21 @@
-const gameControlPanelTemplate = /*html*/`
+import { ControlPanelUIData, ControlPanelUIEvents, IControlPanelUI } from "../../../../editor/ports/UI/IControlPanelUI"
+import { EventBehaviour } from "../../../../shared/EventBehaviour"
+import { PuzzleSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { Templater } from "../../../../shared/templater/Templater"
+import { IVisualizerControlPanel } from "../../../ports/IVisualizerControlPanelUI"
+
+export const gameControlPanelTemplate = /*html*/`
 <div class="control-panel-puzzle-name-container">
 	<div id="game-control-panel-puzzle-name">Název úlohy</div>
 	</div>
 <div class="control-panel-controls">
-	<a href="javascript:void(0)" id="play-puzzle-button-element"><img src="/frontend/images/icons/cq-play.png"></a>
-	<a href="javascript:void(0)" id="stop-puzzle-button-element"><img src="/frontend/images/icons/cq-stop.png"></a>
-	<img id="loading-puzzle-element" src="/frontend/images/icons/cq-loading.png">
+	<a href="javascript:void(0)" id="play-puzzle-button-element"><img src="./images/icons/cq-play.png"></a>
+	<a href="javascript:void(0)" id="stop-puzzle-button-element"><img src="./images/icons/cq-stop.png"></a>
+	<img id="loading-puzzle-element" src="./images/icons/cq-loading.png">
 <div>
 `
 
-class GameControlPanel implements IControlPanelUI, IVisualizerControlPanel{
+export class GameControlPanel implements IControlPanelUI, IVisualizerControlPanel{
 	private _panelElement: HTMLElement
 	private _nameElement: HTMLElement
 	private _playButton: HTMLAnchorElement

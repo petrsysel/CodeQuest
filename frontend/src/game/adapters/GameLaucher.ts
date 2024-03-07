@@ -1,4 +1,9 @@
-class GameLauncher implements IGameLauncher{
+import { EventBehaviour } from "../../shared/EventBehaviour"
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { PuzzleUtils } from "../../shared/puzzle-lib/core/PuzzleUtils"
+import { IGameLauncher, LaucherData, LauncherEvent } from "../ports/IGameLauncher"
+
+export class GameLauncher implements IGameLauncher{
 	private _timeout: number
 	private _eventBehaviour = new EventBehaviour<LauncherEvent, LaucherData>()
 

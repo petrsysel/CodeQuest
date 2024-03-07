@@ -1,11 +1,15 @@
-const gameObjectListTemplate = /*html*/`
+import { IObjectPanelUI, ObjectPanelUIData, ObjectPanelUIEvents } from "../../../../editor/ports/UI/IObjectPanelUI"
+import { PuzzleObject } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { Templater } from "../../../../shared/templater/Templater"
+
+export const gameObjectListTemplate = /*html*/`
 	<div class="game-object-list-wrapper">	
 		<div class="game-object-list-container" id="game-object-list-container">
 		</div>
 	</div>
 `
 
-class GameObjectList implements IObjectPanelUI{
+export class GameObjectList implements IObjectPanelUI{
 	private _listElement: HTMLElement
 	private _listContainerElement: HTMLElement
 

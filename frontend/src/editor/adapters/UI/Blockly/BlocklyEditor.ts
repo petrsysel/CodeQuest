@@ -4,6 +4,9 @@ import Blockly from 'blockly'
 import { BlocklyWorkspaceGenerator } from "./BlocklyWorkspaceGenerator"
 import { BlockNameContainer } from "./BlockNameContainer"
 import { Block } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import javascript from 'blockly/javascript'
+
+const javascriptGenerator = javascript.javascriptGenerator
 
 export class BlocklyEditor implements ICodeEditorUI {
   private _workspace: any
@@ -71,7 +74,7 @@ export class BlocklyEditor implements ICodeEditorUI {
   }
 
   getCode(): string {
-    let code = Blockly.JavaScript.workspaceToCode(this._workspace);
+    let code = javascriptGenerator.workspaceToCode(this._workspace);
     return code
   }
 }

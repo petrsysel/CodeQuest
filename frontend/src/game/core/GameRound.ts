@@ -1,4 +1,4 @@
-class GameRound{
+export class GameRound{
 	private _instructions: GameInstruction[]
 	constructor(instructions: GameInstruction[] = []){
 		this._instructions = instructions

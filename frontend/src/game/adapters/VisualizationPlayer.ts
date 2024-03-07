@@ -1,4 +1,9 @@
-class VisualizationPlayer implements IVisualizationPlayer{
+import { IBoardUI } from "../../editor/ports/UI/IBoardUI"
+import { EventBehaviour } from "../../shared/EventBehaviour"
+import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+
+export class VisualizationPlayer implements IVisualizationPlayer{
 	private _boardUI: IBoardUI
 	private _isPlaying: boolean
 	private _notificationUI: INotificationUI

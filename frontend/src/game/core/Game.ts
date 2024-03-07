@@ -1,4 +1,13 @@
-class Game{
+import { IBoardUI } from "../../editor/ports/UI/IBoardUI"
+import { ICodeEditorUI } from "../../editor/ports/UI/ICodeEditorUI"
+import { IControlPanelUI } from "../../editor/ports/UI/IControlPanelUI"
+import { IObjectPanelUI } from "../../editor/ports/UI/IObjectPanelUI"
+import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { IGameLauncher } from "../ports/IGameLauncher"
+import { IVisualizerControlPanel } from "../ports/IVisualizerControlPanelUI"
+
+export class Game{
 	private _puzzle: Puzzle
 
 	private _selectedObjectId: string | undefined

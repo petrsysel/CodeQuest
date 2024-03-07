@@ -1,4 +1,5 @@
 import { BlocklyGenerator } from "../../../editor/adapters/UI/Blockly/BlocklyGenerator"
+import { GameActor } from "../../../game/core/GameActor"
 import { Puzzle } from "./Puzzle"
 import { Block, CostumeData, PuzzleObject, PuzzlePrimitive } from "./PuzzleTypes"
 

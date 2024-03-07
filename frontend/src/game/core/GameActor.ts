@@ -1,4 +1,6 @@
-class GameActor{
+import { PuzzleObject } from "../../shared/puzzle-lib/core/PuzzleTypes"
+
+export class GameActor{
 	private _primitive: PuzzleObject
 	private _isSleeping: boolean
 	private _code: string

@@ -8,25 +8,29 @@ import { ObjectSettingsUI } from "./adapters/UI/ObjectSettings/ObjectSettingsUI"
 import { PuzzleSettingsUI } from "./adapters/UI/PuzzleSettings/PuzzleSettingsUI";
 import { Editor } from "./core/Editor";
 
-const boardUI = new KonvaBoardUI('board-container', {
-	draggable: true,
-	selectable: "all"
-})
-const codeUI = new BlocklyEditor('blockly-placeholder')
-const controlPanelUI = new ControlPanelUI('control-panel')
-const objectPanel = new ObjectPanelUI('object-panel')
-const objectSettings = new ObjectSettingsUI('object-settings')
-const costumePicker = new CostumePickerUI('cp-place-holder')
-const puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
-const notificationUI = new NotificationUI()
+function main(){
+	const boardUI = new KonvaBoardUI('board-container', {
+		draggable: true,
+		selectable: "all"
+	})
+	const codeUI = new BlocklyEditor('blockly-placeholder')
+	const controlPanelUI = new ControlPanelUI('control-panel')
+	const objectPanel = new ObjectPanelUI('object-panel')
+	const objectSettings = new ObjectSettingsUI('object-settings')
+	const costumePicker = new CostumePickerUI('cp-place-holder')
+	const puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
+	const notificationUI = new NotificationUI()
+	
+	new Editor(
+		boardUI,
+		codeUI,
+		controlPanelUI,
+		objectPanel,
+		objectSettings,
+		costumePicker,
+		puzzleSettings,
+		notificationUI
+	)
+}
 
-new Editor(
-	boardUI,
-	codeUI,
-	controlPanelUI,
-	objectPanel,
-	objectSettings,
-	costumePicker,
-	puzzleSettings,
-	notificationUI
-)
+window.onload = main
