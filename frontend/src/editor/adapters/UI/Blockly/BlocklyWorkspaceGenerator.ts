@@ -2,6 +2,7 @@ import Blockly from 'blockly'
 import { BlocklyBlockDefinitionContainer } from './BlocklyBlockDefinitionContainer'
 import { BlocklyBehaviourDefinitionContainer } from './BlocklyBehaviourDefinitionContainer'
 import { BlocklyToolboxContainer } from './BlocklyToolboxContainer'
+import { BlocklyExtendedBehaviourDefinitionContainer } from './BlocklyExtendedBehaviourDefinitionContainer'
 
 export class BlocklyWorkspaceGenerator{
 	private _workspace: any
@@ -73,7 +74,7 @@ export class BlocklyWorkspaceGenerator{
 
 	createWorkspace(blockOptions: any){
 		BlocklyBlockDefinitionContainer.init()
-		BlocklyBehaviourDefinitionContainer.init()
+		BlocklyExtendedBehaviourDefinitionContainer.init()
 		let toolbox = BlocklyToolboxContainer.getToolbox()
 		let theme = this._getTheme()
 		let options = this._getWorkspaceOptions(toolbox, theme)

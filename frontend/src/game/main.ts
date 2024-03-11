@@ -1,7 +1,9 @@
 import { BlocklyEditor } from "../editor/adapters/UI/Blockly/BlocklyEditor";
+import { BlocklyWorkspaceGenerator } from "../editor/adapters/UI/Blockly/BlocklyWorkspaceGenerator";
 import { KonvaBoardUI } from "../editor/adapters/UI/Board/KonvaBoardUI";
 import { NotificationUI } from "../shared/notification/adapters/NotificationUI";
 import { GameLauncher } from "./adapters/GameLaucher";
+import { OBTGameLauncher } from "./adapters/OBTGameLauncher/OBTGameLauncher";
 import { GameControlPanel } from "./adapters/UI/GameControlPanel/GameControlPanel";
 import { GameObjectList } from "./adapters/UI/GameObjectList/GameObjectList";
 import { VisualizationPlayer } from "./adapters/VisualizationPlayer";
@@ -13,7 +15,8 @@ function main(){
 		draggable: false,
 		selectable: "player"
 	})
-	const gameLauncher = new GameLauncher(200)
+	const workspaceGenerator = new BlocklyWorkspaceGenerator('generator-workspace')
+	const gameLauncher = new OBTGameLauncher(workspaceGenerator)
 	const objectList = new GameObjectList('game-object-list')
 	const controlPanel = new GameControlPanel('game-control-panel')
 	const notificationUI = new NotificationUI()

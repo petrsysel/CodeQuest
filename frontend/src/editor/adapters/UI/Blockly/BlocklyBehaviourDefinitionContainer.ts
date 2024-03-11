@@ -126,6 +126,20 @@ export class BlocklyBehaviourDefinitionContainer {
 			return code;
 		};
 		
+		javascriptGenerator.forBlock['controls_if'] = function(block: any, generator: any) {
+			console.log("IF STATEMENT BLOCK")
+			console.log(block)
+			console.log(generator.valueToCode(block, 'IF0', javascript.Order.ATOMIC))
+			var code = "Cože"
+			return code;
+		};
+		javascriptGenerator.forBlock['variables_set'] = function(block: any, generator: any) {
+			console.log("VARIABLE")
+			console.log(block)
+			console.log(generator.valueToCode(block, 'VALUE', javascript.Order.ATOMIC))
+			var code = "Cože"
+			return code;
+		};
 		javascriptGenerator.forBlock['on_message_recieve'] = function(block: any, generator: any) {
 			var value_message_name = generator.valueToCode(block, 'message_name', javascript.Order.ATOMIC);
 			var on_message_body = generator.statementToCode(block, 'on_message_body');

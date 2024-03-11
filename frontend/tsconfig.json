@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "ES2022",
     "module": "ESNext",
     "esModuleInterop": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "useDefineForClassFields": true,
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,

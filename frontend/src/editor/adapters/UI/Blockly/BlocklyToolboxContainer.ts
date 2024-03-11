@@ -232,6 +232,15 @@ export class BlocklyToolboxContainer{
         </block>
       </value>
     </block>
+    <block type="lists_getIndex">
+      <field name="MODE">GET</field>
+      <field name="WHERE">FROM_START</field>
+      <value name="VALUE">
+      <block type="variables_get">
+      <field name="VAR" id="]DpgMbr,,VjAMM]E=MQ!">list</field>
+      </block>
+      </value>
+      </block>
   </category>
   <category name="Funkce" colour="#995ba5" custom="PROCEDURE"></category>
 	`

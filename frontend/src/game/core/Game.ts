@@ -57,7 +57,7 @@ export class Game{
 			let code = codeUI.getCode()
 			
 			gameLauncher.play(this._puzzle)
-			controlPanelUI.setState("loading")
+			// controlPanelUI.setState("loading")
 		})
 
 		controlPanelUI.on('stop-puzzle', () => {
@@ -70,9 +70,9 @@ export class Game{
 		})
 
 		gameLauncher.on("done", async data => {
-			controlPanelUI.setState("playing")
-			let workPuzzle = this._puzzle.clone()
-			visualizationPlayer.play(data, workPuzzle)
+			controlPanelUI.setState('stoped')
+			// let workPuzzle = this._puzzle.clone()
+			// visualizationPlayer.play(data, workPuzzle)
 			//visualizationPlayer.stop()
 		})
 		

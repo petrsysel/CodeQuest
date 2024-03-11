@@ -29,10 +29,18 @@
     "vite": "^5.1.1"
   },
   "dependencies": {
+    "@types/acorn": "^6.0.0",
+    "@types/esprima": "^4.0.6",
     "@types/hyperscript": "^0.0.7",
+    "acorn": "^8.11.3",
     "blockly": "^10.4.2",
+    "comlink": "^4.4.1",
     "easybox": "git://github.com/petrsysel/easybox.git#v0.1.4",
+    "esprima": "^4.0.1",
+    "greenlet": "^1.1.0",
     "hyperscript": "^2.0.2",
-    "konva": "^9.3.5"
+    "konva": "^9.3.5",
+    "threads": "^1.7.0",
+    "tiny-worker": "^2.3.0"
   }
 }
