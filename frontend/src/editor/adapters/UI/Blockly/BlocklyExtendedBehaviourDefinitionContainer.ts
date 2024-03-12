@@ -34,5 +34,24 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 			var number = block.getFieldValue('NUM')
 			return [`new NumberAction(${number})`, javascript.Order.ATOMIC]
 		}
+		javascriptGenerator.forBlock['text'] = function(block: any, generator: any){
+			const text = block.getFieldValue('TEXT')
+			return [`new TextAction('${text}')`, javascript.Order.ATOMIC]
+		}
+		javascriptGenerator.forBlock['send_message'] = function(block: any, generator: any){
+			const eventName = generator.valueToCode(block, 'message_name', javascript.Order.ATOMIC)
+			return `new EmitAction(${eventName}),`
+		}
+
+		javascriptGenerator.forBlock['on_message_recieve'] = function(block: any, generator: any) {
+			var eventName = generator.valueToCode(block, 'message_name', javascript.Order.ATOMIC);
+			var doInput = generator.statementToCode(block, 'on_message_body');
+			doInput = doInput.replace(new RegExp(';$'), '');
+
+			var code = `new OnEventAction(${eventName}, ${doInput}),`;
+			return code;
+		};
+
+		
 	}
 }

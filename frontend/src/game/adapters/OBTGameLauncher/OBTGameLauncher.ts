@@ -31,7 +31,7 @@ export class OBTGameLauncher implements IGameLauncher{
 
 
 		type ActionType = "instant" | "delayed"
-		type ActionEvent = 'hybernation' | 'ready'
+		type ActionEvent = 'hybernation' | 'ready' | 'event-call'
 
 		abstract class Action<T>{
 			private hybernation: boolean = false
@@ -76,13 +76,17 @@ export class OBTGameLauncher implements IGameLauncher{
 
 		class Stepper{
 			// private signal: Signal<'step' | 'setted', null>
-			private listeners: Map<string, () => void>
+			private listeners: Map<string, (eventName?: string) => void>
 			constructor(){
 				// this.signal = new Signal()
 				this.listeners = new Map()
 			}
-			on(event: 'step' | 'setted', callback: () => void){
+			on(event: 'step' | 'setted' | 'event-call', callback: (eventName?: string) => void){
 				this.listeners.set(event, callback)
+			}
+			emit(eventName: string){
+				const callback = this.listeners.get('event-call')
+				if(callback) callback(eventName)
 			}
 			next(){
 				const callback = this.listeners.get('step')
@@ -200,7 +204,9 @@ export class OBTGameLauncher implements IGameLauncher{
 
 			async execute(stepper: Stepper, object: PuzzleObject): Promise<void> {
 				await this.body.reduce((p, a) => 
-					p.then(() => a.execute(stepper, object)
+					p.then(() => {
+						return a.execute(stepper, object)
+					}
 				), Promise.resolve())
 				this.hybernate()
 			}
@@ -211,42 +217,77 @@ export class OBTGameLauncher implements IGameLauncher{
 			}
 		}
 
-		class EventHandlerAction extends Action<void>{
-			private body: ActionContainer
-			private name: string
-
-			public get eventName(){
-				return this.name
+		class TextAction extends Action<string>{
+			private text: string
+			constructor(text: string){
+				super()
+				this.text = text
 			}
+			execute(stepper: Stepper, object: PuzzleObject): Promise<string> {
+				return new Promise((resolve, reject) => {
+					resolve(this.text)
+					this.hybernate()
+				})
+			}
+			wakeup(): void {
+				this.exitHybernation()
+			}
+		}
+
+		class EmitAction extends Action<void>{
+			text: Action<string>
+
+			constructor(text: Action<string>){
+				super()
+				this.text = text
+			}
+
+			async execute(stepper: Stepper, object: PuzzleObject): Promise<void> {
+				const eventName = await this.text.execute(stepper, object)
+				return new Promise((resolve, reject) => {
+					console.log("Event " + eventName + " were been emitted!")
+					stepper.emit(eventName)
+					resolve()
+				})
+			}
+			wakeup(): void {
+				this.text.wakeup()
+				this.exitHybernation()
+			}
+		}
+
+		class OnEventAction extends Action<void>{
+			eventName: Action<string>
+			body: ActionContainer
+
 			public get actionBody(){
 				return this.body
 			}
 
-			constructor(name: string, ...body: Action<any>[]){
+			constructor(text: Action<string>, ...body: Action<any>[]){
 				super()
-				this.name = name
+				this.eventName = text
 				this.body = new ActionContainer(...body)
 			}
+
 			async execute(stepper: Stepper, object: PuzzleObject): Promise<void> {
-				await this.body.execute(stepper, object)
-				this.hybernate()
+				const eventName = await this.eventName.execute(stepper, object)
+				return new Promise(async (resolve, reject) => {
+					await this.body.execute(stepper, object)
+					resolve()
+					this.hybernate()
+				})
 			}
 			wakeup(): void {
+				this.eventName.wakeup()
 				this.body.wakeup()
 				this.exitHybernation()
 			}
 		}
 
-		const f = new ForAction(
-			new NumberAction(8),
-			[
-				new GoAction()
-			]
-		)
-
 		class Synchronizer{
 			private total: number
-			private hybernating = 0
+			private hybernating: ObjectController[] = []
 			private responseCounter = 0
 			private controllers: ObjectController[]
 
@@ -256,30 +297,37 @@ export class OBTGameLauncher implements IGameLauncher{
 
 				controllers.forEach(c => {
 					c.on('hybernation', () => {
-						// console.log("some object is counted as hybernated")
-						this.hybernating ++
-						// console.log('Process progression')
-						// console.log(`Total: ${this.total}`)
-						// console.log(`Hybernation: ${this.hybernating}`)
-						// console.log(`Responses: ${this.responseCounter}`)
-						if(this.responseCounter >= this.total - this.hybernating){
-							this.next()
-							this.responseCounter = 0
-						}
+						this.hybernating.push(c)
+						
+						this.checkAndNext()
 					})
 
 					c.on('ready', () => {
 						this.responseCounter ++
-						// console.log('Process progression')
-						// console.log(`Total: ${this.total}`)
-						// console.log(`Hybernation: ${this.hybernating}`)
-						// console.log(`Responses: ${this.responseCounter}`)
-						if(this.responseCounter >= this.total - this.hybernating){
-							this.next()
-							this.responseCounter = 0
+						
+						this.checkAndNext()
+					})
+					c.on('event-call', async  data => {
+						for (let i = 0; i < controllers.length; i++) {
+							const controller = controllers[i]
+							const result = await controller.call(data?.eventName!)
+							if(result){
+								this.hybernating.splice(this.hybernating.indexOf(controller), 1)
+								this.checkAndNext()
+							}
 						}
 					})
 				})
+
+				
+			}
+			private checkAndNext(){
+				if(this.responseCounter >= this.total - this.hybernating.length){
+					this.next()
+					this.responseCounter = 0
+				}
+				else{
+				}
 			}
 
 			run(){
@@ -316,79 +364,90 @@ export class OBTGameLauncher implements IGameLauncher{
 				this.threads.splice(this.threads.length - 1, 1)[0]
 				if(this.threads.length === 0) this.signal.emit('empty', null)
 			}
+
+			clearEvents(){
+				this.threads.forEach(t => {
+					if(t.type === 'event') this.threads.splice(this.threads.indexOf(t),1)
+				})
+			}
 		}
 
+		type ThreadType = 'main' | 'event' | 'function'
 		class ThreadController{
 			private stepper: Stepper
-			name: string
+			name: string|Action<string>
 			body: ActionContainer
 			object: PuzzleObject
+			type: ThreadType
 
-			signal: Signal<ActionEvent, null>
+			signal: Signal<ActionEvent, null | {eventName: string}>
 
-			constructor(name: string, object: PuzzleObject, body: ActionContainer){
+			constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer){
 				this.signal = new Signal()
 				this.stepper = new Stepper()
 				this.name = name
 				this.body = body
 				this.object = object
+				this.type = type
 
 				body.on('hybernation', () => {
-					// console.log('hybernation request of object ' + object.settings.name)
-					// console.log("body:")
-					// console.log(body)
 					this.signal.emit('hybernation', null)
 				})
 
 				this.stepper.on('setted', () => {
 					this.signal.emit('ready', null)
 				})
+				this.stepper.on('event-call', eventName => {
+					this.signal.emit('event-call', {eventName: eventName!})
+				})
 			}
 
-			on(event: ActionEvent, callback: () => void){
+			on(event: ActionEvent, callback: (data: null | {eventName: string}) => void){
 				this.signal.on(event, callback)
 			}
 
 			run(){
-				// this.body.wakeup()
-				// console.log(this.body)
+				if(this.type === 'main') console.log("Running main thread")
 				this.body.execute(this.stepper, this.object)
 			}
 			next(){
 				this.stepper.next()
 			}
 		}
-		type ObjectControllerEvent = 'hybernation' | 'ready'
+		type ObjectControllerEvent = 'hybernation' | 'ready' | 'event-call'
 		class ObjectController{
 			mainThread: ThreadController
 			eventThreads: ThreadController[]
 
 			threadStack: ThreadStack
-			private signal: Signal<ObjectControllerEvent, null>
+			private signal: Signal<ObjectControllerEvent, null | {eventName: string}>
 			private object: PuzzleObject
 
-			constructor(object: PuzzleObject, main: ActionContainer, eventHandlers: EventHandlerAction[]){
+			constructor(object: PuzzleObject, main: ActionContainer, eventHandlers: OnEventAction[]){
 				this.signal = new Signal()
 				this.object = object
-				this.mainThread = new ThreadController('main', object, main)
-				this.eventThreads = eventHandlers.map(eh => new ThreadController(eh.eventName, object, eh.actionBody))
+				this.mainThread = new ThreadController('main', 'main', object, main)
+				this.eventThreads = eventHandlers.map(eh => new ThreadController('event', eh.eventName, object, eh.actionBody))
 				this.threadStack = new ThreadStack()
-				this.mainThread.on('ready', () => {
-					this.signal.emit('ready', null)
-				})
+
 				this.threadStack.on('empty', () => {
-					// console.log("stack is empty")
 					this.signal.emit('hybernation', null)
 				})
 				this.threadStack.on('added', () => {
-					// console.log("added to stack")
 					this.threadStack.read()?.on('hybernation', () => {
 						this.threadStack.pop()
 					})
+					this.threadStack.read()?.on('event-call', data => {
+						this.signal.emit('event-call', data)
+					})
+					this.threadStack.read()?.on('ready', () => {
+						this.signal.emit('ready', null)
+					})
 				})
+
 			}
 
-			on(event: ObjectControllerEvent, callback: () => void){
+			on(event: ObjectControllerEvent, callback: (eventName: null | {eventName: string}) => void){
 				this.signal.on(event, callback)
 			}
 
@@ -397,11 +456,23 @@ export class OBTGameLauncher implements IGameLauncher{
 				this.mainThread.run()
 				console.log("Running main thread of an object " + this.object.settings.name)
 			}
-			call(eventName: string){
-				const thread = this.eventThreads.find(t => t.name === eventName)
-				if(!thread) return
-				this.threadStack.add(thread)
-				thread.run()
+			async call(eventName: string): Promise<boolean>{
+				return new Promise(async (resolve, reject) => {
+					const thread = await this.eventThreads.find(async t => {
+						if(typeof(t.name) === 'string'){
+							return t.name === eventName
+						}
+						else{
+							const stepper = new Stepper()
+							return (await t.name.execute(stepper, t.object)) === eventName
+						}
+					})
+					if(!thread) return resolve(false)
+					// this.threadStack.clearEvents()
+					this.threadStack.add(thread)
+					resolve(true)
+					thread.run()
+				})
 			}
 			next(){
 				this.threadStack.read()?.next()
@@ -418,13 +489,11 @@ export class OBTGameLauncher implements IGameLauncher{
 			const finalCode = `tree = [${code.replace(new RegExp(',$'), '')}]`
 			eval(finalCode)
 
-			const eventHandlers = tree.filter(a => a instanceof EventHandlerAction) as EventHandlerAction[]
-			const mainActions = tree.filter(a => !(a instanceof EventHandlerAction))
+			const eventHandlers = tree.filter(a => a instanceof OnEventAction) as OnEventAction[]
+			const mainActions = tree.filter(a => !(a instanceof OnEventAction))
 			const main = new ActionContainer(
 				...mainActions
 			)
-			console.log("PREPARING MAIN THREAD")
-			console.log(mainActions)
 
 			return new ObjectController(o, main, eventHandlers)
 		})
