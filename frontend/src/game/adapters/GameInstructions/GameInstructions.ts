@@ -1,4 +1,8 @@
-type InstructionType =
+import { getMockCostumes } from "../../../editor/mock/costumeDataMock"
+import { INotificationUI } from "../../../shared/notification/ports/INotificationUI"
+import { Puzzle } from "../../../shared/puzzle-lib/core/Puzzle"
+
+export type InstructionType =
 	"goforward" |
 	"jump" |
 	"turn" |
@@ -15,17 +19,17 @@ type InstructionType =
 	"win" |
 	"gameover"
 
-type GameInstruction = {
+export type GameInstruction = {
 	name: InstructionType,
 	objectId: string
 } & Parameter
 
-type QueuedInstruction = {
+export type QueuedInstruction = {
 	instruction: GameInstruction,
 	roundAmount: number
 }
 
-type Parameter = {
+export type Parameter = {
 	side?: "right" | "left",
 	direction?: "up" | "right"| "down" | "left",
 	message?: string,
@@ -36,7 +40,7 @@ type Parameter = {
 	roundAmount?: number
 }
 
-class Instruction {
+export class Instruction {
 	static instantInstructions: InstructionType[] = [
 		"changebackground",
 		"changecostume",

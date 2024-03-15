@@ -50,10 +50,10 @@ export class OBTGameLauncher implements IGameLauncher{
 
 		abstract class Action<T>{
 			private hybernation: boolean = false
-			private signal: Signal<ActionEvent, null>
+			private signal: SingleSignal<ActionEvent, null>
 
 			constructor(){
-				this.signal = new Signal()
+				this.signal = new SingleSignal()
 			}
 
 			protected exitHybernation(){
@@ -300,57 +300,41 @@ export class OBTGameLauncher implements IGameLauncher{
 			}
 		}
 
+		type ObjectResponse = {
+			state: 'hybernation' | 'ready',
+			eventCalls: string[]
+		}
+
 		class Synchronizer{
-			private total: number
-			private hybernating: ObjectController[] = []
-			private responseCounter = 0
 			private controllers: ObjectController[]
+			private responses: ObjectResponse[]
 
 			constructor(...controllers: ObjectController[]){
-				this.total = controllers.length
 				this.controllers = controllers
+				this.responses = []
 
-				controllers.forEach(c => {
-					c.on('hybernation', () => {
-						this.hybernating.push(c)
-						
-						this.checkAndNext()
-					})
+			}
+			next(callings?: string[]){
+				this.controllers.forEach(async c => {
+					const response = await c.next(callings)
+					this.responses.push(response)
 
-					c.on('ready', () => {
-						this.responseCounter ++
-						
-						this.checkAndNext()
-					})
-					c.on('event-call', async  data => {
-						for (let i = 0; i < controllers.length; i++) {
-							const controller = controllers[i]
-							const result = await controller.call(data?.eventName!)
-							if(result){
-								this.hybernating.splice(this.hybernating.indexOf(controller), 1)
-								this.checkAndNext()
-							}
+					const isHybernating = this.responses.filter(r => r.state === 'hybernation')
+
+					if(this.responses.length === controllers.length){
+						const callingAcumulator = this.responses.reduce(
+							((p, c) => [...p, ...c.eventCalls]),new Array<string>()
+						)
+						const responsesBackup = [...this.responses]
+						this.responses = []
+						// Toto musí dýt podmíněné i tím, zda jsou volány nějaké eventy
+						if(isHybernating.length != responsesBackup.length || callingAcumulator.length !== 0){
+							console.log("STARTING NEW ROUND")
+							this.next(callingAcumulator)
 						}
-					})
+						
+					}
 				})
-
-				
-			}
-			private checkAndNext(){
-				if(this.responseCounter >= this.total - this.hybernating.length){
-					this.next()
-					this.responseCounter = 0
-				}
-				else{
-				}
-			}
-
-			run(){
-				this.controllers.forEach(c => c.run())
-			}
-
-			next(){
-				this.controllers.forEach(c => c.next())
 			}
 		}
 
@@ -395,11 +379,18 @@ export class OBTGameLauncher implements IGameLauncher{
 			object: PuzzleObject
 			type: ThreadType
 
-			signal: Signal<ActionEvent, null | {eventName: string}>
+			signal: SingleSignal<ActionEvent, null | {eventName: string}>
+
+			private hasBeenExecuted: boolean = false
+			resolvedName: string = "unresolved"
 
 			constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer){
-				this.signal = new Signal()
+				this.signal = new SingleSignal()
 				this.stepper = new Stepper()
+				if(!(typeof(name) == 'string')) name.execute(this.stepper, object).then(result => {
+					this.resolvedName = result
+				})
+				else this.resolvedName = name
 				this.name = name
 				this.body = body
 				this.object = object
@@ -421,14 +412,15 @@ export class OBTGameLauncher implements IGameLauncher{
 				this.signal.on(event, callback)
 			}
 
-			run(){
-				if(this.type === 'main') console.log("Running main thread")
-				this.body.execute(this.stepper, this.object)
-			}
 			next(){
+				if(!this.hasBeenExecuted){
+					this.hasBeenExecuted = true
+					this.body.execute(this.stepper, this.object)
+				}
 				this.stepper.next()
 			}
 		}
+
 		type ObjectControllerEvent = 'hybernation' | 'ready' | 'event-call'
 		class ObjectController{
 			mainThread: ThreadController
@@ -444,22 +436,8 @@ export class OBTGameLauncher implements IGameLauncher{
 				this.mainThread = new ThreadController('main', 'main', object, main)
 				this.eventThreads = eventHandlers.map(eh => new ThreadController('event', eh.eventName, object, eh.actionBody))
 				this.threadStack = new ThreadStack()
-
-				this.threadStack.on('empty', () => {
-					this.signal.emit('hybernation', null)
-				})
-				this.threadStack.on('added', () => {
-					this.threadStack.read()?.on('hybernation', () => {
-						this.threadStack.pop()
-					})
-					this.threadStack.read()?.on('event-call', data => {
-						this.signal.emit('event-call', data)
-					})
-					this.threadStack.read()?.on('ready', () => {
-						this.signal.emit('ready', null)
-					})
-				})
-
+				
+				this.run()
 			}
 
 			on(event: ObjectControllerEvent, callback: (eventName: null | {eventName: string}) => void){
@@ -468,29 +446,95 @@ export class OBTGameLauncher implements IGameLauncher{
 
 			run(){
 				this.threadStack.add(this.mainThread)
-				this.mainThread.run()
+				this.mainThread.next()
 				console.log("Running main thread of an object " + this.object.settings.name)
 			}
 			async call(eventName: string): Promise<boolean>{
 				return new Promise(async (resolve, reject) => {
-					const thread = await this.eventThreads.find(async t => {
+					function checkHasEvent(t: ThreadController){
+						let comparationPredicate = false
 						if(typeof(t.name) === 'string'){
-							return t.name === eventName
+							comparationPredicate = t.name === eventName
 						}
 						else{
 							const stepper = new Stepper()
-							return (await t.name.execute(stepper, t.object)) === eventName
+							const resolvedEventName = t.resolvedName
+							comparationPredicate = resolvedEventName === eventName
 						}
-					})
-					if(!thread) return resolve(false)
+						return comparationPredicate
+					}
+
+					const thread = this.eventThreads.find(t => checkHasEvent(t))
+					if(!thread) resolve(false)
 					// this.threadStack.clearEvents()
-					this.threadStack.add(thread)
-					resolve(true)
-					thread.run()
+					else{
+						
+						this.threadStack.add(thread)
+						// this.threadStack.read()?.run()
+						resolve(true)
+					}
 				})
 			}
-			next(){
-				this.threadStack.read()?.next()
+			next(callings?: string[]): Promise<ObjectResponse>{
+				return new Promise(async (resolve, reject) => {
+					if(callings){
+						
+						let callingTry = false
+						for (let i = 0; i < callings.length; i++) {
+							if(!callingTry){
+								callingTry = await this.call(callings[i])
+							}
+							
+						}
+					}
+
+					const prepareRound = () => {
+						const activeThread = this.threadStack.read()
+						if(activeThread){
+							if(activeThread.body.isHybernating()) resolve({
+								state: 'hybernation',
+								eventCalls: []
+							})
+							const eventCalls: string[] = []
+							activeThread.on('event-call', data => {
+								eventCalls.push(data?.eventName!)
+							})
+							activeThread.on('hybernation', () => {
+								this.threadStack.pop()
+								
+								// Pokud není prázdný zásobník, pokračuje se ve vykonávání
+								if(!this.threadStack.read()){
+									resolve({
+										state: 'hybernation',
+										eventCalls: eventCalls
+									})
+								}
+								else{
+									// resolve({
+									// 	state: 'ready',
+									// 	eventCalls:eventCalls
+									// })
+									prepareRound()
+								}
+							})
+							activeThread.on('ready', () => {
+								resolve({
+									state: 'ready',
+									eventCalls: eventCalls
+								})
+							})
+
+							activeThread.next()
+						}
+						else {
+							resolve({
+								state: 'hybernation',
+								eventCalls: []
+							})
+						}
+					}
+					prepareRound()
+				})
 			}
 		}
 
@@ -514,6 +558,6 @@ export class OBTGameLauncher implements IGameLauncher{
 		})
 		const synchronizer = new Synchronizer(...controllers)
 
-		synchronizer.run()
+		synchronizer.next()
 	}
 }
