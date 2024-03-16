@@ -11,6 +11,7 @@ import { BlocklyEditor } from "../../../editor/adapters/UI/Blockly/BlocklyEditor
 import { DomHelper, Signal } from "easybox";
 import { PuzzleObject } from "../../../shared/puzzle-lib/core/PuzzleTypes";
 import { object } from "blockly/core/utils";
+import { GameInstruction, Instruction } from "../GameInstructions/GameInstructions";
 
 export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
@@ -46,7 +47,11 @@ export class OBTGameLauncher implements IGameLauncher{
 		}
 
 		type ActionType = "instant" | "delayed"
-		type ActionEvent = 'hybernation' | 'ready' | 'event-call'
+		type ActionEvent = 'hybernation' | 'ready' | 'event-call' | 'register-instruction'
+		type ActionData = {
+			eventName?: string,
+			gameInstruction?: GameInstruction
+		}
 
 		abstract class Action<T>{
 			private hybernation: boolean = false
@@ -89,27 +94,31 @@ export class OBTGameLauncher implements IGameLauncher{
 		}
 		type ActionList<T> = Action<T>[]
 
+		type StepperEvent = 'step' | 'setted' | 'event-call' | 'register-instruction'
 		class Stepper{
-			// private signal: Signal<'step' | 'setted', null>
-			private listeners: Map<string, (eventName?: string) => void>
+			private signal: SingleSignal<StepperEvent, ActionData>
+
 			constructor(){
-				// this.signal = new Signal()
-				this.listeners = new Map()
+				this.signal = new SingleSignal()
 			}
-			on(event: 'step' | 'setted' | 'event-call', callback: (eventName?: string) => void){
-				this.listeners.set(event, callback)
+			on(event: StepperEvent, callback: (data: ActionData) => void){
+				this.signal.on(event, callback)
 			}
 			emit(eventName: string){
-				const callback = this.listeners.get('event-call')
-				if(callback) callback(eventName)
+				this.signal.emit('event-call', {
+					eventName: eventName
+				})
 			}
 			next(){
-				const callback = this.listeners.get('step')
-				if(callback) callback()
+				this.signal.emit('step', {})
 			}
 			set(){
-				const callback = this.listeners.get('setted')
-				if(callback) callback()
+				this.signal.emit('setted', {})
+			}
+			registerInstruction(instruction: GameInstruction){
+				this.signal.emit('register-instruction', {
+					gameInstruction: instruction
+				})
 			}
 		}
 
@@ -122,6 +131,7 @@ export class OBTGameLauncher implements IGameLauncher{
 				return new Promise((resolve, reject) => {
 					stepper.on('step', () => {
 						console.log(`${object.settings.name} is going!`)
+						stepper.registerInstruction(Instruction.goForward(object.id))
 						resolve()
 						this.hybernate()
 					})
@@ -193,11 +203,10 @@ export class OBTGameLauncher implements IGameLauncher{
 			}
 			execute(stepper: Stepper, object: PuzzleObject): Promise<void> {
 				return new Promise((resolve, reject) => {
-					stepper.on('step', () => {
-						setTimeout(() => {
-							resolve()
-							this.hybernate()
-						}, 200)
+					stepper.on('step', async () => {
+						stepper.registerInstruction(Instruction.wait(object.id, await this.delay.execute(stepper, object)))
+						resolve()
+						this.hybernate()
 					})
 					stepper.set()
 				})
@@ -302,19 +311,34 @@ export class OBTGameLauncher implements IGameLauncher{
 
 		type ObjectResponse = {
 			state: 'hybernation' | 'ready',
-			eventCalls: string[]
+			eventCalls: string[],
+			instructions: GameInstruction[]
 		}
 
+		type SynchronizerEvent = 'resolved'
+		type SynchronizerData = {
+			resolvedGame: GameInstruction[][]
+		}
 		class Synchronizer{
 			private controllers: ObjectController[]
 			private responses: ObjectResponse[]
+			private rounds: GameInstruction[][]
+			private signal: Signal<SynchronizerEvent, SynchronizerData>
 
 			constructor(...controllers: ObjectController[]){
 				this.controllers = controllers
 				this.responses = []
-
+				this.rounds = []
+				this.signal = new Signal()
 			}
 			next(callings?: string[]){
+				if(this.rounds.length > 100){
+					this.signal.emit('resolved', {
+						resolvedGame: this.getRounds()
+					})
+					console.log("Cycled!")
+					return
+				}
 				this.controllers.forEach(async c => {
 					const response = await c.next(callings)
 					this.responses.push(response)
@@ -327,14 +351,33 @@ export class OBTGameLauncher implements IGameLauncher{
 						)
 						const responsesBackup = [...this.responses]
 						this.responses = []
-						// Toto musí dýt podmíněné i tím, zda jsou volány nějaké eventy
+						// Toto musí být podmíněné i tím, zda jsou volány nějaké eventy
 						if(isHybernating.length != responsesBackup.length || callingAcumulator.length !== 0){
+							const round = responsesBackup.map(r => r.instructions).reduce((p, a) => {
+								return [...p, ...a]
+							},[])
+							this.rounds.push([...round])
 							console.log("STARTING NEW ROUND")
 							this.next(callingAcumulator)
 						}
-						
+						else if(isHybernating.length == responsesBackup.length && callingAcumulator.length === 0){
+							const round = responsesBackup.map(r => r.instructions).reduce((p, a) => {
+								return [...p, ...a]
+							},[])
+							this.rounds.push([...round])
+
+							this.signal.emit('resolved', {
+								resolvedGame: this.getRounds()
+							})
+						}
 					}
 				})
+			}
+			getRounds(){
+				return this.rounds
+			}
+			on(event: SynchronizerEvent, callback: (data: SynchronizerData) => void){
+				this.signal.on(event, callback)
 			}
 		}
 
@@ -372,6 +415,7 @@ export class OBTGameLauncher implements IGameLauncher{
 		}
 
 		type ThreadType = 'main' | 'event' | 'function'
+		
 		class ThreadController{
 			private stepper: Stepper
 			name: string|Action<string>
@@ -379,9 +423,11 @@ export class OBTGameLauncher implements IGameLauncher{
 			object: PuzzleObject
 			type: ThreadType
 
-			signal: SingleSignal<ActionEvent, null | {eventName: string}>
+			signal: SingleSignal<ActionEvent, ActionData>
 
-			private hasBeenExecuted: boolean = false
+			hasBeenExecuted: boolean = false
+			hasBeenCalledNext: boolean = false
+			wasCalledDelayedAction: boolean = false
 			resolvedName: string = "unresolved"
 
 			constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer){
@@ -397,27 +443,48 @@ export class OBTGameLauncher implements IGameLauncher{
 				this.type = type
 
 				body.on('hybernation', () => {
-					this.signal.emit('hybernation', null)
+					this.signal.emit('hybernation', {})
 				})
 
 				this.stepper.on('setted', () => {
-					this.signal.emit('ready', null)
+					this.wasCalledDelayedAction = true
+					this.signal.emit('ready', {})
 				})
-				this.stepper.on('event-call', eventName => {
-					this.signal.emit('event-call', {eventName: eventName!})
+				this.stepper.on('event-call', data => {
+					this.signal.emit('event-call',{
+						eventName: data.eventName
+					})
+				})
+				this.stepper.on('register-instruction', data => {
+					this.signal.emit('register-instruction', {
+						gameInstruction: data.gameInstruction
+					})
 				})
 			}
 
-			on(event: ActionEvent, callback: (data: null | {eventName: string}) => void){
+			on(event: ActionEvent, callback: (data: ActionData) => void){
 				this.signal.on(event, callback)
 			}
 
 			next(){
 				if(!this.hasBeenExecuted){
-					this.hasBeenExecuted = true
 					this.body.execute(this.stepper, this.object)
+					this.hasBeenExecuted = true
 				}
+				else{
+					this.stepper.next()
+				}
+				
+			}
+			firstNext(){
+				this.hasBeenCalledNext = true
 				this.stepper.next()
+			}
+			reload(){
+				this.hasBeenCalledNext = false
+				this.hasBeenExecuted = false
+				this.wasCalledDelayedAction = false
+				this.body.wakeup()
 			}
 		}
 
@@ -468,7 +535,7 @@ export class OBTGameLauncher implements IGameLauncher{
 					if(!thread) resolve(false)
 					// this.threadStack.clearEvents()
 					else{
-						
+						thread.reload()
 						this.threadStack.add(thread)
 						// this.threadStack.read()?.run()
 						resolve(true)
@@ -476,6 +543,7 @@ export class OBTGameLauncher implements IGameLauncher{
 				})
 			}
 			next(callings?: string[]): Promise<ObjectResponse>{
+				const instructions: GameInstruction[] = []
 				return new Promise(async (resolve, reject) => {
 					if(callings){
 						
@@ -488,52 +556,93 @@ export class OBTGameLauncher implements IGameLauncher{
 						}
 					}
 
-					const prepareRound = () => {
+					const prepareRound = (initEventCalls: string[]) => {
 						const activeThread = this.threadStack.read()
+
 						if(activeThread){
 							if(activeThread.body.isHybernating()) resolve({
 								state: 'hybernation',
-								eventCalls: []
+								eventCalls: initEventCalls,
+								instructions: instructions
 							})
-							const eventCalls: string[] = []
-							activeThread.on('event-call', data => {
-								eventCalls.push(data?.eventName!)
-							})
-							activeThread.on('hybernation', () => {
-								this.threadStack.pop()
-								
-								// Pokud není prázdný zásobník, pokračuje se ve vykonávání
-								if(!this.threadStack.read()){
-									resolve({
-										state: 'hybernation',
-										eventCalls: eventCalls
-									})
-								}
-								else{
-									// resolve({
-									// 	state: 'ready',
-									// 	eventCalls:eventCalls
-									// })
-									prepareRound()
-								}
-							})
-							activeThread.on('ready', () => {
-								resolve({
-									state: 'ready',
-									eventCalls: eventCalls
+							else{
+								const eventCalls: string[] = [...initEventCalls]
+							
+							
+								activeThread.on('event-call', data => {
+									eventCalls.push(data?.eventName!)
 								})
-							})
+								activeThread.on('register-instruction', data => {
+									instructions.push(data.gameInstruction!)
+								})
+								activeThread.on('hybernation', () => {
+									const wasCalledDelayedAction = this.threadStack.read()?.wasCalledDelayedAction
+									this.threadStack.pop()
+									
+									if(this.threadStack.read()){
+										if(!wasCalledDelayedAction){
+											prepareRound([...eventCalls])
+										}
+										else resolve({
+											state: 'ready',
+											eventCalls: eventCalls,
+											instructions: instructions
+										})
+									}
+									else{
+										resolve({
+											state: 'hybernation',
+											eventCalls: eventCalls,
+											instructions: instructions
+										})
+									}
+									
 
-							activeThread.next()
+									// Pokud není prázdný zásobník, pokračuje se ve vykonávání
+									// if(!this.threadStack.read()){
+									// 	resolve({
+									// 		state: 'hybernation',
+									// 		eventCalls: eventCalls,
+									// 		instructions: instructions
+									// 	})
+									// }
+									// else{
+									// 	// tady je chyba, protože když se kód vrátí z event-handleru do main vlákna, které je již připravené a spustí jej - provedou se dvě operace naráz
+									// 	console.log("preparing continue")
+									// 	// resolve({
+									// 	// 	state: 'ready',
+									// 	// 	eventCalls:eventCalls
+									// 	// })
+									// 	prepareRound()
+									// }
+								})
+								activeThread.on('ready', () => {
+									if(activeThread.hasBeenCalledNext){
+										resolve({
+											state: 'ready',
+											eventCalls: eventCalls,
+											instructions: instructions
+										})
+									}
+									else{
+										activeThread.firstNext()
+									}
+								})
+
+								activeThread.next()
+							}
+
+							
 						}
 						else {
 							resolve({
 								state: 'hybernation',
-								eventCalls: []
+								eventCalls: initEventCalls,
+								instructions: instructions
 							})
 						}
 					}
-					prepareRound()
+					prepareRound([])
 				})
 			}
 		}
@@ -558,6 +667,11 @@ export class OBTGameLauncher implements IGameLauncher{
 		})
 		const synchronizer = new Synchronizer(...controllers)
 
+		synchronizer.on('resolved', resolvedGame => {
+			this.signal.emit('done', resolvedGame.resolvedGame)
+		})
+
 		synchronizer.next()
+		
 	}
 }

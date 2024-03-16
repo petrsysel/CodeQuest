@@ -2,6 +2,7 @@ import Konva from "konva"
 import { EventBehaviour } from "../../../../shared/EventBehaviour"
 import { BoardUIData, BoardUIEvents, IBoardUI } from "../../../ports/UI/IBoardUI"
 import { PuzzleObject, PuzzleSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { GameInstruction } from "../../../../game/adapters/GameInstructions/GameInstructions"
 
 export type KonvaData = {
 	stage: any,
@@ -155,7 +156,7 @@ export class KonvaBoardUI implements IBoardUI{
 		await this.render(puzzleSettings, objects)
 		return new Promise<unknown>((resolve, reject) => {
 			let finnished = 0
-			
+			if(instructions.length === 0) resolve("konec")
 			const animations = instructions.map(i => {
 				return this._prepareAnimation(i, () => {
 					finnished++

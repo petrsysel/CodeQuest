@@ -1,3 +1,4 @@
+import { GameInstruction } from "../../../game/adapters/GameInstructions/GameInstructions"
 import { PuzzleObject, PuzzleObjectId, PuzzleSettings } from "../../../shared/puzzle-lib/core/PuzzleTypes"
 
 export type BoardUIEvents = "object-selected"|"object-moved"

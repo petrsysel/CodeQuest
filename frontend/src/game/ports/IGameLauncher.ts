@@ -1,4 +1,5 @@
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { GameInstruction } from "../adapters/GameInstructions/GameInstructions"
 
 export type LauncherEvent = "done" | "fail"
 export type LaucherData = GameInstruction[][]

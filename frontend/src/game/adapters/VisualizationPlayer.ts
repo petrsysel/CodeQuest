@@ -2,6 +2,7 @@ import { IBoardUI } from "../../editor/ports/UI/IBoardUI"
 import { EventBehaviour } from "../../shared/EventBehaviour"
 import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { IVisualizationPlayer, VisualizerData, VisualizerEvent } from "../ports/IVisualizationPlayer"
 import { GameInstruction, Instruction } from "./GameInstructions/GameInstructions"
 
 export class VisualizationPlayer implements IVisualizationPlayer{
@@ -30,7 +31,6 @@ export class VisualizationPlayer implements IVisualizationPlayer{
 			})
 			await Instruction.withNotification(round, this._notificationUI)
 			await this._boardUI.animate(puzzle.getSettings(),puzzle.getObjectList(),round)
-
 			// Provést akce které potřebují čas
 			Instruction.takeTime(round).forEach(i =>{
 				Instruction.performOnPuzzle(i, puzzle)

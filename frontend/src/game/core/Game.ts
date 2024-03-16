@@ -5,6 +5,7 @@ import { IObjectPanelUI } from "../../editor/ports/UI/IObjectPanelUI"
 import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
 import { IGameLauncher } from "../ports/IGameLauncher"
+import { IVisualizationPlayer } from "../ports/IVisualizationPlayer"
 import { IVisualizerControlPanel } from "../ports/IVisualizerControlPanelUI"
 
 export class Game{
@@ -71,9 +72,11 @@ export class Game{
 
 		gameLauncher.on("done", async data => {
 			controlPanelUI.setState('stoped')
-			// let workPuzzle = this._puzzle.clone()
-			// visualizationPlayer.play(data, workPuzzle)
-			//visualizationPlayer.stop()
+			console.log("play visualization")
+			console.log(data)
+			let workPuzzle = this._puzzle.clone()
+			visualizationPlayer.play(data, workPuzzle)
+			// visualizationPlayer.stop()
 		})
 		
 
