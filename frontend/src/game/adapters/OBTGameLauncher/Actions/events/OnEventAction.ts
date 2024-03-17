@@ -1,3 +1,4 @@
+import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
@@ -17,10 +18,10 @@ export class OnEventAction extends Action<void>{
 		this.body = new ActionContainer(...body)
 	}
 
-	async execute(stepper: Stepper, object: PuzzleObject): Promise<void> {
-		const eventName = await this.eventName.execute(stepper, object)
+	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
+		const eventName = await this.eventName.execute(stepper, object, puzzle)
 		return new Promise(async (resolve, reject) => {
-			await this.body.execute(stepper, object)
+			await this.body.execute(stepper, object, puzzle)
 			resolve()
 			this.hybernate()
 		})

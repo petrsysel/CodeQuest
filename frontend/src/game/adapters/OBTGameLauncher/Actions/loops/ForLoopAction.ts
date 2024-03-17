@@ -1,3 +1,4 @@
+import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
 import { Stepper } from "../../Stepper"
 import { Action, ActionList } from "../Action"
@@ -11,12 +12,12 @@ export class ForAction extends Action<void>{
 		this.predicate = predicate
 		this.body = body
 	}
-	async execute(stepper: Stepper, object: PuzzleObject): Promise<void> {
-		let predicateValue = await this.predicate.execute(stepper, object)
+	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
+		let predicateValue = await this.predicate.execute(stepper, object, puzzle)
 		if(typeof predicateValue === 'boolean'){
-			while(predicateValue = await this.predicate.execute(stepper, object)){
+			while(predicateValue = await this.predicate.execute(stepper, object, puzzle)){
 				// await Promise.all(this.body.map(a => a.execute()))
-				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object)), Promise.resolve())
+				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
 				this.hybernate()
 			}
 			
@@ -24,7 +25,7 @@ export class ForAction extends Action<void>{
 		else{
 			for (let i = 0; i < predicateValue; i++) {
 				// await Promise.all(this.body.map(a => a.execute()))
-				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object)), Promise.resolve())
+				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
 				this.hybernate()
 			}
 		}

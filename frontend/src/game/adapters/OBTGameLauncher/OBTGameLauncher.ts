@@ -51,6 +51,8 @@ export class OBTGameLauncher implements IGameLauncher{
 			WaitAction
 		]
 
+		const operatingPuzzle = puzzle.clone()
+
 		const controllers = puzzle.getObjectList().map(o => {
 			let save = JSON.parse(o.settings.code)
       		Blockly.serialization.workspaces.load(save, this.workspace)
@@ -65,7 +67,7 @@ export class OBTGameLauncher implements IGameLauncher{
 				...mainActions
 			)
 
-			return new ObjectController(o, main, eventHandlers)
+			return new ObjectController(o, main, eventHandlers, operatingPuzzle)
 		})
 		const synchronizer = new Synchronizer(...controllers)
 

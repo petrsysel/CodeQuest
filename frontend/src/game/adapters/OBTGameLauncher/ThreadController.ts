@@ -1,3 +1,4 @@
+import { Puzzle } from "../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../shared/puzzle-lib/core/PuzzleTypes"
 import { Action, ActionData, ActionEvent } from "./Actions/Action"
 import { ActionContainer } from "./Actions/ActionContainer"
@@ -12,6 +13,7 @@ export class ThreadController{
 	body: ActionContainer
 	object: PuzzleObject
 	type: ThreadType
+	private puzzle: Puzzle
 
 	signal: SingleSignal<ActionEvent, ActionData>
 
@@ -20,10 +22,11 @@ export class ThreadController{
 	wasCalledDelayedAction: boolean = false
 	resolvedName: string = "unresolved"
 
-	constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer){
+	constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer, puzzle: Puzzle){
+		this.puzzle = puzzle
 		this.signal = new SingleSignal()
 		this.stepper = new Stepper()
-		if(!(typeof(name) == 'string')) name.execute(this.stepper, object).then(result => {
+		if(!(typeof(name) == 'string')) name.execute(this.stepper, object, puzzle).then(result => {
 			this.resolvedName = result
 		})
 		else this.resolvedName = name
@@ -58,7 +61,7 @@ export class ThreadController{
 
 	next(){
 		if(!this.hasBeenExecuted){
-			this.body.execute(this.stepper, this.object)
+			this.body.execute(this.stepper, this.object, this.puzzle)
 			this.hasBeenExecuted = true
 		}
 		else{
