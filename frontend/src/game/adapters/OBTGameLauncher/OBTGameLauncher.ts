@@ -23,6 +23,10 @@ import { NumberAction } from "./Actions/math/NumberAction";
 import { TextAction } from "./Actions/text/TextAction";
 import { EmitAction } from "./Actions/events/EmitAction";
 import { WaitAction } from "./Actions/events/WaitAction";
+import { JumpAction } from "./Actions/movement/JumpActions";
+import { TurnAction } from "./Actions/movement/TurnAction";
+import { SetDirectionAction } from "./Actions/movement/SetDirectionAction";
+import { DirectionPickAction } from "./Actions/movement/DirectionPickAction";
 
 export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
@@ -43,6 +47,10 @@ export class OBTGameLauncher implements IGameLauncher{
 		// Pro sestavení stromu musejí být importovány
 		const enabledActions = [
 			GoAction,
+			JumpAction,
+			TurnAction,
+			SetDirectionAction,
+			DirectionPickAction,
 			ForAction,
 			NumberAction,
 			TextAction,
@@ -72,6 +80,7 @@ export class OBTGameLauncher implements IGameLauncher{
 		const synchronizer = new Synchronizer(...controllers)
 
 		synchronizer.on('resolved', resolvedGame => {
+			console.log(operatingPuzzle)
 			this.signal.emit('done', resolvedGame.resolvedGame)
 		})
 

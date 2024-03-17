@@ -14,6 +14,25 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 			var code = `new GoAction(),`;
 			return code
 		}
+		javascriptGenerator.forBlock['jump'] = function(block: any, generator: any) {
+			var code = `new JumpAction(),`;
+			return code
+		}
+		javascriptGenerator.forBlock['turn'] = function(block: any, generator: any) {
+			const side = block.getFieldValue('turn_side')
+			var code = `new TurnAction('${side}'),`;
+			return code
+		}
+		javascriptGenerator.forBlock['set_direction'] = function(block: any, generator: any) {
+			const direction = generator.valueToCode(block, 'direction', javascript.Order.ATOMIC);
+			var code = `new SetDirectionAction(${direction}),`;
+			return code
+		}
+		javascriptGenerator.forBlock['direction_pick'] = function(block: any, generator: any) {
+			const side = block.getFieldValue('direction');
+			var code = `new DirectionPickAction('${side}')`;
+			return [code, javascript.Order.ATOMIC]
+		}
 
 		
 		javascriptGenerator.forBlock['wait'] = function(block: any, generator: any) {

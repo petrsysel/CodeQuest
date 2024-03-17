@@ -177,7 +177,6 @@ export class Puzzle implements IPuzzle{
     private _commandSetDirection(objectId: PuzzleObjectId, direction: string){
         let object = this.getObject(objectId)
         if(!object) return
-        console.log(`DIRECTION: ${direction}`)
         if(direction != 'right' && direction != 'left' && direction != 'up' && direction != 'down') return
 
         object.settings.direction = direction

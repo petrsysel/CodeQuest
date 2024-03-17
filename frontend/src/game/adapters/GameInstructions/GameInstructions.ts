@@ -222,6 +222,15 @@ export class Instruction {
 	static takeTime(instructions: GameInstruction[]){
 		return instructions.filter(i => !this.instantInstructions.includes(i.name))
 	}
+	static byObject(round: GameInstruction[]){
+		const ids = [...new Set(round.map(i => i.objectId))]
+		return ids.map(id => {
+			return {
+				id: id,
+				instructions: round.filter(a => a.objectId === id)
+			}
+		})
+	}
 
 	static async withNotification(instructions: GameInstruction[], notificationUI: INotificationUI){
 		for(const i of instructions){

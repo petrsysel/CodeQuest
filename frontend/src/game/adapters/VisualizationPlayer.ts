@@ -22,19 +22,21 @@ export class VisualizationPlayer implements IVisualizationPlayer{
 		this._isPlaying = true
 		for(const round of resolvedGame){
 			//Provést okamžité akce
-			if(!this._isPlaying) {
-				this._emit("stoped", null)
-				break
-			}
-			Instruction.instant(round).forEach(i =>{
-				Instruction.performOnPuzzle(i, puzzle)
-			})
-			await Instruction.withNotification(round, this._notificationUI)
-			await this._boardUI.animate(puzzle.getSettings(),puzzle.getObjectList(),round)
+			// if(!this._isPlaying) {
+			// 	this._emit("stoped", null)
+			// 	break
+			// }
+			// Instruction.instant(round).forEach(i =>{
+			// 	Instruction.performOnPuzzle(i, puzzle)
+			// })
+			// await Instruction.withNotification(round, this._notificationUI)
+			await Promise.all(
+				Instruction.byObject(round).map(oRound => this._boardUI.animate(puzzle.getSettings(),puzzle.getObjectList(),oRound.instructions, puzzle))
+			)
 			// Provést akce které potřebují čas
-			Instruction.takeTime(round).forEach(i =>{
-				Instruction.performOnPuzzle(i, puzzle)
-			})
+			// Instruction.takeTime(round).forEach(i =>{
+			// 	Instruction.performOnPuzzle(i, puzzle)
+			// })
 		}
 	}
 

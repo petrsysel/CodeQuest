@@ -2,7 +2,8 @@ import Konva from "konva"
 import { EventBehaviour } from "../../../../shared/EventBehaviour"
 import { BoardUIData, BoardUIEvents, IBoardUI } from "../../../ports/UI/IBoardUI"
 import { PuzzleObject, PuzzleSettings } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
-import { GameInstruction } from "../../../../game/adapters/GameInstructions/GameInstructions"
+import { GameInstruction, Instruction } from "../../../../game/adapters/GameInstructions/GameInstructions"
+import { Puzzle } from "../../../../shared/puzzle-lib/core/Puzzle"
 
 export type KonvaData = {
 	stage: any,
@@ -152,23 +153,36 @@ export class KonvaBoardUI implements IBoardUI{
 		})
 	}
 
-	async animate(puzzleSettings: PuzzleSettings, objects: PuzzleObject[], instructions: GameInstruction[]){
+	async animate(puzzleSettings: PuzzleSettings, objects: PuzzleObject[], instructions: GameInstruction[], puzzle: Puzzle){
 		await this.render(puzzleSettings, objects)
 		return new Promise<unknown>((resolve, reject) => {
-			let finnished = 0
-			if(instructions.length === 0) resolve("konec")
-			const animations = instructions.map(i => {
-				return this._prepareAnimation(i, () => {
-					finnished++
-					test()
+			
+			const performInstruction = async (instructionIndex: number) => {
+				if(instructions.length <= instructionIndex) {
+					resolve(null)	
+					return
+				}
+				const i = instructions[instructionIndex]
+				
+				Instruction.performOnPuzzle(i, puzzle)
+				const preparedAnimation = this._prepareAnimation(i, async () => {
+					// await this.render(puzzleSettings, objects)
+					performInstruction(instructionIndex + 1)
+					
 				})
-			})
-			const valid = animations.filter(a => a != null)
-			valid.forEach(t => t?.play())
-
-			const test = () => {
-				if(finnished == valid.length) resolve("konec")
+				if(preparedAnimation){
+					preparedAnimation.play()
+					
+				} 
+				else{
+					console.log("no animation. So static render")
+					console.log(instructions)
+					// await this.render(puzzleSettings, objects) 
+					performInstruction(instructionIndex+1)
+				}
 			}
+
+			performInstruction(0)
 		})
 	}
 
@@ -194,6 +208,17 @@ export class KonvaBoardUI implements IBoardUI{
 			})
 			return tween
 		}
+		else if(instruction.name == "setdirection"){
+			const direction = (instruction as {direction:"right"|"left"|"up"|"down"}).direction
+			const tween = new Konva.Tween({
+				node: obj.konvaObject,
+				duration: 0,
+				easing: Konva.Easings.EaseInOut,
+				rotation: this.directionToAngle(direction),
+				onFinish: onFinish
+			})
+			return tween
+		}
 		else if(instruction.name == "wait"){
 			const roundAmount = instruction.roundAmount as number
 			
@@ -206,7 +231,7 @@ export class KonvaBoardUI implements IBoardUI{
 			}
 			return tweenMock
 		}
-		
+		else return null
 	}
 
 	private _createMoveAnimation(object: {konvaObject: any, puzzleObject: PuzzleObject}, onFinish: () => void, squareAmount: number){
@@ -273,6 +298,14 @@ export class KonvaBoardUI implements IBoardUI{
 		if(object.settings.direction == "up") angle = 180
 		else if(object.settings.direction == "right") angle = -90
 		else if(object.settings.direction == "down") angle = 0
+		else angle = 90
+		return angle
+	}
+	private directionToAngle(direction: "up"|"right"|"down"|"left"){
+		let angle = 0
+		if(direction == "up") angle = 180
+		else if(direction == "right") angle = -90
+		else if(direction == "down") angle = 0
 		else angle = 90
 		return angle
 	}
