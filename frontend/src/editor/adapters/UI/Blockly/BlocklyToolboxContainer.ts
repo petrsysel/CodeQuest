@@ -18,9 +18,7 @@ export class BlocklyToolboxContainer{
     <block type="direction" deletable="true" movable="true" editable="true"></block>
   </category>
   <category name="Vzhled" colour="#5b80a5">
-    <block type="say" deletable="true" movable="true" editable="true"></block>
     <block type="change_costume" deletable="true" movable="true" editable="true"></block>
-    <block type="change_background" deletable="true" movable="true" editable="true"></block>
     <block type="show" deletable="true" movable="true" editable="true"></block>
     <block type="hide" deletable="true" movable="true" editable="true"></block>
     <block type="set_layer" deletable="true" movable="true" editable="true"></block>
@@ -36,9 +34,7 @@ export class BlocklyToolboxContainer{
     <block type="controls_whileUntil">
       <field name="MODE">WHILE</field>
     </block>
-    <block type="controls_flow_statements">
-      <field name="FLOW">BREAK</field>
-    </block>
+    
   </category>
   <category name="Logika" colour="#5b80a5">
     <block type="controls_if"></block>
@@ -52,8 +48,6 @@ export class BlocklyToolboxContainer{
     <block type="logic_boolean">
       <field name="BOOL">TRUE</field>
     </block>
-    <block type="logic_null"></block>
-    <block type="logic_ternary"></block>
   </category>
   <category name="Matematika" colour="#745ba5">
     <block type="math_number">
@@ -72,25 +66,7 @@ export class BlocklyToolboxContainer{
         </shadow>
       </value>
     </block>
-    <block type="math_single">
-      <field name="OP">ROOT</field>
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">9</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_trig">
-      <field name="OP">SIN</field>
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">45</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_constant">
-      <field name="CONSTANT">E</field>
-    </block>
+    
     <block type="math_number_property">
       <mutation divisor_input="false"></mutation>
       <field name="PROPERTY">EVEN</field>
@@ -107,10 +83,6 @@ export class BlocklyToolboxContainer{
           <field name="NUM">3.1</field>
         </shadow>
       </value>
-    </block>
-    <block type="math_on_list">
-      <mutation op="SUM"></mutation>
-      <field name="OP">SUM</field>
     </block>
     <block type="math_modulo">
       <value name="DIVIDEND">
@@ -153,7 +125,6 @@ export class BlocklyToolboxContainer{
         </shadow>
       </value>
     </block>
-    <block type="math_random_float"></block>
   </category>
   <category name="Text" colour="#5ba58c">
     <block type="text">
@@ -176,22 +147,6 @@ export class BlocklyToolboxContainer{
         </shadow>
       </value>
     </block>
-    <block type="text_changeCase">
-      <field name="CASE">UPPERCASE</field>
-      <value name="TEXT">
-        <shadow type="text">
-          <field name="TEXT">abc</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="text_trim">
-      <field name="MODE">BOTH</field>
-      <value name="TEXT">
-        <shadow type="text">
-          <field name="TEXT">abc</field>
-        </shadow>
-      </value>
-    </block>
   </category>
   <category name="Události" colour="#a5745b">
     
@@ -208,41 +163,8 @@ export class BlocklyToolboxContainer{
     <block type="in_front_of_me" deletable="true" movable="true" editable="true"></block>
   </category>
   <category name="Proměnné" colour="#a55b80" custom="VARIABLE"></category>
-  <category name="Seznamy" colour="#995ba5">
-    <block type="lists_create_with">
-      <mutation items="0"></mutation>
-    </block>
-    <block type="lists_create_with">
-      <mutation items="3"></mutation>
-    </block>
-    <block type="lists_repeat">
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">5</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="lists_length"></block>
-    <block type="lists_isEmpty"></block>
-    <block type="lists_indexOf">
-      <field name="END">FIRST</field>
-      <value name="VALUE">
-        <block type="variables_get">
-          <field name="VAR" id="yr;#3s-wObwR%15af:;a">list</field>
-        </block>
-      </value>
-    </block>
-    <block type="lists_getIndex">
-      <field name="MODE">GET</field>
-      <field name="WHERE">FROM_START</field>
-      <value name="VALUE">
-      <block type="variables_get">
-      <field name="VAR" id="]DpgMbr,,VjAMM]E=MQ!">list</field>
-      </block>
-      </value>
-      </block>
-  </category>
-  <category name="Funkce" colour="#995ba5" custom="PROCEDURE"></category>
+  
+  <category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>
 	`
 	static getToolbox(){
 		let toolbox = document.getElementById('blockly-toolbox') as HTMLElement

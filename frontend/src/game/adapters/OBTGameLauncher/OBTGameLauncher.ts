@@ -27,6 +27,33 @@ import { JumpAction } from "./Actions/movement/JumpActions";
 import { TurnAction } from "./Actions/movement/TurnAction";
 import { SetDirectionAction } from "./Actions/movement/SetDirectionAction";
 import { DirectionPickAction } from "./Actions/movement/DirectionPickAction";
+import { JumpToAction } from "./Actions/movement/JumpToAction";
+import { GetXAction } from "./Actions/movement/GetXAction";
+import { GetYAction } from "./Actions/movement/GetYAction";
+import { GetDirectionAction } from "./Actions/movement/GetDirectionAction";
+import { ChangeCostumeAction } from "./Actions/looks/ChangeCostumeAction";
+import { ShowAction } from "./Actions/looks/ShowAction";
+import { HideAction } from "./Actions/looks/HideAction";
+import { SetLayerAction } from "./Actions/looks/SetLayerAction";
+import { BooleanAction } from "./Actions/logic/BooleanAction";
+import { IfAction } from "./Actions/logic/IfAction";
+import { LogicCompareAction } from "./Actions/logic/LogicCompareAction";
+import { LogicOperationAction } from "./Actions/logic/LogicOperationAction";
+import { LogicNegateAction } from "./Actions/logic/LogicNegateAction";
+import { MathArithmeticAction } from "./Actions/math/MathArithmeticAction";
+import { MathPropertyAction } from "./Actions/math/MathPropertyAction";
+import { MathRoundAction } from "./Actions/math/MathRoundAction";
+import { MathModuloAction } from "./Actions/math/MathModuloAction";
+import { MathConstrainAction } from "./Actions/math/MathConstrainAction";
+import { MathRandomIntAction } from "./Actions/math/MathRandomIntAction";
+import { TextJoinAction } from "./Actions/text/TextJoinAction";
+import { TextLengthAction } from "./Actions/text/TextLengthAction";
+import { TextIsEmptyAction } from "./Actions/text/TextIsEmptyAction";
+import { DistanceToAction } from "./Actions/sensing/DistanceToAction";
+import { IsTouchingAction } from "./Actions/sensing/IsTouchingAction";
+import { IsInFrontOfMeAction } from "./Actions/sensing/IsInFrontOfMeAction";
+import { WinAction } from "./Actions/events/WinAction";
+import { GameOverAction } from "./Actions/events/GameOverAction";
 
 export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
@@ -43,7 +70,7 @@ export class OBTGameLauncher implements IGameLauncher{
 		this.signal.on(event, callback)
 	}
 	async play(puzzle: Puzzle) {
-		
+		console.log("start play")
 		// Pro sestavení stromu musejí být importovány
 		const enabledActions = [
 			GoAction,
@@ -51,12 +78,39 @@ export class OBTGameLauncher implements IGameLauncher{
 			TurnAction,
 			SetDirectionAction,
 			DirectionPickAction,
+			JumpToAction,
+			GetXAction,
+			GetYAction,
+			GetDirectionAction,
+			ChangeCostumeAction,
+			ShowAction,
+			HideAction,
+			SetLayerAction,
 			ForAction,
+			BooleanAction,
+			LogicCompareAction,
+			LogicOperationAction,
+			LogicNegateAction,
+			MathArithmeticAction,
+			MathPropertyAction,
+			MathRoundAction,
+			MathModuloAction,
+			MathConstrainAction,
+			MathRandomIntAction,
+			IfAction,
 			NumberAction,
 			TextAction,
+			TextJoinAction,
+			TextLengthAction,
+			TextIsEmptyAction,
 			EmitAction,
 			OnEventAction,
-			WaitAction
+			WinAction,
+			GameOverAction,
+			WaitAction,
+			DistanceToAction,
+			IsTouchingAction,
+			IsInFrontOfMeAction
 		]
 
 		const operatingPuzzle = puzzle.clone()

@@ -14,16 +14,26 @@ export class ForAction extends Action<void>{
 	}
 	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
 		let predicateValue = await this.predicate.execute(stepper, object, puzzle)
+		console.log("predicate value")
+		console.log(predicateValue)
+		console.log(typeof predicateValue)
 		if(typeof predicateValue === 'boolean'){
+			
+			predicateValue = await this.predicate.execute(stepper, object, puzzle)
+			
+			console.log('init predicate')
+			console.log(predicateValue)
 			while(predicateValue = await this.predicate.execute(stepper, object, puzzle)){
 				// await Promise.all(this.body.map(a => a.execute()))
+				console.log(predicateValue)
+				console.log("in while body")
 				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
-				this.hybernate()
+				
 			}
-			
+			this.hybernate()
 		}
 		else{
-			for (let i = 0; i < predicateValue; i++) {
+			for (let i = 0; i < (predicateValue as number); i++) {
 				// await Promise.all(this.body.map(a => a.execute()))
 				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
 				this.hybernate()

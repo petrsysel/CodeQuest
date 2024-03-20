@@ -33,6 +33,7 @@ export class VisualizationPlayer implements IVisualizationPlayer{
 			await Promise.all(
 				Instruction.byObject(round).map(oRound => this._boardUI.animate(puzzle.getSettings(),puzzle.getObjectList(),oRound.instructions, puzzle))
 			)
+			this._boardUI.render(puzzle.getSettings(), puzzle.getObjectList())
 			// Provést akce které potřebují čas
 			// Instruction.takeTime(round).forEach(i =>{
 			// 	Instruction.performOnPuzzle(i, puzzle)

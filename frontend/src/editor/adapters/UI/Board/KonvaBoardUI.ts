@@ -219,6 +219,39 @@ export class KonvaBoardUI implements IBoardUI{
 			})
 			return tween
 		}
+		else if(instruction.name == "jumpto"){
+			const position = (instruction as {x:number, y:number})
+			const coordinates = this.positionToCoordinates(position.x, position.y)
+			const tween = new Konva.Tween({
+				node: obj.konvaObject,
+				duration: 0,
+				x: coordinates.x,
+				y: coordinates.y,
+				easing: Konva.Easings.EaseInOut,
+				onFinish: onFinish
+			})
+			return tween
+		}
+		else if(instruction.name == "show"){
+			const tween = new Konva.Tween({
+				node: obj.konvaObject,
+				duration: 0,
+				visible: true,
+				easing: Konva.Easings.EaseInOut,
+				onFinish: onFinish
+			})
+			return tween
+		}
+		else if(instruction.name == "hide"){
+			const tween = new Konva.Tween({
+				node: obj.konvaObject,
+				duration: 0,
+				visible: false,
+				easing: Konva.Easings.EaseInOut,
+				onFinish: onFinish
+			})
+			return tween
+		}
 		else if(instruction.name == "wait"){
 			const roundAmount = instruction.roundAmount as number
 			
@@ -265,6 +298,17 @@ export class KonvaBoardUI implements IBoardUI{
 				puzzleObject: puzzleObject,
 				konvaObject: konvaObject
 			}]
+		}
+	}
+
+	private positionToCoordinates(x: number, y: number){
+		const startX = this._konvaData.startX
+		const startY = this._konvaData.startY
+		const squareWidth = this._konvaData.squareWidth
+		const space = this._konvaData.spaceWidth
+		return {
+			x: startX + (x * (squareWidth + space)),
+			y: startY + (y * (squareWidth + space))
 		}
 	}
 

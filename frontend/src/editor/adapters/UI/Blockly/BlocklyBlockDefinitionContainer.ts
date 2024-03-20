@@ -346,7 +346,7 @@ export class BlocklyBlockDefinitionContainer{
 	  },
 	  {
 		"type": "in_front_of_me",
-		"message0": "je přede mnout %1",
+		"message0": "je přede mnou %1",
 		"args0": [
 		  {
 			"type": "input_value",
