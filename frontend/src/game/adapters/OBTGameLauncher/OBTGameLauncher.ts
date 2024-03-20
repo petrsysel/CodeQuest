@@ -115,35 +115,64 @@ export class OBTGameLauncher implements IGameLauncher{
 
 		const operatingPuzzle = puzzle.clone()
 
-		const controllers = puzzle.getObjectList().map(o => {
-			let save = {}
-			try{
-				save = JSON.parse(o.settings.code)
-			}
-			catch(e){
+		const prepareControllers = () => {
+			return puzzle.getObjectList().map(o => {
+				let save = {}
+				try{
+					save = JSON.parse(o.settings.code)
+				}
+				catch(e){
+					
+				}
+				  Blockly.serialization.workspaces.load(save, this.workspace)
+				let tree: Action<any>[] = []
+				const code: string = javascriptGenerator.workspaceToCode(this.workspace)
+				const finalCode = `tree = [${code.replace(new RegExp(',$'), '')}]`
+				eval(finalCode)
+	
+				const eventHandlers = tree.filter(a => a instanceof OnEventAction) as OnEventAction[]
+				const mainActions = tree.filter(a => !(a instanceof OnEventAction))
+				const main = new ActionContainer(
+					...mainActions
+				)
+	
+				return new ObjectController(o, main, eventHandlers, operatingPuzzle)
+			})
+		}
+
+		window.onunhandledrejection = (e) => {
+			this.signal.emit('fail', {
+				resolvedGame: [],
+				error: "V kódu je asi nějaká chyba."
+			})
+		}
+
+		try{
+			const controllers = prepareControllers()
+			const synchronizer = new Synchronizer(...controllers)
+
+			synchronizer.on('resolved', resolvedGame => {
+				if(resolvedGame.gameEnd === "syntaxerror"){
+					this.signal.emit('fail', {
+						resolvedGame: resolvedGame.resolvedGame,
+						error: resolvedGame.message
+					})
+				}
+				else{
+					this.signal.emit('done', {
+						resolvedGame: resolvedGame.resolvedGame
+					})
+				}
 				
-			}
-      		Blockly.serialization.workspaces.load(save, this.workspace)
-			let tree: Action<any>[] = []
-			const code: string = javascriptGenerator.workspaceToCode(this.workspace)
-			const finalCode = `tree = [${code.replace(new RegExp(',$'), '')}]`
-			eval(finalCode)
+			})
 
-			const eventHandlers = tree.filter(a => a instanceof OnEventAction) as OnEventAction[]
-			const mainActions = tree.filter(a => !(a instanceof OnEventAction))
-			const main = new ActionContainer(
-				...mainActions
-			)
-
-			return new ObjectController(o, main, eventHandlers, operatingPuzzle)
-		})
-		const synchronizer = new Synchronizer(...controllers)
-
-		synchronizer.on('resolved', resolvedGame => {
-			console.log(operatingPuzzle)
-			this.signal.emit('done', resolvedGame.resolvedGame)
-		})
-
-		synchronizer.next()
+			synchronizer.next()
+		}
+		catch(e) {
+			this.signal.emit('fail', {
+				resolvedGame: [],
+				error: "V kódu je asi nějaká chyba."
+			})
+		}
 	}
 }

@@ -22,6 +22,8 @@ export class Game{
 		notificationUI: INotificationUI,
 		visualizationPlayer: IVisualizationPlayer
 		){
+
+			
 		
 		this._puzzle = new Puzzle()
 		const puzzleFromStorage = localStorage.getItem("cq-puzzle")
@@ -77,8 +79,16 @@ export class Game{
 			console.log("play visualization")
 			console.log(data)
 			let workPuzzle = this._puzzle.clone()
-			visualizationPlayer.play(data, workPuzzle)
+			visualizationPlayer.play(data.resolvedGame, workPuzzle)
 			// visualizationPlayer.stop()
+		})
+		gameLauncher.on('fail', data => {
+			setTimeout(() => {
+				controlPanelUI.setState('stoped')
+				notificationUI.notify(data.error!, {
+					
+				})
+			}, 20)
 		})
 		
 

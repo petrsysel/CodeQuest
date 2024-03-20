@@ -1,5 +1,5 @@
 import { Signal } from "easybox"
-import { GameInstruction } from "../GameInstructions/GameInstructions"
+import { GameInstruction, Instruction } from "../GameInstructions/GameInstructions"
 import { ObjectController, ObjectResponse } from "./ObjectController"
 import { SingleSignal } from "./SingleSignal"
 
@@ -42,7 +42,25 @@ export class Synchronizer{
 			this.running = false
 		})
 		this.controllers.forEach(async c => {
-			const response = await c.next(callings)
+			let response: ObjectResponse
+			try{
+				response = await c.next(callings)
+			}
+			catch(e){
+				response = {
+					eventCalls:[],
+					instructions:[],
+					state: "hybernation",
+				}
+
+				this.internalSignal.emit('end-request', null)
+				this.signal.emit('resolved', {
+					gameEnd: "syntaxerror",
+					message: "V kódu je asi nějaká chyba.",
+					resolvedGame: this.getRounds()
+				})
+			}
+			
 			this.responses.push(response)
 			
 			const isHybernating = this.responses.filter(r => r.state === 'hybernation')
@@ -68,12 +86,14 @@ export class Synchronizer{
 						return [...p, ...a]
 					},[])
 					this.rounds.push([...round])
-					this.checkEndGame(responsesBackup)
-					this.signal.emit('resolved', {
-						gameEnd: "notfinnished",
-						message: "Úlohu se nepodařilo vyřešit. To ale nevadí! Zkus to znovu!",
-						resolvedGame: this.getRounds()
-					})
+					if(!this.checkEndGame(responsesBackup)){
+						this.rounds.push([Instruction.gameOver(c.mainThread.object.id,"Úlohu se nepodařilo vyřešit. To ale nevadí! Zkus to znovu!")])
+						this.signal.emit('resolved', {
+							gameEnd: "notfinnished",
+							message: "Úlohu se nepodařilo vyřešit. To ale nevadí! Zkus to znovu!",
+							resolvedGame: this.getRounds()
+						})
+					}
 				}
 			}
 		})
@@ -82,6 +102,7 @@ export class Synchronizer{
 		const winInstruction = responses.find(r => r.instructions.find(i => i.name === "win"))
 		const gameOverInstruction = responses.find(r => r.instructions.find(i => i.name === "gameover"))
 			
+		let endgame = true
 		if(winInstruction){
 			this.internalSignal.emit('end-request', null)
 			this.signal.emit('resolved', {
@@ -98,6 +119,10 @@ export class Synchronizer{
 				resolvedGame: this.getRounds()
 			})
 		}
+		else{
+			endgame = false
+		}
+		return endgame
 	}
 	getRounds(){
 		const rounds = [...this.rounds]
