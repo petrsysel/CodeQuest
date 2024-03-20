@@ -21,24 +21,14 @@ export class VisualizationPlayer implements IVisualizationPlayer{
 	async play(resolvedGame: GameInstruction[][], puzzle: Puzzle){
 		this._isPlaying = true
 		for(const round of resolvedGame){
-			//Provést okamžité akce
-			// if(!this._isPlaying) {
-			// 	this._emit("stoped", null)
-			// 	break
-			// }
-			// Instruction.instant(round).forEach(i =>{
-			// 	Instruction.performOnPuzzle(i, puzzle)
-			// })
-			// await Instruction.withNotification(round, this._notificationUI)
+			if(!this._isPlaying) break
 			await Promise.all(
 				Instruction.byObject(round).map(oRound => this._boardUI.animate(puzzle.getSettings(),puzzle.getObjectList(),oRound.instructions, puzzle))
 			)
+			await Instruction.withNotification(round, this._notificationUI)
 			this._boardUI.render(puzzle.getSettings(), puzzle.getObjectList())
-			// Provést akce které potřebují čas
-			// Instruction.takeTime(round).forEach(i =>{
-			// 	Instruction.performOnPuzzle(i, puzzle)
-			// })
 		}
+		this._emit('stoped', null)
 	}
 
 	stop(): void {

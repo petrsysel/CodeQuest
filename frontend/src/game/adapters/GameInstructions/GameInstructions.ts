@@ -238,6 +238,14 @@ export class Instruction {
 				const message = i.message as string
 				await notificationUI.notify(message)
 			}
+			else if(i.name === "win"){
+				const message = i.message as string
+				await notificationUI.notify(message)
+			}
+			else if(i.name === "gameover"){
+				const message = i.message as string
+				await notificationUI.notify(message)
+			}
 		}
 	}
 }

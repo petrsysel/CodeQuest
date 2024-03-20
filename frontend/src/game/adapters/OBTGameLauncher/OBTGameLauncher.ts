@@ -116,7 +116,13 @@ export class OBTGameLauncher implements IGameLauncher{
 		const operatingPuzzle = puzzle.clone()
 
 		const controllers = puzzle.getObjectList().map(o => {
-			let save = JSON.parse(o.settings.code)
+			let save = {}
+			try{
+				save = JSON.parse(o.settings.code)
+			}
+			catch(e){
+				
+			}
       		Blockly.serialization.workspaces.load(save, this.workspace)
 			let tree: Action<any>[] = []
 			const code: string = javascriptGenerator.workspaceToCode(this.workspace)
