@@ -52,7 +52,9 @@ export class Game{
 				// let filtered = JSON.parse(object.settings.code)
 				// filtered.blocks.blocks = filtered.blocks.blocks.filter((block:any) => block.type != "rule_check")
 				// codeUI.loadWorkspace(JSON.stringify(filtered))
-				codeUI.loadWorkspace(object.settings.code)
+				codeUI.loadWorkspace(object.settings.code, {
+					loadRuleChecks: false
+				})
 				
 			}
 		}
@@ -102,7 +104,9 @@ export class Game{
 			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
 			let object = this._puzzle.getObject(this._selectedObjectId)
 			codeUI.clearWorkspace()
-			if(object)codeUI.loadWorkspace(object.settings.code)
+			if(object)codeUI.loadWorkspace(object.settings.code, {
+				loadRuleChecks: false
+			})
 		})
 		
 		codeUI.on('code-change', data => {

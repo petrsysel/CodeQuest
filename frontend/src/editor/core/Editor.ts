@@ -151,7 +151,9 @@ export class Editor{
         this.codeUI.clearWorkspace()
         let code = this._mockupPuzzle.getObjectCode(this._selectedObjectId)
         if(code){
-            this.codeUI.loadWorkspace(code)
+            this.codeUI.loadWorkspace(code, {
+                loadRuleChecks: true
+            })
         }
         this.controlPanelUI.render(this._mockupPuzzle.getSettings())
     }

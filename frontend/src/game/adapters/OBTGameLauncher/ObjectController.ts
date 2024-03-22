@@ -34,8 +34,9 @@ export class ObjectController{
 		this.puzzle = puzzle
 		this.sharedData = sharedData
 		this.object = object
-		this.mainThread = new ThreadController('main', 'main', object, main, puzzle, sharedData)
-		this.eventThreads = eventHandlers.map(eh => new ThreadController('event', eh.eventName, object, eh.actionBody, puzzle, sharedData))
+		const ruleCheck = ruleChecks.length > 0 ? ruleChecks[0] : undefined
+		this.mainThread = new ThreadController('main', 'main', object, main, puzzle, sharedData, ruleCheck)
+		this.eventThreads = eventHandlers.map(eh => new ThreadController('event', eh.eventName, object, eh.actionBody, puzzle, sharedData, ruleCheck))
 		this.threadStack = new ThreadStack()
 		this.ruleChecks = ruleChecks
 		
@@ -110,35 +111,39 @@ export class ObjectController{
 						activeThread.on('register-instruction', data => {
 							instructions.push(data.gameInstruction!)
 						})
-						activeThread.on('hybernation', () => {
+						activeThread.on('hybernation', async () => {
+							const ruleCheckRound = await activeThread.checkRules()
+							console.log(ruleCheckRound)
 							const wasCalledDelayedAction = this.threadStack.read()?.wasCalledDelayedAction
 							this.threadStack.pop()
 							
 							if(this.threadStack.read()){
 								if(!wasCalledDelayedAction){
-									prepareRound([...eventCalls])
+									prepareRound([...eventCalls, ...ruleCheckRound.eventCalls])
 								}
 								else resolve({
 									state: 'ready',
-									eventCalls: eventCalls,
-									instructions: instructions
+									eventCalls: [...eventCalls, ...ruleCheckRound.eventCalls],
+									instructions: [...instructions, ...ruleCheckRound.instructions]
 								})
 							}
 							else{
 								resolve({
 									state: 'hybernation',
-									eventCalls: eventCalls,
-									instructions: instructions
+									eventCalls: [...eventCalls, ...ruleCheckRound.eventCalls],
+									instructions: [...instructions, ...ruleCheckRound.instructions]
 								})
 							}
 							
 						})
-						activeThread.on('ready', () => {
+						activeThread.on('ready', async () => {
+							const ruleCheckRound = await activeThread.checkRules()
+							console.log(ruleCheckRound)
 							if(activeThread.hasBeenCalledNext){
 								resolve({
 									state: 'ready',
-									eventCalls: eventCalls,
-									instructions: instructions
+									eventCalls: [...eventCalls, ...ruleCheckRound.eventCalls],
+									instructions: [...instructions, ...ruleCheckRound.instructions]
 								})
 							}
 							else{

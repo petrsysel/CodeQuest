@@ -23,18 +23,17 @@ export class BlocklyEditor implements ICodeEditorUI {
     let jsonString = JSON.stringify(save)
     return jsonString
   }
-  loadWorkspace(workspace: CodeEditorWorkspace): boolean {
+  loadWorkspace(workspace: CodeEditorWorkspace, options: {
+    loadRuleChecks: boolean
+  }): boolean {
     try {
       let save = JSON.parse(workspace)
-      Blockly.serialization.workspaces.load(save, this._workspace)
+      Blockly.serialization.workspaces.load(save, this._workspace);
 
       // ZDE ODFILTROVAT RULE_CHECK BLOKY
-      const blocks = (this._workspace as WorkspaceSvg).getBlocksByType("rule_check").forEach(b => {
-        const code = javascriptGenerator.statementToCode(b, `rule_check_body`).replace(new RegExp(',$'), '')
-        console.log(code)
+      if(!options.loadRuleChecks)(this._workspace as WorkspaceSvg).getBlocksByType("rule_check").forEach(b => {
         b.dispose(true)
       })
-      console.log(blocks)
       return true
     }
     catch (e) {
@@ -78,7 +77,9 @@ export class BlocklyEditor implements ICodeEditorUI {
     this._eventBehaviour.on(event, callback)
   }
   clearWorkspace(): void {
-    this.loadWorkspace("{}")
+    this.loadWorkspace("{}", {
+      loadRuleChecks: true
+    })
   }
 
   getCode(): string {

@@ -1,7 +1,10 @@
 import { Puzzle } from "../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../shared/puzzle-lib/core/PuzzleTypes"
+import { GameInstruction } from "../GameInstructions/GameInstructions"
 import { Action, ActionData, ActionEvent } from "./Actions/Action"
 import { ActionContainer } from "./Actions/ActionContainer"
+import { RuleCheckAction } from "./Actions/events/RuleCheckAction"
+import { ObjectResponse } from "./ObjectController"
 import { SharedData } from "./SharedData"
 import { SingleSignal } from "./SingleSignal"
 import { Stepper } from "./Stepper"
@@ -16,6 +19,7 @@ export class ThreadController{
 	type: ThreadType
 	private puzzle: Puzzle
 	private sharedData: SharedData
+	private ruleCheck: RuleCheckAction | undefined
 
 	signal: SingleSignal<ActionEvent, ActionData>
 
@@ -24,7 +28,7 @@ export class ThreadController{
 	wasCalledDelayedAction: boolean = false
 	resolvedName: string = "unresolved"
 
-	constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer, puzzle: Puzzle, sharedData: SharedData){
+	constructor(type: ThreadType, name: string|Action<string>, object: PuzzleObject, body: ActionContainer, puzzle: Puzzle, sharedData: SharedData, ruleCheck: RuleCheckAction | undefined){
 		this.puzzle = puzzle
 		this.sharedData = sharedData
 		this.signal = new SingleSignal()
@@ -37,6 +41,7 @@ export class ThreadController{
 		this.body = body
 		this.object = object
 		this.type = type
+		this.ruleCheck = ruleCheck
 
 		body.on('hybernation', () => {
 			this.signal.emit('hybernation', {})
@@ -62,7 +67,38 @@ export class ThreadController{
 		this.signal.on(event, callback)
 	}
 
+	checkRules(): Promise<ObjectResponse>{
+		return new Promise(async (resolve, reject) => {
+			const eventCalls: string[] = []
+			const instructions: GameInstruction[] = []
+			const customStepper = new Stepper()
+			customStepper.on('event-call', data => {
+				eventCalls.push(data.eventName!)
+			})
+			customStepper.on('register-instruction', data => {
+				instructions.push(data.gameInstruction!)
+			})
+			customStepper.on('setted', () => {
+				customStepper.next()
+			})
+			if(this.ruleCheck) {
+				await this.ruleCheck.execute(customStepper, this.object, this.puzzle, this.sharedData)
+				resolve({
+					eventCalls: eventCalls,
+					instructions: instructions,
+					state: "ready"
+				})
+			}
+			else resolve({
+				eventCalls: [],
+				instructions: [],
+				state: "ready"
+			})
+		})
+	}
+
 	next(){
+		
 		if(!this.hasBeenExecuted){
 			this.body.execute(this.stepper, this.object, this.puzzle, this.sharedData)
 			this.hasBeenExecuted = true

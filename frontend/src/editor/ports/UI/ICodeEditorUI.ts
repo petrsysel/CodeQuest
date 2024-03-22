@@ -4,7 +4,9 @@ export type CodeEditorUIEvents = "code-change"
 export type CodeEditorUIData = CodeEditorWorkspace
 
 export interface ICodeEditorUI{
-    loadWorkspace(workspace:CodeEditorWorkspace):boolean
+    loadWorkspace(workspace:CodeEditorWorkspace, options: {
+        loadRuleChecks: boolean
+    }):boolean
     getWorkspace():CodeEditorWorkspace
     on(event: CodeEditorUIEvents, callback: (data: CodeEditorUIData) => void): void
     clearWorkspace():void

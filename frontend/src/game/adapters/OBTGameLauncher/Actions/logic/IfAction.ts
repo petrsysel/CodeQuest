@@ -33,7 +33,7 @@ export class IfAction extends Action<void>{
 				}
 			}
 			else{
-				this.elseStatement.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle, sharedData)), Promise.resolve())
+				if(this.elseStatement) this.elseStatement.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle, sharedData)), Promise.resolve())
 				this.hybernate()
 			}
 			

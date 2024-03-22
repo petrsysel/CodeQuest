@@ -217,6 +217,7 @@ export class Puzzle implements IPuzzle{
         let object = this.getObject(objectId)
         if(!object) return false
         let targetObjects = this._primitive.objects.filter(o => o.settings.name == objectName)
+        targetObjects = targetObjects.filter(o => o.settings.visible)
         return targetObjects.some(o => o.settings.X == object?.settings.X && o.settings.Y == object.settings.Y)
     }
     private _commandIsInFrontOfMe(objectId: PuzzleObjectId, objectName: string){
