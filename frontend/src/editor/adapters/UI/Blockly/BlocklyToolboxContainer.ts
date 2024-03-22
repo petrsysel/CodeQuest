@@ -214,6 +214,7 @@ export class BlocklyToolboxContainer{
         </shadow>
       </value>
     </block>
+    <block type="rule_check">
   </category>
   <category name="Vnímání" colour="#5ba58c">
     <block type="distance_to">
@@ -239,8 +240,8 @@ export class BlocklyToolboxContainer{
     </block>
   </category>
   <category name="Proměnné" colour="#a55b80" custom="VARIABLE"></category>
-  
-  <category name="Functions" colour="#995ba5" custom="PROCEDURE"></category>
+
+  <category name="Funkce" colour="#995ba5" custom="PROCEDURE"></category>
 	`
 	static getToolbox(){
 		let toolbox = document.getElementById('blockly-toolbox') as HTMLElement

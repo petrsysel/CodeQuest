@@ -3,25 +3,29 @@ import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
 import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
+import { ActionContainer } from "../ActionContainer"
 
-export class EmitAction extends Action<void>{
-	text: Action<string>
+export class RuleCheckAction extends Action<void>{
+	body: ActionContainer
 
-	constructor(text: Action<string>){
+	public get actionBody(){
+		return this.body
+	}
+
+	constructor(body: Action<any>[]){
 		super()
-		this.text = text
+		this.body = new ActionContainer(...body)
 	}
 
 	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
-		const eventName = await this.text.execute(stepper, object, puzzle, sharedData)
-		return new Promise((resolve, reject) => {
-			console.log("Event " + eventName + " were been emitted!")
-			stepper.emit(eventName)
+		return new Promise(async (resolve, reject) => {
+			await this.body.execute(stepper, object, puzzle, sharedData)
 			resolve()
+			this.hybernate()
 		})
 	}
 	wakeup(): void {
-		this.text.wakeup()
+		this.body.wakeup()
 		this.exitHybernation()
 	}
 }

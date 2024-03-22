@@ -42,6 +42,7 @@ export class Synchronizer{
 			this.running = false
 		})
 		this.controllers.forEach(async c => {
+			
 			let response: ObjectResponse
 			try{
 				response = await c.next(callings)

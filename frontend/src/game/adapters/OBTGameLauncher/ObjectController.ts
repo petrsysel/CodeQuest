@@ -7,6 +7,8 @@ import { Stepper } from "./Stepper"
 import { ActionContainer } from "./Actions/ActionContainer"
 import { OnEventAction } from "./Actions/events/OnEventAction"
 import { Puzzle } from "../../../shared/puzzle-lib/core/Puzzle"
+import { SharedData } from "./SharedData"
+import { RuleCheckAction } from "./Actions/events/RuleCheckAction"
 
 export type ObjectControllerEvent = 'hybernation' | 'ready' | 'event-call'
 
@@ -24,14 +26,18 @@ export class ObjectController{
 	private signal: Signal<ObjectControllerEvent, null | {eventName: string}>
 	private object: PuzzleObject
 	private puzzle: Puzzle
+	private sharedData: SharedData
+	private ruleChecks: RuleCheckAction[]
 
-	constructor(object: PuzzleObject, main: ActionContainer, eventHandlers: OnEventAction[], puzzle: Puzzle){
+	constructor(object: PuzzleObject, main: ActionContainer, eventHandlers: OnEventAction[], puzzle: Puzzle, sharedData: SharedData, ruleChecks: RuleCheckAction[]){
 		this.signal = new Signal()
 		this.puzzle = puzzle
+		this.sharedData = sharedData
 		this.object = object
-		this.mainThread = new ThreadController('main', 'main', object, main, puzzle)
-		this.eventThreads = eventHandlers.map(eh => new ThreadController('event', eh.eventName, object, eh.actionBody, puzzle))
+		this.mainThread = new ThreadController('main', 'main', object, main, puzzle, sharedData)
+		this.eventThreads = eventHandlers.map(eh => new ThreadController('event', eh.eventName, object, eh.actionBody, puzzle, sharedData))
 		this.threadStack = new ThreadStack()
+		this.ruleChecks = ruleChecks
 		
 		this.run()
 	}

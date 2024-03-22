@@ -1,6 +1,7 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle";
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes";
 import { Instruction } from "../../../GameInstructions/GameInstructions";
+import { SharedData } from "../../SharedData";
 import { Stepper } from "../../Stepper";
 import { Action } from "../Action";
 
@@ -14,10 +15,10 @@ export class WaitAction extends Action<void>{
 		this.type = 'delayed'
 		this.delay = delay
 	}
-	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
+	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise((resolve, reject) => {
 			stepper.on('step', async () => {
-				stepper.registerInstruction(Instruction.wait(object.id, await this.delay.execute(stepper, object, puzzle)))
+				stepper.registerInstruction(Instruction.wait(object.id, await this.delay.execute(stepper, object, puzzle, sharedData)))
 				resolve()
 				this.hybernate()
 			})

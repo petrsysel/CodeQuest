@@ -53,6 +53,7 @@ export class Game{
 				// filtered.blocks.blocks = filtered.blocks.blocks.filter((block:any) => block.type != "rule_check")
 				// codeUI.loadWorkspace(JSON.stringify(filtered))
 				codeUI.loadWorkspace(object.settings.code)
+				
 			}
 		}
 

@@ -1,6 +1,6 @@
 import { EventBehaviour } from "../../../../shared/EventBehaviour"
 import { CodeEditorUIData, CodeEditorUIEvents, CodeEditorWorkspace, ICodeEditorUI } from "../../../ports/UI/ICodeEditorUI"
-import Blockly from 'blockly'
+import Blockly, { Generator, JavaScript, WorkspaceSvg } from 'blockly'
 import { BlocklyWorkspaceGenerator } from "./BlocklyWorkspaceGenerator"
 import { BlockNameContainer } from "./BlockNameContainer"
 import { Block } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
@@ -27,6 +27,14 @@ export class BlocklyEditor implements ICodeEditorUI {
     try {
       let save = JSON.parse(workspace)
       Blockly.serialization.workspaces.load(save, this._workspace)
+
+      // ZDE ODFILTROVAT RULE_CHECK BLOKY
+      const blocks = (this._workspace as WorkspaceSvg).getBlocksByType("rule_check").forEach(b => {
+        const code = javascriptGenerator.statementToCode(b, `rule_check_body`).replace(new RegExp(',$'), '')
+        console.log(code)
+        b.dispose(true)
+      })
+      console.log(blocks)
       return true
     }
     catch (e) {

@@ -1,11 +1,13 @@
-import Blockly from 'blockly'
+import Blockly, { Block, WorkspaceSvg } from 'blockly'
 import { BlocklyBlockDefinitionContainer } from './BlocklyBlockDefinitionContainer'
 import { BlocklyBehaviourDefinitionContainer } from './BlocklyBehaviourDefinitionContainer'
 import { BlocklyToolboxContainer } from './BlocklyToolboxContainer'
 import { BlocklyExtendedBehaviourDefinitionContainer } from './BlocklyExtendedBehaviourDefinitionContainer'
 
+import Cs from 'blockly/msg/cs'
+
 export class BlocklyWorkspaceGenerator{
-	private _workspace: any
+	private _workspace: WorkspaceSvg | undefined
 	private _destination: string
 
 	constructor(destination: string){
@@ -81,7 +83,7 @@ export class BlocklyWorkspaceGenerator{
 		
 		this._workspace = Blockly.inject(this._destination, options);
 
-		
+		Blockly.setLocale(Cs)
 
 		return this._workspace
 	}

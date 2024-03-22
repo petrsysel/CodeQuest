@@ -1,5 +1,6 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action, ActionList } from "../Action"
 
@@ -18,13 +19,13 @@ export class IfAction extends Action<void>{
 		this.statementAmount = ifDoPairs.length
 		this.elseStatement = elseStatement
 	}
-	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
+	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		const checkStatement = async (i: number) => {
 			if(i < this.statementAmount){
 				const predicate = this.ifDoPairs[i].ifStatement
-				const predicateValidity = await predicate.execute(stepper, object, puzzle)
+				const predicateValidity = await predicate.execute(stepper, object, puzzle, sharedData)
 				if(predicateValidity){
-					await this.ifDoPairs[i].doStatement.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
+					await this.ifDoPairs[i].doStatement.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle, sharedData)), Promise.resolve())
 					this.hybernate()
 				}
 				else{
@@ -32,7 +33,7 @@ export class IfAction extends Action<void>{
 				}
 			}
 			else{
-				this.elseStatement.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
+				this.elseStatement.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle, sharedData)), Promise.resolve())
 				this.hybernate()
 			}
 			

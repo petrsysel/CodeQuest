@@ -54,6 +54,15 @@ import { IsTouchingAction } from "./Actions/sensing/IsTouchingAction";
 import { IsInFrontOfMeAction } from "./Actions/sensing/IsInFrontOfMeAction";
 import { WinAction } from "./Actions/events/WinAction";
 import { GameOverAction } from "./Actions/events/GameOverAction";
+import { SharedData } from "./SharedData";
+import { SetVariableAction } from "./Actions/variables/SetVariableAction";
+import { ChangeVariableAction } from "./Actions/variables/ChangeVariableAction";
+import { GetVariableAction } from "./Actions/variables/GetVariableAction";
+import { FunctionAction } from "./Actions/functions/FunctionAction";
+import { CallMethodAction } from "./Actions/functions/CallMethodAction";
+import { ReturnFunctionAction } from "./Actions/functions/ReturnFunctionAction";
+import { CallFunctionAction } from "./Actions/functions/CallFunctionAction";
+import { RuleCheckAction } from "./Actions/events/RuleCheckAction";
 
 export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
@@ -110,10 +119,19 @@ export class OBTGameLauncher implements IGameLauncher{
 			WaitAction,
 			DistanceToAction,
 			IsTouchingAction,
-			IsInFrontOfMeAction
+			IsInFrontOfMeAction,
+			SetVariableAction,
+			ChangeVariableAction,
+			GetVariableAction,
+			FunctionAction,
+			CallMethodAction,
+			ReturnFunctionAction,
+			CallFunctionAction,
+			RuleCheckAction
 		]
 
 		const operatingPuzzle = puzzle.clone()
+		const sharedData = new SharedData()
 
 		const prepareControllers = () => {
 			return puzzle.getObjectList().map(o => {
@@ -124,27 +142,39 @@ export class OBTGameLauncher implements IGameLauncher{
 				catch(e){
 					
 				}
+				console.log("SAVED CODE")
+				console.log(save)
 				  Blockly.serialization.workspaces.load(save, this.workspace)
 				let tree: Action<any>[] = []
-				const code: string = javascriptGenerator.workspaceToCode(this.workspace)
+				let code: string = javascriptGenerator.workspaceToCode(this.workspace)
+				console.log(code)
+				code = code.replaceAll(/var.*?;/g, "")
+				code = code.replaceAll(/\/\/.*?\.\.\./g, "")
+				console.log(code)
 				const finalCode = `tree = [${code.replace(new RegExp(',$'), '')}]`
 				eval(finalCode)
 	
 				const eventHandlers = tree.filter(a => a instanceof OnEventAction) as OnEventAction[]
-				const mainActions = tree.filter(a => !(a instanceof OnEventAction))
+				const functions = tree.filter(a => a instanceof FunctionAction) as FunctionAction[]
+				functions.forEach(f => sharedData.registerFunction(o.id, f))
+				const ruleChecks = tree.filter(a => a instanceof RuleCheckAction) as RuleCheckAction[]
+				functions.forEach(f => sharedData.registerFunction(o.id, f))
+				const mainActions = tree.filter(a => !(a instanceof OnEventAction) && !(a instanceof FunctionAction) && !(a instanceof RuleCheckAction))
 				const main = new ActionContainer(
 					...mainActions
 				)
 	
-				return new ObjectController(o, main, eventHandlers, operatingPuzzle)
+				return new ObjectController(o, main, eventHandlers, operatingPuzzle, sharedData, ruleChecks)
 			})
 		}
 
 		window.onunhandledrejection = (e) => {
+			if(e.reason instanceof DOMException) return
 			this.signal.emit('fail', {
 				resolvedGame: [],
 				error: "V kódu je asi nějaká chyba."
 			})
+			
 		}
 
 		try{
@@ -169,6 +199,7 @@ export class OBTGameLauncher implements IGameLauncher{
 			synchronizer.next()
 		}
 		catch(e) {
+			console.error(e)
 			this.signal.emit('fail', {
 				resolvedGame: [],
 				error: "V kódu je asi nějaká chyba."

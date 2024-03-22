@@ -275,5 +275,100 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 			var code = `new IsInFrontOfMeAction(${targetName})`;
 			return [code, javascript.Order.ATOMIC]
 		};
+		javascriptGenerator.forBlock['variables_set'] = function(block: any, generator: any) {
+			var value = generator.valueToCode(block, 'VALUE', javascript.Order.ATOMIC);
+			const name = block.getFieldValue('VAR')
+			
+			var code = `new SetVariableAction('${name}', ${value}),`;
+			return code
+		};
+		javascriptGenerator.forBlock['math_change'] = function(block: any, generator: any) {
+			var value = generator.valueToCode(block, 'DELTA', javascript.Order.ATOMIC);
+			const name = block.getFieldValue('VAR')
+			
+			var code = `new ChangeVariableAction('${name}', ${value}),`;
+			return code
+		};
+		javascriptGenerator.forBlock['variables_get'] = function(block: any, generator: any) {
+			const name = block.getFieldValue('VAR')
+			
+			var code = `new GetVariableAction('${name}')`;
+			return [code, javascript.Order.ATOMIC]
+		};
+		javascriptGenerator.forBlock['procedures_defnoreturn'] = function(block: any, generator: any) {
+			const name = block.getFieldValue('NAME')
+			const body = generator.statementToCode(block, `STACK`).replace(new RegExp(',$'), '')
+			
+			
+			var code = `new FunctionAction('${name}', [${body}]),`;
+			return code
+		};
+		javascriptGenerator.forBlock['procedures_callnoreturn'] = function(block: any, generator: any) {
+			const variables: [] = block.getVarModels()
+			const name = block.getFieldValue('NAME')
+
+			let args = ""
+			for (let i = 0; i < variables.length; i++) {
+				args += generator.valueToCode(block, `ARG${i}`, javascript.Order.ATOMIC) + ",";
+			}
+			args = args.replace(new RegExp(',$'), '')
+			var seen:any = [];
+
+			const tinyVariables = variables.map((v:any) => {
+				return {
+					id: v.id_,
+					name: v.name
+				}
+			})
+			const code = `new CallMethodAction('${name}', ${JSON.stringify(tinyVariables)}, [${args}]),`;
+			return code
+		};
+
+		javascriptGenerator.forBlock['procedures_ifreturn'] = function(block: any, generator: any) {
+			const root = block.getRootBlock().getFieldValue("NAME")
+			const condition = generator.valueToCode(block, `CONDITION`, javascript.Order.ATOMIC)
+			const value = generator.valueToCode(block, `VALUE`, javascript.Order.ATOMIC)
+
+			const code = `new ReturnFunctionAction('${root}', ${condition}, ${value}),`;
+			console.log(code)
+			return code
+		};
+		
+		javascriptGenerator.forBlock['procedures_defreturn'] = function(block: any, generator: any) {
+			const name = block.getFieldValue('NAME')
+			const body = generator.statementToCode(block, `STACK`).replace(new RegExp(',$'), '')
+			const returnValue = generator.valueToCode(block, 'RETURN', javascript.Order.ATOMIC)
+			
+			const code = `new FunctionAction('${name}', [${body}], ${returnValue}),`;
+			return code
+		}
+
+		javascriptGenerator.forBlock['procedures_callreturn'] = function(block: any, generator: any) {
+			const variables: [] = block.getVarModels()
+			const name = block.getFieldValue('NAME')
+
+			let args = ""
+			for (let i = 0; i < variables.length; i++) {
+				args += generator.valueToCode(block, `ARG${i}`, javascript.Order.ATOMIC) + ",";
+			}
+			args = args.replace(new RegExp(',$'), '')
+
+			const tinyVariables = variables.map((v:any) => {
+				return {
+					id: v.id_,
+					name: v.name
+				}
+			})
+			const code = `new CallFunctionAction('${name}', ${JSON.stringify(tinyVariables)}, [${args}])`;
+			console.log(code)
+			return [code, javascript.Order.ATOMIC]
+		}
+
+		javascriptGenerator.forBlock['rule_check'] = function(block: any, generator: any) {
+			const body = generator.statementToCode(block, `rule_check_body`).replace(new RegExp(',$'), '')
+			
+			const code = `new RuleCheckAction([${body}])`;
+			return code
+		}
 	}
 }

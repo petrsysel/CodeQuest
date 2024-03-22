@@ -1,5 +1,6 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
 
@@ -15,11 +16,11 @@ export class MathPropertyAction extends Action<boolean>{
 		this.numberToCheck = numberToCheck
 		this.divisor = divisor
 	}
-	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<boolean> {
+	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<boolean> {
 		return new Promise(async (resolve, reject) => {
-			let value = await this.numberToCheck.execute(stepper, object, puzzle)
+			let value = await this.numberToCheck.execute(stepper, object, puzzle, sharedData)
 			let divisor = this.divisor ?
-				await this.divisor.execute(stepper, object, puzzle): 0
+				await this.divisor.execute(stepper, object, puzzle, sharedData): 0
 
 			const isPrime = (num: number) => {
 				for(let i = 2, s = Math.sqrt(num); i <= s; i++) {

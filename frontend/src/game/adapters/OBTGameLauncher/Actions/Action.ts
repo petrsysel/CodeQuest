@@ -1,6 +1,7 @@
 import { Puzzle } from "../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
 import { GameInstruction } from "../../GameInstructions/GameInstructions"
+import { SharedData } from "../SharedData"
 import { SingleSignal } from "../SingleSignal"
 import { Stepper } from "../Stepper"
 
@@ -31,7 +32,7 @@ export abstract class Action<T>{
 	isHybernating(){
 		return this.hybernation
 	}
-	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<T>{
+	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<T>{
 		return new Promise((resolve, reject) => {
 			reject("Action not yet implemented.")
 		})

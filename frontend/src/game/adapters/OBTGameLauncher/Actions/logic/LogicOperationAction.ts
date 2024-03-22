@@ -1,5 +1,6 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
 
@@ -15,10 +16,10 @@ export class LogicOperationAction extends Action<boolean>{
 		this.operandA = operandA
 		this.operandB = operandB
 	}
-	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<boolean> {
+	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<boolean> {
 		return new Promise(async (resolve, reject) => {
-			let valueA = await this.operandA.execute(stepper, object, puzzle)
-			let valueB = await this.operandB.execute(stepper, object, puzzle)
+			let valueA = await this.operandA.execute(stepper, object, puzzle, sharedData)
+			let valueB = await this.operandB.execute(stepper, object, puzzle, sharedData)
 
 			let result: boolean
 			if(this.operation === "AND"){

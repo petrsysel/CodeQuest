@@ -1,5 +1,6 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action, ActionList } from "../Action"
 
@@ -12,22 +13,22 @@ export class ForAction extends Action<void>{
 		this.predicate = predicate
 		this.body = body
 	}
-	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
-		let predicateValue = await this.predicate.execute(stepper, object, puzzle)
+	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
+		let predicateValue = await this.predicate.execute(stepper, object, puzzle, sharedData)
 		console.log("predicate value")
 		console.log(predicateValue)
 		console.log(typeof predicateValue)
 		if(typeof predicateValue === 'boolean'){
 			
-			predicateValue = await this.predicate.execute(stepper, object, puzzle)
+			predicateValue = await this.predicate.execute(stepper, object, puzzle, sharedData)
 			
 			console.log('init predicate')
 			console.log(predicateValue)
-			while(predicateValue = await this.predicate.execute(stepper, object, puzzle)){
+			while(predicateValue = await this.predicate.execute(stepper, object, puzzle, sharedData)){
 				// await Promise.all(this.body.map(a => a.execute()))
 				console.log(predicateValue)
 				console.log("in while body")
-				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
+				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle, sharedData)), Promise.resolve())
 				
 			}
 			this.hybernate()
@@ -35,7 +36,7 @@ export class ForAction extends Action<void>{
 		else{
 			for (let i = 0; i < (predicateValue as number); i++) {
 				// await Promise.all(this.body.map(a => a.execute()))
-				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle)), Promise.resolve())
+				await this.body.reduce((p, fn) => p.then(() => fn.execute(stepper, object, puzzle, sharedData)), Promise.resolve())
 				this.hybernate()
 			}
 		}

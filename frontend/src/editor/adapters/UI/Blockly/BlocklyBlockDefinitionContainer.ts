@@ -373,7 +373,8 @@ export class BlocklyBlockDefinitionContainer{
 		"colour": 160,
 		"tooltip": "Vrací počet políček, které dělí objekt a jiný objektu se zadaným jménem",
 		"helpUrl": ""
-	}]
+		}
+	]
 
 	static init(){
 		Blockly.defineBlocksWithJsonArray(this.definitions)

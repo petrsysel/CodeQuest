@@ -1,5 +1,6 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
 
@@ -11,9 +12,9 @@ export class LogicNegateAction extends Action<boolean>{
 		super()
 		this.expression = expression
 	}
-	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<boolean> {
+	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<boolean> {
 		return new Promise(async (resolve, reject) => {
-			let value = await this.expression.execute(stepper, object, puzzle)
+			let value = await this.expression.execute(stepper, object, puzzle, sharedData)
 			resolve(!value)
 			this.hybernate()
 		})

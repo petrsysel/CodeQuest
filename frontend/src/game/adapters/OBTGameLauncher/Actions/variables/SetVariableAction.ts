@@ -5,24 +5,25 @@ import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
 
-export class ChangeCostumeAction extends Action<void>{
-	private costumeName: Action<string>
-	constructor(costumeName: Action<string>){
+export class SetVariableAction extends Action<void>{
+	private variableName: string
+	private value: Action<any>
+	constructor(variableName: string, value: Action<any>){
 		super()
-		this.costumeName = costumeName
+		this.variableName = variableName
+		this.value = value
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
-			const costume = await this.costumeName.execute(stepper, object, puzzle, sharedData)
-			console.log(`Changing costume to ${costume} is going!`)
-			// puzzle.commands.
-			stepper.registerInstruction(Instruction.changeCostume(object.id, costume))
+			const value = await this.value.execute(stepper, object, puzzle, sharedData)
+			console.log(`${object.settings.name} is setting variable.`)
+
+			sharedData.setVariable(object.id, this.variableName, value)
 			resolve()
 			this.hybernate()
 		})
 	}
 	wakeup(): void {
-		this.costumeName.wakeup()
 		this.exitHybernation()
 	}
 }

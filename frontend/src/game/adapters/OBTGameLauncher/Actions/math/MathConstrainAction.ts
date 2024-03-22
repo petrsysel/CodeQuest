@@ -1,5 +1,6 @@
 import { Puzzle } from "../../../../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObject } from "../../../../../shared/puzzle-lib/core/PuzzleTypes"
+import { SharedData } from "../../SharedData"
 import { Stepper } from "../../Stepper"
 import { Action } from "../Action"
 
@@ -14,11 +15,11 @@ export class MathConstrainAction extends Action<number>{
 		this.low = low
 		this.high = high
 	}
-	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<number> {
+	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<number> {
 		return new Promise(async (resolve, reject) => {
-			let val = await this.value.execute(stepper, object, puzzle)
-			let lowValue = await this.low.execute(stepper, object, puzzle)
-			let highValue = await this.high.execute(stepper, object, puzzle)
+			let val = await this.value.execute(stepper, object, puzzle, sharedData)
+			let lowValue = await this.low.execute(stepper, object, puzzle, sharedData)
+			let highValue = await this.high.execute(stepper, object, puzzle, sharedData)
 
 			let result: number
 
