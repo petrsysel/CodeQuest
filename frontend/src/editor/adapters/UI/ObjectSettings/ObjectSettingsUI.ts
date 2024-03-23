@@ -5,69 +5,73 @@ import { Templater } from "../../../../shared/templater/Templater"
 import { IObjectSettingsUI, ObjectSettingsUIData, ObjectSettingsUIEvents } from "../../../ports/UI/IObjectSettingsUI"
 
 export const objectSettingsTemplate = /*html*/`
-    <div class="object-fields" id="object-fields-element">
-        <input type="text" id="name-element" class="object-name-input">
-        <table>
-            <tr>
-                <td>
-                    Vrstva: 
-                </td>
-                <td>
-                    <input type="number" id="layer-input-element">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Upravitelný hráčem: 
-                </td>
-                <td>
-                    <input type="checkbox" id="player-edit-input-element">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Pozice X: 
-                </td>
-                <td>
-                    <input type="number" id="position-x-input-element">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Pozice Y: 
-                </td>
-                <td>
-                    <input type="number" id="position-y-input-element">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Směr: 
-                </td>
-                <td>
-                    <select id="direction-input-element">
-                        <option value ="up" id="up-option-element">nahoru</option>
-                        <option value ="right" id="right-option-element">vpravo</option>
-                        <option value ="down" id="down-option-element">dolu</option>
-                        <option value ="left" id="left-option-element">vlevo</option>
-                    <select>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Viditelný: 
-                </td>
-                <td>
-                    <input type="checkbox" id="visible-input-element">
-                </td>
-            </tr>
-        </table>
-    </div>
-    
-    <div class="costume-preview" id="costume-preview-element">
-    </div>
-    <div id="nonselect-element" class="nonselect-element">
-        Není vybrán žádný objekt
+    <div class="object-fields-container">
+        <div class="object-fields" id="object-fields-element">
+            <input type="text" id="name-element" class="object-name-input">
+            <table>
+                <tr>
+                    <td>
+                        Vrstva: 
+                    </td>
+                    <td>
+                        <input type="number" id="layer-input-element">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Upravitelný hráčem: 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="player-edit-input-element">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Pozice X: 
+                    </td>
+                    <td>
+                        <input type="number" id="position-x-input-element">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Pozice Y: 
+                    </td>
+                    <td>
+                        <input type="number" id="position-y-input-element">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Směr: 
+                    </td>
+                    <td>
+                        <select id="direction-input-element">
+                            <option value ="up" id="up-option-element">nahoru</option>
+                            <option value ="right" id="right-option-element">vpravo</option>
+                            <option value ="down" id="down-option-element">dolu</option>
+                            <option value ="left" id="left-option-element">vlevo</option>
+                        <select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Viditelný: 
+                    </td>
+                    <td>
+                        <input type="checkbox" id="visible-input-element">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="costume-preview-container">
+            <div class="costume-preview" id="costume-preview-element">
+            </div>
+        </div>
+        <div id="nonselect-element" class="nonselect-element">
+            Není vybrán žádný objekt
+        </div>
     </div>
 `
 

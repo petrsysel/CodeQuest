@@ -12,6 +12,7 @@ export interface ICodeEditorUI{
     clearWorkspace():void
     getBlocks(): Block[]
     getCode(): string
+    setupToolbox(enabledBlocks: Block[]): void
 }
 
 export type CodeEditorWorkspace = string

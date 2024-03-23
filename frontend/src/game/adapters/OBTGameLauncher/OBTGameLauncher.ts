@@ -73,8 +73,8 @@ export class OBTGameLauncher implements IGameLauncher{
 	constructor(workspaceGenerator: BlocklyWorkspaceGenerator){
 		this.signal = new Signal()
 		this.workspaceGenerator = workspaceGenerator
-		this.workspace = workspaceGenerator.createWorkspace(null)
-		this.ruleCheckWorkspace = workspaceGenerator.createWorkspace(null)
+		this.workspace = workspaceGenerator.createWorkspace([])
+		this.ruleCheckWorkspace = workspaceGenerator.createWorkspace([])
 	}
 	
 	on(event: LauncherEvent, callback: (data: LaucherData) => void): void {
@@ -82,8 +82,6 @@ export class OBTGameLauncher implements IGameLauncher{
 	}
 	async play(puzzle: Puzzle, originalPuzzle: Puzzle) {
 		const workOriginalPuzzle = originalPuzzle.clone()
-		console.log("DOPRDELE TOHLE JE ORIGINAL PUZZLE")
-		console.log(originalPuzzle)
 		console.log("start play")
 		// Pro sestavení stromu musejí být importovány
 		const enabledActions = [

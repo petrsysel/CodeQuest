@@ -23,7 +23,8 @@ export class Game{
 		notificationUI: INotificationUI,
 		visualizationPlayer: IVisualizationPlayer
 		){
-
+		
+		
 		window.onresize = () => {
 			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
 			objectList.render(this._puzzle.getObjectList())
@@ -36,6 +37,8 @@ export class Game{
 			this._puzzle.loadFromString(puzzleFromStorage)
 		}
 		else this._puzzle.loadFromString(puzzleMock.threeWizards())
+
+		codeUI.setupToolbox(this._puzzle.getBlocks())
 		
 		this.originalPuzzle = this._puzzle.clone()
 

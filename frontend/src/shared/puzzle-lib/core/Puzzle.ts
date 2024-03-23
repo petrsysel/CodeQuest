@@ -94,6 +94,9 @@ export class Puzzle implements IPuzzle{
         else return false
         return true
     }
+    getBlocks(){
+        return [...this._primitive.settings.blocks]
+    }
 
     private _validatePosition(x:number, y:number){
         let validateX = x

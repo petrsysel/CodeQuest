@@ -1,10 +1,11 @@
-import Blockly, { Block, BlocklyOptions, WorkspaceSvg } from 'blockly'
+import Blockly, { BlocklyOptions, WorkspaceSvg } from 'blockly'
 import { BlocklyBlockDefinitionContainer } from './BlocklyBlockDefinitionContainer'
 import { BlocklyBehaviourDefinitionContainer } from './BlocklyBehaviourDefinitionContainer'
 import { BlocklyToolboxContainer } from './BlocklyToolboxContainer'
 import { BlocklyExtendedBehaviourDefinitionContainer } from './BlocklyExtendedBehaviourDefinitionContainer'
 
 import Cs from 'blockly/msg/cs'
+import { Block } from '../../../../shared/puzzle-lib/core/PuzzleTypes'
 
 export class BlocklyWorkspaceGenerator{
 	private _workspace: WorkspaceSvg | undefined
@@ -83,10 +84,10 @@ export class BlocklyWorkspaceGenerator{
 		})
 	}
 
-	createWorkspace(blockOptions: any){
+	createWorkspace(enabledBlocks: Block[]){
 		BlocklyBlockDefinitionContainer.init()
 		BlocklyExtendedBehaviourDefinitionContainer.init()
-		let toolbox = BlocklyToolboxContainer.getToolbox()
+		let toolbox = BlocklyToolboxContainer.getToolbox(enabledBlocks)
 		let theme = this._getTheme()
 		let options = this._getWorkspaceOptions(toolbox, theme)
 		

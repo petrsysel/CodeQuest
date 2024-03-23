@@ -1,6 +1,6 @@
 import { EventBehaviour } from "../../../../shared/EventBehaviour"
 import { CodeEditorUIData, CodeEditorUIEvents, CodeEditorWorkspace, ICodeEditorUI } from "../../../ports/UI/ICodeEditorUI"
-import Blockly, { Generator, JavaScript, WorkspaceSvg } from 'blockly'
+import Blockly, { Generator, JavaScript, Workspace, WorkspaceSvg } from 'blockly'
 import { BlocklyWorkspaceGenerator } from "./BlocklyWorkspaceGenerator"
 import { BlockNameContainer } from "./BlockNameContainer"
 import { Block } from "../../../../shared/puzzle-lib/core/PuzzleTypes"
@@ -12,10 +12,12 @@ export class BlocklyEditor implements ICodeEditorUI {
   private _workspace: any
   private _eventBehaviour: EventBehaviour<CodeEditorUIEvents, CodeEditorUIData>
   private _workspaceGenerator: BlocklyWorkspaceGenerator
+  private destination: string
   constructor(destination: string) {
+    this.destination = destination
     this._eventBehaviour = new EventBehaviour()
     this._workspaceGenerator = new BlocklyWorkspaceGenerator(destination)
-    this._setupBlockly()
+    this._setupBlockly([])
   }
   getWorkspace(): CodeEditorWorkspace {
     // Saves only the variables information for the workspace.
@@ -42,29 +44,41 @@ export class BlocklyEditor implements ICodeEditorUI {
     }
   }
 
-  private _setupBlockly() {
+  private _setupBlockly(enabledBlocks: Block[]) {
     
-    this._workspace = this._workspaceGenerator.createWorkspace(null)
+    this._workspace = this._workspaceGenerator.createWorkspace(enabledBlocks)
     this._workspace.addChangeListener((event: any) => {
       if (event.type == 'move' || event.type == 'change') this._emit('code-change', this.getWorkspace())
     })
   }
 
   getBlocks(): Block[] {
-    let blocks: Block[] = []
-    let list = ""
-    this._workspace.toolbox_.contents_.forEach((category: any) => {
-      let catName = category.name_
-      if(!category.toolboxItemDef_.contents) return
-      category.toolboxItemDef_.contents.forEach((block: any) => {
-        let type = block.type
-        list += type+"\n"
+    let blocks: Block[] = [];
+    (this._workspace as any).getToolbox()!.getToolboxItems().forEach((category: any) => {
+      const blocksOfCat = category.getContents()
+      if(blocksOfCat.constructor === Array) blocksOfCat.forEach((block: any) => {
         blocks.push({
-          name: BlockNameContainer.getName(type),
-          type: type,
-          category: catName
+          category:category.getName(),
+          name: BlockNameContainer.getName(block.type),
+          type: block.type
         })
       })
+      else{
+        if(blocksOfCat == "VARIABLE"){
+          blocks.push({
+            category: "Proměnné",
+            name: "Bloky pro práci s proměnnými",
+             type: "variables"
+          })
+        }
+        if(blocksOfCat == "PROCEDURE"){
+          blocks.push({
+            category: "Funkce",
+            name: "Bloky pro práci s funkcemi",
+             type: "functions"
+          })
+        }
+      }
     })
     return blocks
   }
@@ -85,5 +99,26 @@ export class BlocklyEditor implements ICodeEditorUI {
   getCode(): string {
     let code = javascriptGenerator.workspaceToCode(this._workspace);
     return code
+  }
+
+  setupToolbox(enabledBlocks: Block[]){
+    console.log(enabledBlocks)
+    if(enabledBlocks.length == 0) return
+    
+    (this._workspace as any).getToolbox().getToolboxItems().forEach((cat: any) => {
+      if(!enabledBlocks.some(b => b.category == cat.getName())) cat.hide()
+      else{
+    console.log(cat)
+        let toKeep: any[] = []
+        
+        if(typeof(cat.getContents()) != "string"){
+          cat.getContents()?.forEach((b: any) => {
+            if(enabledBlocks.some(eb => eb.type == b.type)) toKeep.push(b)
+          })
+          cat?.updateFlyoutContents(toKeep)
+        }
+        
+      }
+    })
   }
 }
