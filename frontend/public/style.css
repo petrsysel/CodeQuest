@@ -386,6 +386,9 @@ a{
 .game-object-list-container img{
     margin: 0 1em;
     height: 100%;
+    
+}
+.game-selected-object{
     filter: drop-shadow(0 0 4px blue);
 }
 

@@ -4,6 +4,7 @@ import { IControlPanelUI } from "../../editor/ports/UI/IControlPanelUI"
 import { IObjectPanelUI } from "../../editor/ports/UI/IObjectPanelUI"
 import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { PuzzleObjectId } from "../../shared/puzzle-lib/core/PuzzleTypes"
 import { IGameLauncher } from "../ports/IGameLauncher"
 import { IVisualizationPlayer } from "../ports/IVisualizationPlayer"
 import { IVisualizerControlPanel } from "../ports/IVisualizerControlPanelUI"
@@ -105,24 +106,36 @@ export class Game{
 		})
 		
 
-		boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+		objectList.on('object-selected', data => {
+			onSelected(data ? data.id : "")
+		})
 
 		boardUI.on('object-selected', data => {
-			this._selectedObjectId = data.objectId
-			console.log(`Object ${data.objectId} was selected`)
-			boardUI.setSelected(data.objectId)
-			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
-			let object = this._puzzle.getObject(this._selectedObjectId)
-			codeUI.clearWorkspace()
-			if(object)codeUI.loadWorkspace(object.settings.code, {
-				loadRuleChecks: false
-			})
+			onSelected(data.objectId)
 		})
 		
 		codeUI.on('code-change', data => {
 
 			if(this._selectedObjectId) this._puzzle.changeObjectCode(this._selectedObjectId, data)
 		})
+
+		boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+		objectList.setSelected(this._selectedObjectId? this._selectedObjectId : "")
+		objectList.render(this._puzzle.getObjectList())
+
+		const onSelected = (selectedId: PuzzleObjectId) => {
+			this._selectedObjectId = selectedId
+			console.log(`Object ${selectedId} was selected`)
+			boardUI.setSelected(selectedId)
+			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+			objectList.setSelected(this._selectedObjectId? this._selectedObjectId : "")
+			objectList.render(this._puzzle.getObjectList())
+			let object = this._puzzle.getObject(this._selectedObjectId)
+			codeUI.clearWorkspace()
+			if(object)codeUI.loadWorkspace(object.settings.code, {
+				loadRuleChecks: false
+			})
+		}
 	}
 
 
