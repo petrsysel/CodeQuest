@@ -1,7 +1,7 @@
 import { IPuzzleRepository } from "./IPuzzleRepository";
 import { ISessionManager } from "./ISessionManager";
 import { IUserRepository } from "./IUserRepository";
-import express, { Express, Request, Response } from "express"
+import expres, { Express, Request, Response } from "express"
 import { User } from "./ServerTypes";
 import { randomUUID } from "crypto";
 import { UserUtils } from "./UserUtils";
@@ -34,9 +34,11 @@ export class Server{
 			console.log(`Server is listening on http://${hostname}:${port}`)
 		})
 
-		express.get('/', (req, res) => {
-			res.redirect('http://localhost:5173')	// platform page
-		})
+		// express.get('/', (req, res) => {
+		// 	// res.redirect('http://localhost:5173')	// platform page
+		// })
+		express.use(expres.static('public'))
+		// express.use()
 		express.get('/api', (req, res) => {
 			readFile('./assets/api.html', (err, data) => {
 				if(err) {
