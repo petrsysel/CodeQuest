@@ -1,4 +1,12 @@
-class GameResolver{
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
+import { Utility } from "../../shared/utils/Utility"
+import { GameActor } from "../core/GameActor"
+import { GameMessageCallback } from "../core/GameMessageCallback"
+import { GameProcedure } from "../core/GameProcedure"
+import { GameInstruction, Instruction } from "./GameInstructions/GameInstructions"
+import { ObjectSynchronizer } from "./ObjectSynchronizer"
+
+export class GameResolver{
 	private _procedure
 	private _synchronizer
 

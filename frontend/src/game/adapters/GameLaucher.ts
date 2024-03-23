@@ -2,6 +2,7 @@ import { EventBehaviour } from "../../shared/EventBehaviour"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleUtils } from "../../shared/puzzle-lib/core/PuzzleUtils"
 import { IGameLauncher, LaucherData, LauncherEvent } from "../ports/IGameLauncher"
+import { GameInstruction } from "./GameInstructions/GameInstructions"
 
 export class GameLauncher implements IGameLauncher{
 	private _timeout: number
@@ -33,7 +34,9 @@ export class GameLauncher implements IGameLauncher{
 		}
 
 		setTimeout(() => {
-			this._emit("done", lastState)
+			this._emit("done", {
+				resolvedGame: lastState
+			})
 			worker.terminate()
 			console.log("Worker has been terminated")
 			

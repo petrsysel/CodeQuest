@@ -1,4 +1,4 @@
-import Blockly, { Block, WorkspaceSvg } from 'blockly'
+import Blockly, { Block, BlocklyOptions, WorkspaceSvg } from 'blockly'
 import { BlocklyBlockDefinitionContainer } from './BlocklyBlockDefinitionContainer'
 import { BlocklyBehaviourDefinitionContainer } from './BlocklyBehaviourDefinitionContainer'
 import { BlocklyToolboxContainer } from './BlocklyToolboxContainer'
@@ -15,7 +15,7 @@ export class BlocklyWorkspaceGenerator{
 	}
 
 	private _getWorkspaceOptions(toolbox: HTMLElement, theme: any){
-		let options = {
+		let options: BlocklyOptions = {
 			toolbox: toolbox,
 			theme: theme,
 			collapse: true,
@@ -23,6 +23,15 @@ export class BlocklyWorkspaceGenerator{
 			disable: true,
 			maxBlocks: Infinity,
 			trashcan: true,
+			zoom: {
+				controls: true,
+				maxScale: 3,
+				minScale:0.3,
+				scaleSpeed: 1.2,
+				startScale: 1,
+				wheel: true
+			},
+			
 			horizontalLayout: false,
 			toolboxPosition: 'start',
 			css: true,

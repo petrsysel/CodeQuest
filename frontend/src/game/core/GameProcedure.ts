@@ -1,3 +1,4 @@
+import { GameInstruction } from "../adapters/GameInstructions/GameInstructions"
 import { GameRound } from "./GameRound"
 
 export class GameProcedure{

@@ -1,3 +1,5 @@
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle";
+import { PuzzleId } from "../../shared/puzzle-lib/core/PuzzleTypes";
 import { ClientID } from "./ClientID";
 import { User } from "./User";
 

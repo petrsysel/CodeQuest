@@ -1,3 +1,4 @@
+import { Puzzle } from "../shared/puzzle-lib/core/Puzzle";
 import { IServerAPI, ServerAction, StoredPuzzleInfo } from "./core/IServerAPI";
 import { User } from "./core/User";
 async function post(api: string, body: any){

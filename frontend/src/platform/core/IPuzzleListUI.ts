@@ -1,3 +1,4 @@
+import { PuzzleId } from "../../shared/puzzle-lib/core/PuzzleTypes"
 import { StoredPuzzleInfo } from "./IServerAPI"
 
 export type PuzzleListEvent = 'search-request' | 'create-puzzle-request' | 'play-puzzle' | 'duplicate-puzzle' | 'remove-puzzle'

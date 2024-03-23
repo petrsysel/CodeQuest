@@ -1,10 +1,14 @@
+import { EventBehaviour } from "../../shared/EventBehaviour"
+import { GameActor } from "../core/GameActor"
+import { IObjectSynchronizer } from "../ports/GameResolver/IObjectSynchronizer"
+
 type SynchroAction = {
 	actor: GameActor,
 	action: () => void,
 	onFinished: (result: any) => void
 }
 
-class ObjectSynchronizer implements IObjectSynchronizer{
+export class ObjectSynchronizer implements IObjectSynchronizer{
 	private _actors: GameActor[]
 	private _registeredActions: SynchroAction[]
 	private _registrationTimeout: number

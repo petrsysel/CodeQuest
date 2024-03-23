@@ -30,7 +30,7 @@ body{
 }
 *{
     font-family: mainFont, Verdana;
-    font-size: 18px;
+    font-size: 14px;
     margin: 0;
     padding: 0;
 }
@@ -44,13 +44,14 @@ body{
 #editor{
     display: grid;
     grid-template-columns: 1fr 1fr 250px;
-    grid-template-rows: 1fr 60px 200px;
+    grid-template-rows: 1fr 3rem 15rem 3rem;
     /* gap: 5px; */
     height: calc(100vh - 60px);
     grid-template-areas: 
     'code-editor board object-panel'
-    'code-editor puzzle-settings object-panel'
-    'code-editor object-settings object-panel';
+    'code-editor board object-settings'
+    'code-editor board object-settings'
+    'code-editor puzzle-settings object-settings';
     margin: 0;
     padding: 0;
 }
@@ -317,7 +318,7 @@ a{
 #game{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 60px 200px;
+    grid-template-rows: 1fr 3rem 5rem;
     /* gap: 5px; */
     height: calc(100vh - 60px);
     grid-template-areas: 
@@ -642,4 +643,8 @@ input {
     background-color: var(--light-main-color);
     color: var(--dark-main-color);
     outline: 2px solid var(--dark-main-color);
+}
+
+.grid-puzzle-settings img {
+    height: 3rem;
 }

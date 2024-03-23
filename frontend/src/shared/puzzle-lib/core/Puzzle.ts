@@ -1,3 +1,4 @@
+import { IPuzzle } from "../ports/IPuzzle"
 import { ObjectSettingsValidator } from "./ObjectSettingsValidator"
 import { CostumeData, PuzzleObject, PuzzleObjectId, PuzzleObjectSettings, PuzzlePrimitive, PuzzleSettings } from "./PuzzleTypes"
 import { PuzzleUtils } from "./PuzzleUtils"

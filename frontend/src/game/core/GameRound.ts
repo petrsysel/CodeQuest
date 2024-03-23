@@ -1,3 +1,5 @@
+import { GameInstruction } from "../adapters/GameInstructions/GameInstructions"
+
 export class GameRound{
 	private _instructions: GameInstruction[]
 	constructor(instructions: GameInstruction[] = []){

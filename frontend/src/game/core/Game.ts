@@ -12,6 +12,7 @@ export class Game{
 	private _puzzle: Puzzle
 
 	private _selectedObjectId: string | undefined
+	private originalPuzzle: Puzzle
 
 	constructor(
 		codeUI: ICodeEditorUI,
@@ -23,7 +24,11 @@ export class Game{
 		visualizationPlayer: IVisualizationPlayer
 		){
 
-			
+		window.onresize = () => {
+			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+			objectList.render(this._puzzle.getObjectList())
+			controlPanelUI.render(this._puzzle.getSettings())
+		}
 		
 		this._puzzle = new Puzzle()
 		const puzzleFromStorage = localStorage.getItem("cq-puzzle")
@@ -32,6 +37,8 @@ export class Game{
 		}
 		else this._puzzle.loadFromString(puzzleMock.threeWizards())
 		
+		this.originalPuzzle = this._puzzle.clone()
+
 		this._selectedObjectId = this._puzzle.getFirstPlayerObject()
 
 		objectList.render(this._puzzle.getObjectList())
@@ -62,7 +69,7 @@ export class Game{
 		controlPanelUI.on('play-puzzle', () => {
 			let code = codeUI.getCode()
 			
-			gameLauncher.play(this._puzzle)
+			gameLauncher.play(this._puzzle, this.originalPuzzle)
 			controlPanelUI.setState("loading")
 		})
 

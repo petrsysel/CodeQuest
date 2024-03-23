@@ -8,6 +8,6 @@ export type LaucherData = {
 }
 
 export interface IGameLauncher{
-	play(puzzle: Puzzle): void
+	play(puzzle: Puzzle, originalPuzzle: Puzzle): void
 	on(event: LauncherEvent, callback: (data: LaucherData) => void): void
 }

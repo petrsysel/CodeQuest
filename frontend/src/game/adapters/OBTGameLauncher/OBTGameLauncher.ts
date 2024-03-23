@@ -3,13 +3,13 @@ import { BlocklyWorkspaceGenerator } from "../../../editor/adapters/UI/Blockly/B
 import { Puzzle } from "../../../shared/puzzle-lib/core/Puzzle";
 import { IGameLauncher, LaucherData, LauncherEvent } from "../../ports/IGameLauncher";
 
-import Blockly from 'blockly'
+import Blockly, { Workspace, WorkspaceSvg } from 'blockly'
 import * as esprima from 'esprima'
 import greenlet from "greenlet";
 import * as Comlink from 'comlink'
 import { BlocklyEditor } from "../../../editor/adapters/UI/Blockly/BlocklyEditor";
 import { DomHelper, Signal } from "easybox";
-import { PuzzleObject } from "../../../shared/puzzle-lib/core/PuzzleTypes";
+import { PuzzleObject, PuzzleObjectId } from "../../../shared/puzzle-lib/core/PuzzleTypes";
 import { object } from "blockly/core/utils";
 import { GameInstruction, Instruction } from "../GameInstructions/GameInstructions";
 import { Action } from "./Actions/Action";
@@ -68,17 +68,22 @@ export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
 	private workspaceGenerator: BlocklyWorkspaceGenerator
 	private workspace: any
+	private ruleCheckWorkspace: WorkspaceSvg
 
 	constructor(workspaceGenerator: BlocklyWorkspaceGenerator){
 		this.signal = new Signal()
 		this.workspaceGenerator = workspaceGenerator
 		this.workspace = workspaceGenerator.createWorkspace(null)
+		this.ruleCheckWorkspace = workspaceGenerator.createWorkspace(null)
 	}
 	
 	on(event: LauncherEvent, callback: (data: LaucherData) => void): void {
 		this.signal.on(event, callback)
 	}
-	async play(puzzle: Puzzle) {
+	async play(puzzle: Puzzle, originalPuzzle: Puzzle) {
+		const workOriginalPuzzle = originalPuzzle.clone()
+		console.log("DOPRDELE TOHLE JE ORIGINAL PUZZLE")
+		console.log(originalPuzzle)
 		console.log("start play")
 		// Pro sestavení stromu musejí být importovány
 		const enabledActions = [
@@ -146,6 +151,7 @@ export class OBTGameLauncher implements IGameLauncher{
 				console.log(save)
 				  Blockly.serialization.workspaces.load(save, this.workspace)
 				let tree: Action<any>[] = []
+				let ruleChecks: RuleCheckAction[] = []
 				let code: string = javascriptGenerator.workspaceToCode(this.workspace)
 				console.log(code)
 				code = code.replaceAll(/var.*?;/g, "")
@@ -157,7 +163,10 @@ export class OBTGameLauncher implements IGameLauncher{
 				const eventHandlers = tree.filter(a => a instanceof OnEventAction) as OnEventAction[]
 				const functions = tree.filter(a => a instanceof FunctionAction) as FunctionAction[]
 				functions.forEach(f => sharedData.registerFunction(o.id, f))
-				const ruleChecks = tree.filter(a => a instanceof RuleCheckAction) as RuleCheckAction[]
+				const extractedRuleCheck = this.extractRuleCheck(o, workOriginalPuzzle)
+				console.log("RULE CHECK")
+				console.log(extractedRuleCheck)
+				ruleChecks = eval(`[${extractedRuleCheck}]`)
 				functions.forEach(f => sharedData.registerFunction(o.id, f))
 				const mainActions = tree.filter(a => !(a instanceof OnEventAction) && !(a instanceof FunctionAction) && !(a instanceof RuleCheckAction))
 				const main = new ActionContainer(
@@ -205,5 +214,23 @@ export class OBTGameLauncher implements IGameLauncher{
 				error: "V kódu je asi nějaká chyba."
 			})
 		}
+	}
+
+	private extractRuleCheck(object: PuzzleObject, originalPuzzle: Puzzle){
+		const target = originalPuzzle.getObjectList().find(o => o.id === object.id)
+		if(!target) return ""
+		let save
+		try{
+			save = JSON.parse(target.settings.code)
+		}
+		catch(e){
+			save = {}
+		}
+		Blockly.serialization.workspaces.load(save, this.ruleCheckWorkspace);
+		const ruleChecks = (this.ruleCheckWorkspace as Workspace).getBlocksByType('rule_check')
+		if(ruleChecks.length === 0) return ""
+		const body = javascriptGenerator.statementToCode(ruleChecks[0], `rule_check_body`).replace(new RegExp(',$'), '')
+		const code = `new RuleCheckAction([${body}])`;
+		return code
 	}
 }

@@ -1,3 +1,4 @@
+import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle";
 import { ClientID } from "../core/ClientID";
 import { IServerAPI, LoginResponse, RegisterResponse, SavePuzzleResponse, StoredPuzzleInfo } from "../core/IServerAPI";
 import { User } from "../core/User";

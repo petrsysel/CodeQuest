@@ -1,4 +1,7 @@
-interface IPuzzle{
+import { CodeEditorWorkspace } from "../../../editor/ports/UI/ICodeEditorUI"
+import { CostumeData, PuzzleObject, PuzzleObjectId, PuzzleObjectSettings, PuzzleSettings } from "../core/PuzzleTypes"
+
+export interface IPuzzle{
     addObject(): PuzzleObjectId
     removeObject(id: PuzzleObjectId): boolean
     changeObjectSettings(id: PuzzleObjectId, settings: PuzzleObjectSettings): boolean
