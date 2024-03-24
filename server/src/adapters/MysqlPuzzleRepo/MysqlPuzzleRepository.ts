@@ -17,19 +17,15 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 			readFile('./assets/puzzle.sql', (err, data) => {
 				if(err) return
 				this.connection.query(data.toString(), (err, result) => {
-					if(err) console.log(err)
-					else console.log(result)
+					if(err) console.error(err)
 				})
 			})
 		})
 	}
 	async save(puzzle: FullPuzzle): Promise<void> {
 		const existing = await this.getById(puzzle.id)
-		console.log("Saving")
-		console.log(puzzle)
 		return new Promise((resolve, reject) => {
 			if(existing){
-				console.log(`Updating puzzle: ${puzzle.id}`)
 				this.connection.query(
 					`UPDATE puzzles SET name=?, content=?,image=? WHERE id=?`,
 					[puzzle.name, puzzle, puzzle.image, puzzle.id],
@@ -40,7 +36,6 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 				)
 			}
 			else{
-				console.log(puzzle)
 				this.connection.query<ResultSetHeader>(
 					`INSERT INTO puzzles (id, name, author, authorid, content, image, code) VALUES(?,?,?,?,?,?,?)`,
 					[
@@ -67,7 +62,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 			const filter = authorId ? `authorid=?`:'code IS NOT NULL'
 			const queryString = `%${query}%`
 			const values = authorId ? [authorId, queryString, queryString, limit, offset] : [queryString, queryString, limit, offset]
-			console.log(values)
+			
 			this.connection.query<PuzzleModel[]>(
 				`SELECT * FROM puzzles WHERE ${filter} AND (LOWER(name) LIKE LOWER(?) OR LOWER(author) LIKE LOWER(?)) ORDER BY date DESC LIMIT ? OFFSET ?`,
 				values,
@@ -148,7 +143,6 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 	}
 
 	publish(id: string, code?: string | undefined): Promise<void> {
-		console.log(`Publishing with code: ${code}`)
 		return new Promise((resolve, reject) => {
 			this.connection.query(
 				`UPDATE puzzles SET code=? WHERE id=?`,
@@ -161,7 +155,6 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 		})
 	}
 	remove(id: string): Promise<void> {
-		console.log(`Removing: ${id}`)
 		return new Promise((resolve, reject) => {
 			this.connection.query(
 				`DELETE FROM puzzles WHERE id=?`,

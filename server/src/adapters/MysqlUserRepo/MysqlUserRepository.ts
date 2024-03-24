@@ -22,8 +22,7 @@ export class MysqlUserRepository implements IUserRepository{
 			readFile('./assets/user.sql', (err, data) => {
 				if(err) return
 				this.connection.query(data.toString(), (err, result) => {
-					if(err) console.log(err)
-					else console.log(result)
+					if(err) console.error(err)
 				})
 			})
 		})
@@ -32,7 +31,6 @@ export class MysqlUserRepository implements IUserRepository{
 	save(user: User): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const fullname = user.fullname.length !== 0 ? user.fullname : user.username
-			console.log(fullname)
 			this.connection.query<ResultSetHeader>(
 				`INSERT INTO users (id, username, email, fullname, passwordhash) VALUES (?,?,?,?,?);`,
 				[user.id, user.username, user.email, fullname, user.passwordHash],
@@ -52,7 +50,6 @@ export class MysqlUserRepository implements IUserRepository{
 				(err, result) => {
 					if(err) reject(err)
 					else {
-						console.log(result)
 						if(result.length == 0){
 							resolve(undefined)
 							return

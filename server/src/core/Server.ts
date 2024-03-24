@@ -8,7 +8,7 @@ import { UserUtils } from "./UserUtils";
 import { send } from "process";
 import bodyParser from "body-parser"
 import { FullPuzzle, generateCode } from "./Puzzle";
-import { readFile } from "fs";
+import { readFile, readdir } from "fs";
 
 export class Server{
 	constructor(
@@ -94,7 +94,7 @@ export class Server{
 					})
 					sessionManager.logIn(clientid, user, 60*60)
 				}).catch(err=>{
-					console.log(err)
+					console.error(err)
 					res.send({
 						error: "Při registraci došlo k chybě na straně serveru"
 					})
@@ -182,7 +182,6 @@ export class Server{
 				return
 			}
 			const isPrivate = puzzle.code == undefined
-			console.log(`code ${puzzle.code}`)
 			
 			const user = sessionManager.isLogged(clientid)
 			if(isPrivate && (!user || user.id !== puzzle.authorid)){
@@ -201,7 +200,6 @@ export class Server{
 			const clientid = req.body.clientid
 			const id = req.body.id
 			const isPublic = req.body.public
-			console.log(isPublic)
 
 			const user = sessionManager.isLogged(clientid)
 			const puzzle = await puzzleRepository.getById(id)
@@ -250,6 +248,13 @@ export class Server{
 					error: err
 				})
 			})
+		})
+		express.post('/api/costumes', (req, res) => {
+			
+			readdir('./public/costumes',{}, (err, files) => {
+				res.send(files)
+			})
+			
 		})
 	}
 }
