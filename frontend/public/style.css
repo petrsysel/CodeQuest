@@ -522,6 +522,11 @@ a{
 }
 .platform-title{
     font-size: 3rem;
+    text-decoration: none;
+}
+a .platform-title{
+    text-decoration: none;
+    color: var(--light-main-color);
 }
 
 .dialogue-overlay{

@@ -25,7 +25,8 @@ export class Synchronizer{
 		this.internalSignal = new SingleSignal()
 	}
 	next(callings?: string[]){
-		if(this.rounds.length > 100){
+		// Looptrap
+		if(this.rounds.length > 300){
 			this.signal.emit('resolved', {
 				gameEnd: "cycled",
 				message: "Nejspíš došlo k zacyklení. Chceš úlohu přesto spustit?",
