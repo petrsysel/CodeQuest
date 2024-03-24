@@ -10,7 +10,7 @@ import { ObjectSettingsUI } from "./adapters/UI/ObjectSettings/ObjectSettingsUI"
 import { PuzzleSettingsUI } from "./adapters/UI/PuzzleSettings/PuzzleSettingsUI";
 import { Editor } from "./core/Editor";
 
-function main(){
+async function main(){
 	const boardUI = new KonvaBoardUI('board-container', {
 		draggable: true,
 		selectable: "all"
@@ -24,6 +24,7 @@ function main(){
 	const notificationUI = new NotificationUI()
 	const serverApi = new ServerApi()
 	const clientIdManager = new ClientIdManager()
+	const costumes = await serverApi.getCostumes()
 	
 	new Editor(
 		boardUI,
@@ -35,7 +36,8 @@ function main(){
 		puzzleSettings,
 		notificationUI,
 		serverApi,
-		clientIdManager
+		clientIdManager,
+		costumes
 	)
 }
 

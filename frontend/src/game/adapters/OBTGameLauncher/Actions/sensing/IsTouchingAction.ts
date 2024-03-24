@@ -17,7 +17,6 @@ export class IsTouchingAction extends Action<boolean>{
 			const target = await this.targetName.execute(stepper, object, puzzle, sharedData)
 
 			const isTouch = puzzle.commands.isTouch(object.id, target)
-			console.log(`Check touch: ${isTouch}`)
 			resolve(isTouch)
 			this.hybernate()
 		})

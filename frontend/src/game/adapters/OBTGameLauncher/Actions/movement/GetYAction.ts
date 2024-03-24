@@ -11,7 +11,6 @@ export class GetYAction extends Action<number>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<number> {
 		return new Promise(async (resolve, reject) => {
-			console.log(`Get Y request!`)
 			const x = puzzle.commands.getY(object.id)
 			resolve(x)
 			this.hybernate()

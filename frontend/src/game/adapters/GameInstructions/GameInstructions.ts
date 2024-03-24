@@ -1,6 +1,6 @@
-import { getMockCostumes } from "../../../editor/mock/costumeDataMock"
 import { INotificationUI } from "../../../shared/notification/ports/INotificationUI"
 import { Puzzle } from "../../../shared/puzzle-lib/core/Puzzle"
+import { CostumeData } from "../../../shared/puzzle-lib/core/PuzzleTypes"
 
 export type InstructionType =
 	"goforward" |
@@ -41,6 +41,11 @@ export type Parameter = {
 }
 
 export class Instruction {
+	private static costumeData: CostumeData[]
+	static initCostumeData(costumeData: CostumeData[]){
+		this.costumeData = costumeData
+	}
+
 	static instantInstructions: InstructionType[] = [
 		"changebackground",
 		"changecostume",
@@ -161,8 +166,8 @@ export class Instruction {
 				break
 			case "changecostume":
 				const newCostume = instruction.costumeName as string
-				const costume = getMockCostumes().find(c => c.name == newCostume)
-				console.log(costume)
+				const costume = this.costumeData.find(c => c.name == newCostume)
+				
 				if(costume) puzzle.changeObjectCostume(instruction.objectId, costume)
 				break
 			case "gameover":

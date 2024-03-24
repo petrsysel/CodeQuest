@@ -4,6 +4,7 @@ import { KonvaBoardUI } from "../editor/adapters/UI/Board/KonvaBoardUI";
 import { ServerApi } from "../platform/ServerApi";
 import { ClientIdManager } from "../platform/adapters/ClientIdManager";
 import { NotificationUI } from "../shared/notification/adapters/NotificationUI";
+import { Instruction } from "./adapters/GameInstructions/GameInstructions";
 import { GameLauncher } from "./adapters/GameLaucher";
 import { OBTGameLauncher } from "./adapters/OBTGameLauncher/OBTGameLauncher";
 import { GameControlPanel } from "./adapters/UI/GameControlPanel/GameControlPanel";
@@ -11,7 +12,10 @@ import { GameObjectList } from "./adapters/UI/GameObjectList/GameObjectList";
 import { VisualizationPlayer } from "./adapters/VisualizationPlayer";
 import { Game } from "./core/Game";
 
-function main(){
+async function main(){
+	
+	
+
 	const game = new BlocklyEditor('game-blockly-placeholder')
 	const board = new KonvaBoardUI('game-board-container', {
 		draggable: false,
@@ -25,6 +29,8 @@ function main(){
 	const visualizationPlayer = new VisualizationPlayer(board, notificationUI)
 	const serverApi = new ServerApi()
 	const clientIdManager = new ClientIdManager()
+	const costumes = await serverApi.getCostumes()
+	Instruction.initCostumeData(costumes)
 
 	new Game(
 		game,

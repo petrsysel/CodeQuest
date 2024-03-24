@@ -11,7 +11,6 @@ export class JumpAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
 		return new Promise((resolve, reject) => {
 			stepper.on('step', () => {
-				console.log(`${object.settings.name} is jumping!`)
 				puzzle.commands.jump(object.id)
 				stepper.registerInstruction(Instruction.jump(object.id))
 				resolve()

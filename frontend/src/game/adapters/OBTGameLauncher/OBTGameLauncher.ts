@@ -82,7 +82,7 @@ export class OBTGameLauncher implements IGameLauncher{
 	}
 	async play(puzzle: Puzzle, originalPuzzle: Puzzle) {
 		const workOriginalPuzzle = originalPuzzle.clone()
-		console.log("start play")
+		
 		// Pro sestavení stromu musejí být importovány
 		const enabledActions = [
 			GoAction,
@@ -145,16 +145,14 @@ export class OBTGameLauncher implements IGameLauncher{
 				catch(e){
 					
 				}
-				console.log("SAVED CODE")
-				console.log(save)
-				  Blockly.serialization.workspaces.load(save, this.workspace)
+				Blockly.serialization.workspaces.load(save, this.workspace)
 				let tree: Action<any>[] = []
 				let ruleChecks: RuleCheckAction[] = []
 				let code: string = javascriptGenerator.workspaceToCode(this.workspace)
-				console.log(code)
+				
 				code = code.replaceAll(/var.*?;/g, "")
 				code = code.replaceAll(/\/\/.*?\.\.\./g, "")
-				console.log(code)
+				
 				const finalCode = `tree = [${code.replace(new RegExp(',$'), '')}]`
 				eval(finalCode)
 	
@@ -162,8 +160,7 @@ export class OBTGameLauncher implements IGameLauncher{
 				const functions = tree.filter(a => a instanceof FunctionAction) as FunctionAction[]
 				functions.forEach(f => sharedData.registerFunction(o.id, f))
 				const extractedRuleCheck = this.extractRuleCheck(o, workOriginalPuzzle)
-				console.log("RULE CHECK")
-				console.log(extractedRuleCheck)
+				
 				ruleChecks = eval(`[${extractedRuleCheck}]`)
 				functions.forEach(f => sharedData.registerFunction(o.id, f))
 				const mainActions = tree.filter(a => !(a instanceof OnEventAction) && !(a instanceof FunctionAction) && !(a instanceof RuleCheckAction))

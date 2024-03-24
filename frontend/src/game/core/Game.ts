@@ -99,8 +99,6 @@ export class Game{
 
 		gameLauncher.on("done", async data => {
 			controlPanelUI.setState('playing')
-			console.log("play visualization")
-			console.log(data)
 			let workPuzzle = this._puzzle.clone()
 			visualizationPlayer.play(data.resolvedGame, workPuzzle)
 			// visualizationPlayer.stop()
@@ -134,7 +132,6 @@ export class Game{
 
 		const onSelected = (selectedId: PuzzleObjectId) => {
 			this._selectedObjectId = selectedId
-			console.log(`Object ${selectedId} was selected`)
 			boardUI.setSelected(selectedId)
 			boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
 			objectList.setSelected(this._selectedObjectId? this._selectedObjectId : "")
@@ -153,7 +150,6 @@ export class Game{
             serverApi.getContent(clientid, id).then(response => {
                 if(!response.error){
                     this._puzzle.loadFromString(response.response!)
-                    console.log(`LOADED PUZZLE: ${this._puzzle.getId()}`)
 					const playerObject = this._puzzle.getObjectList().find(o => o.settings.playerEdit)?.id
 					if(playerObject){
 						this._selectedObjectId = playerObject

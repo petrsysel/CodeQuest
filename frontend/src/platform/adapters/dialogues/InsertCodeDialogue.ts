@@ -33,7 +33,6 @@ export class InsetCodeDialogue extends DialogueWindow<string>{
             this.okBtnElement.onclick = () => {
                 resolve(this.codeInputElement.value)
                 this.hide()
-                console.log(this.codeInputElement.value)
             }
         })
     }

@@ -250,7 +250,7 @@ export class BlocklyToolboxContainer{
 </category>
 	`
 	static getToolbox(enabledBlocks: Block[]){
-    console.log(enabledBlocks)
+    
 		let toolbox = document.getElementById('blockly-toolbox') as HTMLElement
 
     

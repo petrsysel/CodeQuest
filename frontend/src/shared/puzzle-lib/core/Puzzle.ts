@@ -19,7 +19,6 @@ export class Puzzle implements IPuzzle{
             newObject
         )
         this._objectCounter++
-        // console.log(JSON.stringify(this._primitive, undefined, 4))
         return newObject.id
     }
     duplicateObject(originalId: string): PuzzleObjectId {
@@ -30,7 +29,6 @@ export class Puzzle implements IPuzzle{
             newObject
         )
         this._objectCounter++
-        // console.log(JSON.stringify(this._primitive, undefined, 4))
         return newObject.id
     }
     removeObject(id: string): boolean {
@@ -129,7 +127,6 @@ export class Puzzle implements IPuzzle{
     
     loadFromString(puzzleString: string){
         let decoded = decodeURIComponent(puzzleString)
-        console.log(decoded)
         this._primitive = JSON.parse(decoded)
     }
 
@@ -187,7 +184,6 @@ export class Puzzle implements IPuzzle{
         object.settings.direction = direction
     }
     private _commandJumpTo(objectId: PuzzleObjectId, x: number, y: number){
-        console.log(`Jumping to ${x} ${y}`)
         let object = this.getObject(objectId)
         if(!object) return
         object.settings.X = x

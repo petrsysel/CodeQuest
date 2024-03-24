@@ -260,7 +260,7 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 
 		javascriptGenerator.forBlock['distance_to'] = function(block: any, generator: any) {
 			var targetName = generator.valueToCode(block, 'object_name', javascript.Order.ATOMIC);
-			console.log(targetName)
+			
 			var code = `new DistanceToAction(${targetName})`;
 			return [code, javascript.Order.ATOMIC]
 		};
@@ -330,7 +330,7 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 			const value = generator.valueToCode(block, `VALUE`, javascript.Order.ATOMIC)
 
 			const code = `new ReturnFunctionAction('${root}', ${condition}, ${value}),`;
-			console.log(code)
+			
 			return code
 		};
 		
@@ -360,7 +360,7 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 				}
 			})
 			const code = `new CallFunctionAction('${name}', ${JSON.stringify(tinyVariables)}, [${args}])`;
-			console.log(code)
+			
 			return [code, javascript.Order.ATOMIC]
 		}
 

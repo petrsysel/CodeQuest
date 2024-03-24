@@ -11,7 +11,7 @@ export class GetDirectionAction extends Action<string>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<string> {
 		return new Promise(async (resolve, reject) => {
-			console.log(`Get direction request!`)
+			
 			const direction = puzzle.commands.getDirection(object.id)
 			resolve(direction)
 			this.hybernate()

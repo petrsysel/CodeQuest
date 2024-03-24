@@ -14,7 +14,7 @@ export class SetLayerAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
 			const resolvedLayer = await this.layer.execute(stepper, object, puzzle, sharedData)
-			console.log(`Seting layer of an object!`)
+			
 			puzzle.commands.setLayer(object.id, resolvedLayer)
 			stepper.registerInstruction(Instruction.setLayer(object.id, resolvedLayer))
 			resolve()

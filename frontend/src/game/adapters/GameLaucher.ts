@@ -18,7 +18,6 @@ export class GameLauncher implements IGameLauncher{
 			PuzzleUtils.createActors(puzzle)
 		)
 		let destr = PuzzleUtils.destringifyActors(stringifyActors)
-		console.log(destr)
 		worker.postMessage({
 			command: 'start',
 			content: puzzle.stringify(),
@@ -38,7 +37,6 @@ export class GameLauncher implements IGameLauncher{
 				resolvedGame: lastState
 			})
 			worker.terminate()
-			console.log("Worker has been terminated")
 			
 		}, this._timeout)
 	}

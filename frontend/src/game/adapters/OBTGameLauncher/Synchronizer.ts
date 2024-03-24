@@ -32,7 +32,6 @@ export class Synchronizer{
 				resolvedGame: this.getRounds()
 			})
 			
-			console.log("Cycled!")
 			return
 		}
 		if(!this.running){
@@ -78,7 +77,6 @@ export class Synchronizer{
 						return [...p, ...a]
 					},[])
 					this.rounds.push([...round])
-					console.log("STARTING NEW ROUND")
 					this.checkEndGame(responsesBackup)
 					this.next(callingAcumulator)
 				}

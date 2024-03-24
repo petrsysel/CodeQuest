@@ -5,8 +5,7 @@ import { INotificationUI } from "../../shared/notification/ports/INotificationUI
 import { ObjectSettingsValidator } from "../../shared/puzzle-lib/core/ObjectSettingsValidator"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleSettingsValidator } from "../../shared/puzzle-lib/core/PuzzleSettingsValidator"
-import { PuzzleObjectId, PuzzleObjectSettings } from "../../shared/puzzle-lib/core/PuzzleTypes"
-import { getMockCostumes } from "../mock/costumeDataMock"
+import { CostumeData, PuzzleObjectId, PuzzleObjectSettings } from "../../shared/puzzle-lib/core/PuzzleTypes"
 import { IBoardUI } from "../ports/UI/IBoardUI"
 import { ICodeEditorUI } from "../ports/UI/ICodeEditorUI"
 import { IControlPanelUI } from "../ports/UI/IControlPanelUI"
@@ -17,7 +16,7 @@ import { IPuzzleSettingsUI } from "../ports/UI/IPuzzleSettingsUI"
 
 export class Editor{
     private _mockupPuzzle: Puzzle
-    private _mockupCostumes = getMockCostumes()
+    private _mockupCostumes: CostumeData[]
 
     private _selectedObjectId: PuzzleObjectId | undefined
 
@@ -42,10 +41,11 @@ export class Editor{
         puzzleSettingsUI: IPuzzleSettingsUI,
         notificationUI: INotificationUI,
         serverApi: IServerAPI,
-        clientIdManager: ClientIdManager
+        clientIdManager: ClientIdManager,
+        costumeData: CostumeData[]
         ){
         const clientid = clientIdManager.get()
-
+        this._mockupCostumes = costumeData
         serverApi.isLogged(clientid).then(user => {
             this.loggedUser = user
             const logged = user != undefined
@@ -112,7 +112,7 @@ export class Editor{
             
             this._renderAll()
         })
-        objectSettingsUI.on('change-costume-request', () => {
+        objectSettingsUI.on('change-costume-request', async () => {
             costumePickerUI.render(this._mockupCostumes)
         })
         costumePickerUI.on('costume-pick', (costume) => {
@@ -143,7 +143,6 @@ export class Editor{
         const save = () => {
             if(!this.loggedUser) return
             const previewImage = boardUI.getPreviewImage()
-            console.log(previewImage)
             return serverApi.savePuzzle(clientid, this._mockupPuzzle, this.loggedUser, previewImage, null)
         }
         const openGame = (puzzleId: string) => {
@@ -172,9 +171,7 @@ export class Editor{
         if(id){
             serverApi.getContent(clientid, id).then(response => {
                 if(!response.error){
-                    console.log(response.response)
                     this._mockupPuzzle.loadFromString(response.response!)
-                    console.log(`Loaded puzzle: ${this._mockupPuzzle.getId()}`)
                     this._renderAll()
                 }
                 else console.error(response.error)

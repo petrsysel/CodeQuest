@@ -11,7 +11,7 @@ export class HideAction extends Action<void>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
 		return new Promise(async (resolve, reject) => {
-			console.log(`Object is hiding!`)
+			
 			puzzle.commands.hide(object.id)
 			stepper.registerInstruction(Instruction.hide(object.id))
 			resolve()

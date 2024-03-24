@@ -1,4 +1,5 @@
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle";
+import { CostumeData } from "../../shared/puzzle-lib/core/PuzzleTypes";
 import { ClientID } from "../core/ClientID";
 import { IServerAPI, LoginResponse, PuzzleAccess, RegisterResponse, SavePuzzleResponse, ServerAction, StoredPuzzleInfo } from "../core/IServerAPI";
 import { User } from "../core/User";
@@ -119,6 +120,11 @@ export class MockServerAPI implements IServerAPI{
             resolve({
                 success: true
             })
+        })
+    }
+    getCostumes(): Promise<CostumeData[]> {
+        return new Promise((resolve, reject) => {
+            resolve([])
         })
     }
 }

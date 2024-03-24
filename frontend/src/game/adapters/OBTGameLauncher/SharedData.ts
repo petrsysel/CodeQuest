@@ -24,8 +24,6 @@ export class SharedData {
 	}
 	getVariable(objectId: PuzzleObjectId, variableId: string): any | undefined{
 		const data = this.variables.get(`${objectId}.${variableId}`)
-		console.log("SHARED DATA GET")
-		console.log(data)
 		return data
 	}
 	changeVariable(objectId: PuzzleObjectId, variableId: string, increment: any){
@@ -79,7 +77,6 @@ export class SharedData {
 		return func.wasReturned
 	}
 	returnFuntion(objectId: PuzzleObjectId, functionName: string, value?: any){
-		console.log(`RETURNING VALUE: ${value}`)
 		this.setFunctionValue(objectId, functionName, value)
 	}
 }

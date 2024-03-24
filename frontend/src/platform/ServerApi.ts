@@ -1,8 +1,8 @@
 import { Puzzle } from "../shared/puzzle-lib/core/Puzzle";
+import { CostumeData } from "../shared/puzzle-lib/core/PuzzleTypes";
 import { ContentResponse, IServerAPI, PuzzleAccess, ServerAction, StoredPuzzleInfo } from "./core/IServerAPI";
 import { User } from "./core/User";
 async function post(api: string, body: any){
-	console.log(api)
 	return await fetch(api, {
 		method: 'POST',
 		headers: {
@@ -33,7 +33,6 @@ export class ServerApi implements IServerAPI{
 				password: password
 			})
 			const data = await response.json()
-			console.log(data)
 			resolve({
 				success: data.error == undefined,
 				error: data.error
@@ -60,7 +59,6 @@ export class ServerApi implements IServerAPI{
 				clientid: id
 			})
 			const data = await response.json()
-			console.log(data)
 			if(!data.result) resolve(undefined)
 			else{
 				const user = data.user
@@ -95,12 +93,10 @@ export class ServerApi implements IServerAPI{
 				code: code
 			})
 			const data = await response.json()
-			console.log(data)
 			const result = {
 				success: data.error === undefined,
 				error: data.error
 			}
-			console.log(result)
 			resolve(result)
 		})
 	}
@@ -134,12 +130,8 @@ export class ServerApi implements IServerAPI{
 				code: puzzleCode
 			})
 			const data = await response.json()
-			console.log(data)
-			console.log(data.id)
-			console.log(!data.id)
 			if(!data.result.id) resolve(undefined)
 			else{
-				console.log("resolving puzzle code")
 				const puzzle: StoredPuzzleInfo = {
 					author: data.result.author,
 					id: data.result.id,
@@ -163,7 +155,6 @@ export class ServerApi implements IServerAPI{
 				access: access
 			})
 			const data = await response.json()
-			console.log(data)
 			const savedPuzzles: StoredPuzzleInfo[] = data.map((res: any) => {
 				const puzzle: StoredPuzzleInfo = {
 					author: res.author,
@@ -220,6 +211,24 @@ export class ServerApi implements IServerAPI{
 				success: data.error == undefined,
 				error: data.error
 			})
+		})
+	}
+
+	getCostumes(): Promise<CostumeData[]> {
+		return new Promise(async (resolve, reject) => {
+			const response = await post(this.address("costumes"), {
+				
+			})
+			const data = await response.json()
+			
+			resolve(data.map((path: string) => {
+				const costumeData: CostumeData = {
+					name: path.split('.')[0],
+					path: `/costumes/${path}`,
+					tags: [path]
+				}
+				return costumeData
+			}))
 		})
 	}
 }

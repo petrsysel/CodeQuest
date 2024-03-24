@@ -37,7 +37,7 @@ export class CallFunctionAction extends Action<any>{
 				functionAction.wakeup()
 				await functionAction.execute(stepper, object, puzzle, sharedData)
 				const resolvedReturnValue = sharedData.getFunction(object.id, this.name)!
-				console.log(resolvedReturnValue)
+				
 				resolve(resolvedReturnValue.returnedValue)
 			}
 			this.hybernate()

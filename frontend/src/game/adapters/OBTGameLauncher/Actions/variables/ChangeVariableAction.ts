@@ -16,7 +16,7 @@ export class ChangeVariableAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
 			const increment = await this.increment.execute(stepper, object, puzzle, sharedData)
-			console.log(`${object.settings.name} is changing variable.`)
+			
 			sharedData.changeVariable(object.id, this.variableName, increment)
 			resolve()
 			this.hybernate()

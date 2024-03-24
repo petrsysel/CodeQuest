@@ -1,5 +1,5 @@
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle";
-import { PuzzleId } from "../../shared/puzzle-lib/core/PuzzleTypes";
+import { CostumeData, PuzzleId } from "../../shared/puzzle-lib/core/PuzzleTypes";
 import { ClientID } from "./ClientID";
 import { User } from "./User";
 
@@ -52,4 +52,5 @@ export interface IServerAPI {
     getContent(clientId: ClientID, puzzleId: PuzzleId): Promise<ContentResponse>
     publish(clientId: ClientID, puzzleId: PuzzleId, publish: boolean): Promise<ServerAction>
     remove(clientId: ClientID, puzzleId: PuzzleId): Promise<ServerAction>
+    getCostumes(): Promise<CostumeData[]>
 }

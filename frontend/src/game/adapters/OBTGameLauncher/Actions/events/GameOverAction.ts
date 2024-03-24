@@ -16,7 +16,7 @@ export class GameOverAction extends Action<void>{
 	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		const messageValue = await this.message.execute(stepper, object, puzzle, sharedData)
 		return new Promise((resolve, reject) => {
-			console.log("GAME OVER!")
+			
 			stepper.registerInstruction(Instruction.gameOver(object.id, messageValue))
 			stepper.on('step', () => {
 				resolve()

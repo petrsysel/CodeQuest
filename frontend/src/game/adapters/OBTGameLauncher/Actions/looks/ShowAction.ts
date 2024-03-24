@@ -11,7 +11,7 @@ export class ShowAction extends Action<void>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
 		return new Promise(async (resolve, reject) => {
-			console.log(`Object is showing up!`)
+			
 			puzzle.commands.show(object.id)
 			stepper.registerInstruction(Instruction.show(object.id))
 			resolve()

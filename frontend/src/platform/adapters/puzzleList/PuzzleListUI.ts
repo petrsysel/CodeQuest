@@ -152,7 +152,6 @@ export class PuzzleListUI implements IPuzzleListUI{
 			}
 
 			this.puzzleListContainer.appendChild(newPuzzleElement)
-			console.log(this.puzzleListContainer)
 		})
 	}
 }

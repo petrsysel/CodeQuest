@@ -41,7 +41,6 @@ export class Platform{
 
         serverApi.isLogged(clientId).then(user => {
             this.loggedUser = user
-            console.log(user)
             const logged = user != undefined
             navBar.render({
                 loggedUser: logged,
@@ -87,13 +86,10 @@ export class Platform{
         navBar.on('register-request', async () => {
             async function showRegisterDialogueRec(error?: string, preFill?: RegisterData){
                 const response = await registerForm.show(error, preFill)
-                console.log("REGISTRATION FORM")
-                console.log(response)
                 if(!response) return
                 const validationResponse = registerForm.validate(response)
                 if(!validationResponse.isValid) showRegisterDialogueRec(validationResponse.error, response)
                 else {
-                    console.log("Registration form is valid")
                     const serverResponse = await serverApi.registerRequest(
                         clientId,
                         {
@@ -121,7 +117,6 @@ export class Platform{
             const response = await insertPuzzleCode.show()
             if(!response) return
             const puzzleInfo = await serverApi.findByCode(response)
-            console.log(puzzleInfo)
             if(!puzzleInfo){
                 const response = await yesNoDialogue.notify("Úloha s tímto kódem neexistuje")
                 return
@@ -135,8 +130,6 @@ export class Platform{
                 renderMode: "custom"
             })
             serverApi.fetchPuzzles(clientId, "private", 10, 0).then((result) => {
-                console.log("SERVER RESPONSE")
-                console.log(result)
                 puzzleList.render(result, {
                     mode: "custom",
                     loggedUser: this.loggedUser != undefined,
@@ -181,7 +174,7 @@ export class Platform{
             if(!this.loggedUser) return
             serverApi.savePuzzle(clientId, puzzle, this.loggedUser, getQuestionMarkImg(), null).then(result => {
                 if(result.success) window.open(`editor.html?puzzleid=${puzzle.getId()}`)
-                else console.log(result.error)
+                else console.error(result.error)
             })
         })
 
@@ -223,7 +216,6 @@ export class Platform{
         })
 
         puzzleList.on('search-request', async data => {
-            console.log(`searching: ${data.query}`)
             const id = data.mode! === "custom" ? clientId : '-'
             const result = await serverApi.findPuzzles(id, data.query!)
             puzzleList.render(result, {

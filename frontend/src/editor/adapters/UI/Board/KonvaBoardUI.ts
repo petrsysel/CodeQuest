@@ -175,8 +175,7 @@ export class KonvaBoardUI implements IBoardUI{
 					
 				} 
 				else{
-					console.log("no animation. So static render")
-					console.log(instructions)
+					//no animation. So static render
 					// await this.render(puzzleSettings, objects) 
 					performInstruction(instructionIndex+1)
 				}
@@ -399,7 +398,6 @@ export class KonvaBoardUI implements IBoardUI{
 		// canvas.height = 100*ratio
 		// return canvas.toDataURL()
 		const img = this._konvaData.stage.toDataURL({pixelRatio:0.3})
-		console.log(img)
 		return img
 	}
 }

@@ -180,8 +180,6 @@ export class GameResolver{
 			};\n
 			${mark}();`
 
-			console.log("KÓD KE SPUŠTĚNÍ:")
-			console.log(func)
 			const f = new Function('actor','goForward', 'turn', "jump", "setDirection", "jumpTo", "getX", "getY", "getDirection", "say", "changeCostume", "changeBackground", "show", "hide", "setLayer", "wait", "win", "gameOver", "isTouch", "isInFrontOfMe", "distanceTo", "registerMessageCallback", "sendMessage", func)
 			
 			f(actor, goForward, turn, jump, setDirection, jumpTo, getX, getY, getDirection, say, changeCostume, changeBackground, show, hide, setLayer, wait, win, gameOver, isTouch, isInFrontOfMe, distanceTo,

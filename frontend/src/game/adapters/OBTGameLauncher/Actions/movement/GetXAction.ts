@@ -11,7 +11,6 @@ export class GetXAction extends Action<number>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<number> {
 		return new Promise(async (resolve, reject) => {
-			console.log(`Get X request!`)
 			const x = puzzle.commands.getX(object.id)
 			resolve(x)
 			this.hybernate()

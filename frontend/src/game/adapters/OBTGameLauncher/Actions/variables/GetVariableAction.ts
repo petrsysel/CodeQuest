@@ -15,8 +15,6 @@ export class GetVariableAction extends Action<any>{
 		return new Promise(async (resolve, reject) => {
 			
 			const variable = sharedData.getVariable(object.id, this.variableName)
-			console.log(variable)
-			console.log(`${object.settings.name} is getting variable: ${variable}.`)
 			resolve(variable)
 			this.hybernate()
 		})

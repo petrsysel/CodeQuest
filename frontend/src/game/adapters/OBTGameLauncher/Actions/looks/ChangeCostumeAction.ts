@@ -14,7 +14,7 @@ export class ChangeCostumeAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
 			const costume = await this.costumeName.execute(stepper, object, puzzle, sharedData)
-			console.log(`Changing costume to ${costume} is going!`)
+			
 			// puzzle.commands.
 			stepper.registerInstruction(Instruction.changeCostume(object.id, costume))
 			resolve()

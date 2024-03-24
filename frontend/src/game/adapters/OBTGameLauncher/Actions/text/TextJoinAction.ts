@@ -15,10 +15,8 @@ export class TextJoinAction extends Action<string>{
 			let acc: string = ""
 			for(const str of this.strings){
 				const resolved = await str.execute(stepper, object, puzzle, sharedData)
-				console.log(resolved)
 				acc += resolved
 			}
-			console.log(`Resolved joined text: ${acc}`)
 			resolve(acc)
 			this.hybernate()
 		})

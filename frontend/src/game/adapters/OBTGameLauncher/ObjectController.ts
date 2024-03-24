@@ -50,7 +50,6 @@ export class ObjectController{
 	run(){
 		this.threadStack.add(this.mainThread)
 		this.mainThread.next()
-		console.log("Running main thread of an object " + this.object.settings.name)
 	}
 	async call(eventName: string): Promise<boolean>{
 		return new Promise(async (resolve, reject) => {
@@ -113,7 +112,7 @@ export class ObjectController{
 						})
 						activeThread.on('hybernation', async () => {
 							const ruleCheckRound = await activeThread.checkRules()
-							console.log(ruleCheckRound)
+							
 							const wasCalledDelayedAction = this.threadStack.read()?.wasCalledDelayedAction
 							this.threadStack.pop()
 							
@@ -138,7 +137,7 @@ export class ObjectController{
 						})
 						activeThread.on('ready', async () => {
 							const ruleCheckRound = await activeThread.checkRules()
-							console.log(ruleCheckRound)
+							
 							if(activeThread.hasBeenCalledNext){
 								resolve({
 									state: 'ready',

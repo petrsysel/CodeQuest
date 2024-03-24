@@ -17,7 +17,6 @@ export class JumpToAction extends Action<void>{
 		return new Promise(async (resolve, reject) => {
 			const posX = await this.x.execute(stepper, object, puzzle, sharedData)
 			const posY = await this.y.execute(stepper, object, puzzle, sharedData)
-			console.log(`${object.settings.name} is jumping to another position`)
 			puzzle.commands.jumpTo(object.id, posX, posY)
 			stepper.registerInstruction(Instruction.jumpTo(object.id, posX, posY))
 			resolve()

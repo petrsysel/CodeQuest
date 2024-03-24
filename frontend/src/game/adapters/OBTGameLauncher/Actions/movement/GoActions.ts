@@ -12,7 +12,6 @@ export class GoAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<void> {
 		return new Promise((resolve, reject) => {
 			stepper.on('step', () => {
-				console.log(`${object.settings.name} is going!`)
 				puzzle.commands.goForward(object.id)
 				stepper.registerInstruction(Instruction.goForward(object.id))
 				resolve()

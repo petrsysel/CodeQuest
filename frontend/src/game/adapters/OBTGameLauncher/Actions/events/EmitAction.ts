@@ -15,7 +15,6 @@ export class EmitAction extends Action<void>{
 	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		const eventName = await this.text.execute(stepper, object, puzzle, sharedData)
 		return new Promise((resolve, reject) => {
-			console.log("Event " + eventName + " were been emitted!")
 			stepper.emit(eventName)
 			resolve()
 		})

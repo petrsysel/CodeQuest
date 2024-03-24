@@ -16,7 +16,7 @@ export class WinAction extends Action<void>{
 	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		const messageValue = await this.message.execute(stepper, object, puzzle, sharedData)
 		return new Promise((resolve, reject) => {
-			console.log("WIN!")
+			
 			stepper.registerInstruction(Instruction.win(object.id, messageValue))
 			stepper.on('step', () => {
 				resolve()

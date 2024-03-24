@@ -45,7 +45,6 @@ export class ObjectSynchronizer implements IObjectSynchronizer{
 		let noActionActors = this._actors.filter(a => !this._registeredActions.some(ra => ra.actor.getObject().id == a.getObject().id))
 		noActionActors.forEach(a => {
 			a.putToSleep()
-			console.log('putting to sleep: ' + a.getObject().settings.name)
 		})
 		this._checkActions()
 	}

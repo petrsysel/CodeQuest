@@ -16,7 +16,6 @@ export class SetVariableAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
 			const value = await this.value.execute(stepper, object, puzzle, sharedData)
-			console.log(`${object.settings.name} is setting variable.`)
 
 			sharedData.setVariable(object.id, this.variableName, value)
 			resolve()

@@ -18,12 +18,10 @@ export class ReturnFunctionAction extends Action<void>{
 
 	async execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		const resolvedCondition = await this.condition.execute(stepper, object, puzzle, sharedData)
-		console.log(this.value)
+		
 		const valueToReturn = this.value? await this.value.execute(stepper, object, puzzle, sharedData) : null
 		
 		if(resolvedCondition){
-			console.log("Condition resolved")
-			console.log(this.functionName)
 			const func = sharedData.getFunction(object.id, this.functionName)!.emit("returned")
 			sharedData.returnFuntion(object.id, this.functionName, valueToReturn)
 		}

@@ -102,13 +102,11 @@ export class BlocklyEditor implements ICodeEditorUI {
   }
 
   setupToolbox(enabledBlocks: Block[]){
-    console.log(enabledBlocks)
     if(enabledBlocks.length == 0) return
     
     (this._workspace as any).getToolbox().getToolboxItems().forEach((cat: any) => {
       if(!enabledBlocks.some(b => b.category == cat.getName())) cat.hide()
       else{
-    console.log(cat)
         let toKeep: any[] = []
         
         if(typeof(cat.getContents()) != "string"){

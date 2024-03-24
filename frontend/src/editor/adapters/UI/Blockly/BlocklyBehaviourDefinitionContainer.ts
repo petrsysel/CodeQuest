@@ -11,8 +11,6 @@ export class BlocklyBehaviourDefinitionContainer {
 	static init(){
 		
 		const ruleCheckCode = Utility.getRuleCheckCode()
-		console.log("hello")
-		console.log(javascript)
 		javascriptGenerator.forBlock['go_forward'] = function(block: any, generator: any) {
 			var code = `
 			await goForward(actor);\n
@@ -39,7 +37,7 @@ export class BlocklyBehaviourDefinitionContainer {
 		
 		javascriptGenerator.forBlock['set_direction'] = function(block: any, generator: any) {
 			var value_direction = generator.valueToCode(block, 'direction', javascript.Order.NONE);
-			console.log(typeof value_direction)
+			
 			var code = `await setDirection(actor, ${value_direction})\n`;
 			return code;
 		};
@@ -54,7 +52,7 @@ export class BlocklyBehaviourDefinitionContainer {
 		javascriptGenerator.forBlock['direction_pick'] = function(block: any, generator: any) {
 			var dropdown_direction = block.getFieldValue('direction');
 			var code = `"${dropdown_direction}"`
-			console.log(code)
+			
 			return [code, javascriptGenerator.ORDER_ATOMIC];
 		};
 		
@@ -126,20 +124,6 @@ export class BlocklyBehaviourDefinitionContainer {
 			return code;
 		};
 		
-		javascriptGenerator.forBlock['controls_if'] = function(block: any, generator: any) {
-			console.log("IF STATEMENT BLOCK")
-			console.log(block)
-			console.log(generator.valueToCode(block, 'IF0', javascript.Order.ATOMIC))
-			var code = "Cože"
-			return code;
-		};
-		javascriptGenerator.forBlock['variables_set'] = function(block: any, generator: any) {
-			console.log("VARIABLE")
-			console.log(block)
-			console.log(generator.valueToCode(block, 'VALUE', javascript.Order.ATOMIC))
-			var code = "Cože"
-			return code;
-		};
 		javascriptGenerator.forBlock['on_message_recieve'] = function(block: any, generator: any) {
 			var value_message_name = generator.valueToCode(block, 'message_name', javascript.Order.ATOMIC);
 			var on_message_body = generator.statementToCode(block, 'on_message_body');

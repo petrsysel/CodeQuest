@@ -12,7 +12,6 @@ export class DirectionPickAction extends Action<string>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle): Promise<string> {
 		return new Promise(async (resolve, reject) => {
-			console.log(`${object.settings.name} picking direction!`)
 			resolve(this.direction)
 			this.hybernate()
 		})
