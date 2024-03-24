@@ -10,7 +10,7 @@ export default {
 			}
 		},
 		optimizeDeps: {
-			exclude: ['./src/game/adapters/OBTGameLauncher/OBTGameLauncher.ts'],
+			include: ['./src/game/adapters/OBTGameLauncher/OBTGameLauncher.ts'],
 		}
 	}
   }
