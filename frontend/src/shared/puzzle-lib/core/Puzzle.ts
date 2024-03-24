@@ -1,6 +1,6 @@
 import { IPuzzle } from "../ports/IPuzzle"
 import { ObjectSettingsValidator } from "./ObjectSettingsValidator"
-import { CostumeData, PuzzleObject, PuzzleObjectId, PuzzleObjectSettings, PuzzlePrimitive, PuzzleSettings } from "./PuzzleTypes"
+import { CostumeData, PuzzleId, PuzzleObject, PuzzleObjectId, PuzzleObjectSettings, PuzzlePrimitive, PuzzleSettings } from "./PuzzleTypes"
 import { PuzzleUtils } from "./PuzzleUtils"
 
 export class Puzzle implements IPuzzle{
@@ -129,6 +129,7 @@ export class Puzzle implements IPuzzle{
     
     loadFromString(puzzleString: string){
         let decoded = decodeURIComponent(puzzleString)
+        console.log(decoded)
         this._primitive = JSON.parse(decoded)
     }
 
@@ -278,5 +279,14 @@ export class Puzzle implements IPuzzle{
     clone(){
         // return new Puzzle({...this._primitive})
         return new Puzzle(JSON.parse(JSON.stringify(this._primitive)))
+    }
+    getId(): PuzzleId{
+        return this._primitive.id
+    }
+    duplicate(){
+        let primitive: PuzzlePrimitive = JSON.parse(JSON.stringify(this._primitive))
+        primitive.id = crypto.randomUUID()
+        primitive.settings.name += ' - kopie'
+        return new Puzzle(primitive)
     }
 }

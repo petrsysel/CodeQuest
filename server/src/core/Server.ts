@@ -22,6 +22,8 @@ export class Server{
 		const hostname = process.env.HOST || 'localhost'
 
 		express.use(bodyParser.json())
+		express.use(expres.json({limit: '50mb'}));
+		express.use(expres.urlencoded({limit: '50mb'}));
 		express.use((req, res, next) => {
 			res.socket?.setNoDelay(true)
 			res.append('Access-Control-Allow-Origin', ['*'])
@@ -199,6 +201,7 @@ export class Server{
 			const clientid = req.body.clientid
 			const id = req.body.id
 			const isPublic = req.body.public
+			console.log(isPublic)
 
 			const user = sessionManager.isLogged(clientid)
 			const puzzle = await puzzleRepository.getById(id)
@@ -211,6 +214,24 @@ export class Server{
 			}
 			const code = isPublic ? generateCode() : undefined
 			puzzleRepository.publish(puzzle.id, code)
+			res.send({
+				result: "ok"
+			})
+		})
+		express.post('/api/puzzles/remove', async (req, res) => {
+			const clientid = req.body.clientid
+			const id = req.body.id
+
+			const user = sessionManager.isLogged(clientid)
+			const puzzle = await puzzleRepository.getById(id)
+
+			if(!puzzle || !user || puzzle.authorid !== user.id){
+				res.send({
+					error: "Access denied."
+				})
+				return
+			}
+			puzzleRepository.remove(puzzle.id)
 			res.send({
 				result: "ok"
 			})

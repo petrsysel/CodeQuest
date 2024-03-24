@@ -23,6 +23,7 @@ export class ControlPanelUI implements IControlPanelUI{
 	private _tryPuzzleButton: HTMLElement
 
 	private _puzzleNameElement: HTMLElement
+	private savePuzzleButton: HTMLElement
 
 	constructor(destination: string){
 		this._eventBehaviour = new EventBehaviour()
@@ -32,6 +33,7 @@ export class ControlPanelUI implements IControlPanelUI{
 
 		this._settingsButton = document.getElementById('puzzle-settings-button-element') as HTMLElement
 		this._tryPuzzleButton = document.getElementById('try-puzzle-button-element') as HTMLElement
+		this.savePuzzleButton = document.getElementById('save-puzzle-button-element') as HTMLElement
 		this._puzzleNameElement = document.getElementById('control-panel-puzzle-name') as HTMLElement
 
 		this._settingsButton.addEventListener('click', () => {
@@ -39,6 +41,9 @@ export class ControlPanelUI implements IControlPanelUI{
 		})
 		this._tryPuzzleButton.addEventListener('click', () => {
 			this._emit('play-puzzle', null)
+		})
+		this.savePuzzleButton.addEventListener('click', () => {
+			this._emit('save-game', null)
 		})
 	}
 

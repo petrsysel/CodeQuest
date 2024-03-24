@@ -1,6 +1,6 @@
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle";
 import { ClientID } from "../core/ClientID";
-import { IServerAPI, LoginResponse, RegisterResponse, SavePuzzleResponse, StoredPuzzleInfo } from "../core/IServerAPI";
+import { IServerAPI, LoginResponse, PuzzleAccess, RegisterResponse, SavePuzzleResponse, ServerAction, StoredPuzzleInfo } from "../core/IServerAPI";
 import { User } from "../core/User";
 import { getQuestionMarkImg } from "./getQuestionmarkImg";
 
@@ -45,7 +45,7 @@ export class MockServerAPI implements IServerAPI{
 
     }
 
-    fetchPuzzles(id: ClientID, amount?: number | undefined, offset?: number | undefined): Promise<StoredPuzzleInfo[]> {
+    fetchPuzzles(id: ClientID, access: PuzzleAccess, amount?: number | undefined, offset?: number | undefined): Promise<StoredPuzzleInfo[]> {
         return new Promise((resolve, reject) => {
             resolve([...MockSavedPuzzles])
         })
@@ -67,7 +67,8 @@ export class MockServerAPI implements IServerAPI{
             let user: User | undefined = {
                 email: 'petrsysel99@gmail.com',
                 fullname: 'Petr Sysel',
-                username: 'petrsysel'
+                username: 'petrsysel',
+                id: '-'
             }
             user = undefined
             resolve(user)
@@ -93,6 +94,27 @@ export class MockServerAPI implements IServerAPI{
         })
     }
     savePuzzle(id: ClientID, puzzle: Puzzle): Promise<SavePuzzleResponse> {
+        return new Promise((resolve, reject) => {
+            resolve({
+                success: true
+            })
+        })
+    }
+    getContent(id: ClientID): Promise<SavePuzzleResponse> {
+        return new Promise((resolve, reject) => {
+            resolve({
+                success: true
+            })
+        })
+    }
+    publish(clientId: string, puzzleId: string, publish: boolean): Promise<ServerAction> {
+        return new Promise((resolve, reject) => {
+            resolve({
+                success: true
+            })
+        })
+    }
+    remove(clientId: string, puzzleId: string): Promise<ServerAction> {
         return new Promise((resolve, reject) => {
             resolve({
                 success: true

@@ -3,7 +3,10 @@ import { getQuestionMarkImg } from "../../mocks/getQuestionmarkImg";
 
 export const puzzleListTmpl = h('div.puzzle-list-container',
     h('div.puzzle-list-header',
-        h('input.puzzle-list-search',{'placeholder':'Zadejte název úlohy'}),
+        h('div.puzzle-list-search-bar',
+            h('input.puzzle-list-search',{'placeholder':'Zadejte název úlohy'}),
+            h('button.puzzle-list-search-btn.platform-btn.dark-btn', "Vyhledat")
+        ),
         h('div.align-right',
             h('button.puzzle-list-create-btn.platform-btn.dark-btn', "Vytvořit novou úlohu")
         )
@@ -15,20 +18,27 @@ export const puzzleListTmpl = h('div.puzzle-list-container',
                 h('div.puzzle-list-preview-img',
                     h('img',{'src':getQuestionMarkImg()})
                 ),
-                h('div.puzzle-list-item-info',
-                    h('p.puzzle-list-item-name', "Strašně dlouhatánský název úlohy"),
-                    h('p.puzzle-list-item-author', "Autor"),
-                    h('p.puzzle-list-item-code', "Kód"),
-                ),
-                h('div.puzzle-list-item-action-bar',
-                    h('a.puzzle-list-item-edit',{'href':'javascript:void(0)'},
-                        h('img', {'src': './images/icons/cq-edit.png'})),
-                    h('a-puzzle-list-item-play',{'href':'javascript:void(0)'},
-                        h('img', {'src': './images/icons/cq-play.png'})),
-                    h('a.puzzle-list-item-duplicate',{'href':'javascript:void(0)'},
-                        h('img', {'src': './images/icons/cq-duplicate.png'})),
-                    h('a.puzzle-list-item-delete',{'href':'javascript:void(0)'},
-                        h('img', {'src': './images/icons/cq-delete.png'}))
+                
+                h('div.puzzle-list-item-body',
+                    h('div.puzzle-list-item-info',
+                        h('p.puzzle-list-item-name', "Strašně dlouhatánský název úlohy"),
+                        h('p.puzzle-list-item-author', "Autor"),
+                        h('p.puzzle-list-item-code', "Kód"),
+                    ),
+                    h('div.puzzle-list-item-action-bar',
+                        h('a.puzzle-list-item-edit',{'href':'javascript:void(0)'},
+                            h('img', {'src': './images/icons/cq-edit.png'})),
+                        h('a.puzzle-list-item-play',{'href':'javascript:void(0)'},
+                            h('img', {'src': './images/icons/cq-play.png'})),
+                        h('a.puzzle-list-item-duplicate',{'href':'javascript:void(0)'},
+                            h('img', {'src': './images/icons/cq-duplicate.png'})),
+                        h('a.puzzle-list-item-publish',{'href':'javascript:void(0)'},
+                            h('img', {'src': './images/icons/cq-publish.png'})),
+                        h('a.puzzle-list-item-unpublish',{'href':'javascript:void(0)'},
+                            h('img', {'src': './images/icons/cq-unpublish.png'})),
+                        h('a.puzzle-list-item-delete',{'href':'javascript:void(0)'},
+                            h('img', {'src': './images/icons/cq-delete.png'}))
+                    )
                 )
             )
         ),

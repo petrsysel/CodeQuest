@@ -1,3 +1,6 @@
+import { ClientIdManager } from "../../platform/adapters/ClientIdManager"
+import { IServerAPI } from "../../platform/core/IServerAPI"
+import { User } from "../../platform/core/User"
 import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
 import { ObjectSettingsValidator } from "../../shared/puzzle-lib/core/ObjectSettingsValidator"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
@@ -27,6 +30,8 @@ export class Editor{
     private puzzleSettingsUI: IPuzzleSettingsUI
     private notificationUI: INotificationUI
 
+    private loggedUser: User | undefined
+
     constructor(
         boardUI: IBoardUI,
         codeUI: ICodeEditorUI,
@@ -35,8 +40,17 @@ export class Editor{
         objectSettingsUI: IObjectSettingsUI,
         costumePickerUI: ICostumePickerUI,
         puzzleSettingsUI: IPuzzleSettingsUI,
-        notificationUI: INotificationUI
+        notificationUI: INotificationUI,
+        serverApi: IServerAPI,
+        clientIdManager: ClientIdManager
         ){
+        const clientid = clientIdManager.get()
+
+        serverApi.isLogged(clientid).then(user => {
+            this.loggedUser = user
+            const logged = user != undefined
+        })
+
         this.codeUI = codeUI
 
         this._mockupPuzzle = new Puzzle()
@@ -126,15 +140,46 @@ export class Editor{
             let blocks = codeUI.getBlocks()
             this.puzzleSettingsUI.render(this._mockupPuzzle.getSettings(), blocks)
         })
-
+        const save = () => {
+            if(!this.loggedUser) return
+            const previewImage = boardUI.getPreviewImage()
+            console.log(previewImage)
+            return serverApi.savePuzzle(clientid, this._mockupPuzzle, this.loggedUser, previewImage, null)
+        }
+        const openGame = (puzzleId: string) => {
+            window.open(`game.html?puzzleid=${puzzleId}`)
+        }
         controlPanelUI.on('play-puzzle', async () => {
-            let puzzle = this._mockupPuzzle.stringify()
-            console.log(puzzle)
-            localStorage.setItem("cq-puzzle", puzzle)
-            await notificationUI.notify(`
-            Úloha byla uložena do místního úložiště prohlížeče. Pro vyzkoušení úlohy prosím navštivte okno <a href="/game.html" target="_blank">hry</a>
-            `)
+            save()?.then(response => {
+                openGame(this._mockupPuzzle.getId())
+            })
+            .catch(async () => {
+                await notificationUI.notify("Úlohu se nepodařilo uložit.")
+            })
         })
+        controlPanelUI.on('save-game', () => {
+            save()?.then(async response => {
+                await notificationUI.notify("Úloha byla uložena!")
+            })
+            .catch(async () => {
+                await notificationUI.notify("Úlohu se nepodařilo uložit.")
+            })
+        })
+
+        const queryString = window.location.search
+        const urlParams = new URLSearchParams(queryString)
+        const id = urlParams.get('puzzleid')
+        if(id){
+            serverApi.getContent(clientid, id).then(response => {
+                if(!response.error){
+                    console.log(response.response)
+                    this._mockupPuzzle.loadFromString(response.response!)
+                    console.log(`Loaded puzzle: ${this._mockupPuzzle.getId()}`)
+                    this._renderAll()
+                }
+                else console.error(response.error)
+            })
+        }
         
         this._renderAll()
     }

@@ -20,6 +20,6 @@ export class BlocklyGenerator{
 		workspaceDestination.id = 'generator-workspace'
 		body.appendChild(workspaceDestination)
 		let workspaceGenerator = new BlocklyWorkspaceGenerator('generator-workspace')
-		this._workspace = workspaceGenerator.createWorkspace({})
+		this._workspace = workspaceGenerator.createWorkspace([])
 	}
 }

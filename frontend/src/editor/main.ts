@@ -1,3 +1,5 @@
+import { ServerApi } from "../platform/ServerApi";
+import { ClientIdManager } from "../platform/adapters/ClientIdManager";
 import { NotificationUI } from "../shared/notification/adapters/NotificationUI";
 import { BlocklyEditor } from "./adapters/UI/Blockly/BlocklyEditor";
 import { KonvaBoardUI } from "./adapters/UI/Board/KonvaBoardUI";
@@ -20,6 +22,8 @@ function main(){
 	const costumePicker = new CostumePickerUI('cp-place-holder')
 	const puzzleSettings = new PuzzleSettingsUI('puzzle-settings-place-holder')
 	const notificationUI = new NotificationUI()
+	const serverApi = new ServerApi()
+	const clientIdManager = new ClientIdManager()
 	
 	new Editor(
 		boardUI,
@@ -29,7 +33,9 @@ function main(){
 		objectSettings,
 		costumePicker,
 		puzzleSettings,
-		notificationUI
+		notificationUI,
+		serverApi,
+		clientIdManager
 	)
 }
 

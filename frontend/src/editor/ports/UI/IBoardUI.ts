@@ -14,4 +14,5 @@ export interface IBoardUI {
     render(puzzleSettings: PuzzleSettings, objects: PuzzleObject[]): void
     on(event: BoardUIEvents, callback: (data: BoardUIData) => void): void
     animate(puzzleSettings: PuzzleSettings, objects: PuzzleObject[], instructions: GameInstruction[], puzzle: Puzzle): Promise<unknown>
+    getPreviewImage(): string
 }

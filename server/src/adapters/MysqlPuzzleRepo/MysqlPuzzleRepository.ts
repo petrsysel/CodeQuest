@@ -25,12 +25,14 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 	}
 	async save(puzzle: FullPuzzle): Promise<void> {
 		const existing = await this.getById(puzzle.id)
-
+		console.log("Saving")
+		console.log(puzzle)
 		return new Promise((resolve, reject) => {
 			if(existing){
+				console.log(`Updating puzzle: ${puzzle.id}`)
 				this.connection.query(
-					`UPDATE puzzles SET name=?, content=?,image=?`,
-					[puzzle.name, puzzle, puzzle.image],
+					`UPDATE puzzles SET name=?, content=?,image=? WHERE id=?`,
+					[puzzle.name, puzzle, puzzle.image, puzzle.id],
 					(err, result) => {
 						if(err) reject(err)
 						else resolve()
@@ -146,10 +148,24 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 	}
 
 	publish(id: string, code?: string | undefined): Promise<void> {
+		console.log(`Publishing with code: ${code}`)
 		return new Promise((resolve, reject) => {
 			this.connection.query(
 				`UPDATE puzzles SET code=? WHERE id=?`,
 				[code, id],
+				(err, result) => {
+					if(err) reject(err)
+					else resolve()
+				}
+			)
+		})
+	}
+	remove(id: string): Promise<void> {
+		console.log(`Removing: ${id}`)
+		return new Promise((resolve, reject) => {
+			this.connection.query(
+				`DELETE FROM puzzles WHERE id=?`,
+				[id],
 				(err, result) => {
 					if(err) reject(err)
 					else resolve()

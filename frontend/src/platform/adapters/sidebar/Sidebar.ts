@@ -36,8 +36,15 @@ export class Sidebar implements ISidebar{
         this.signal.on(event, callback)
     }
     render(options: SidebarOptions): void {
-        if(options.loggedUser) this.renderUser()
-        else this.renderGuest()
+        if(options.loggedUser) {
+            this.renderUser()
+        }
+        else {
+            this.renderGuest()
+        }
+
+        if(options.renderMode === "custom") this.selectedCustom()
+        else this.selectedPublic()
     }
 
     private renderGuest(){
@@ -45,5 +52,14 @@ export class Sidebar implements ISidebar{
     }
     private renderUser(){
         this.customPuzzlesElement.style.display = 'block'
+    }
+
+    private selectedPublic(){
+        this.publicPuzzlesElement.classList.add('platform-sidebar-selected-page')
+        this.customPuzzlesElement.classList.remove('platform-sidebar-selected-page')
+    }
+    private selectedCustom(){
+        this.publicPuzzlesElement.classList.remove('platform-sidebar-selected-page')
+        this.customPuzzlesElement.classList.add('platform-sidebar-selected-page')
     }
 }

@@ -1,6 +1,8 @@
 import { BlocklyEditor } from "../editor/adapters/UI/Blockly/BlocklyEditor";
 import { BlocklyWorkspaceGenerator } from "../editor/adapters/UI/Blockly/BlocklyWorkspaceGenerator";
 import { KonvaBoardUI } from "../editor/adapters/UI/Board/KonvaBoardUI";
+import { ServerApi } from "../platform/ServerApi";
+import { ClientIdManager } from "../platform/adapters/ClientIdManager";
 import { NotificationUI } from "../shared/notification/adapters/NotificationUI";
 import { GameLauncher } from "./adapters/GameLaucher";
 import { OBTGameLauncher } from "./adapters/OBTGameLauncher/OBTGameLauncher";
@@ -21,6 +23,8 @@ function main(){
 	const controlPanel = new GameControlPanel('game-control-panel')
 	const notificationUI = new NotificationUI()
 	const visualizationPlayer = new VisualizationPlayer(board, notificationUI)
+	const serverApi = new ServerApi()
+	const clientIdManager = new ClientIdManager()
 
 	new Game(
 		game,
@@ -29,7 +33,9 @@ function main(){
 		objectList,
 		gameLauncher,
 		notificationUI,
-		visualizationPlayer
+		visualizationPlayer,
+		serverApi,
+		clientIdManager
 	)
 }
 

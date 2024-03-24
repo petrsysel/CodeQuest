@@ -427,6 +427,7 @@ a{
     flex: 4;
     display: flex;
     align-items: center;
+    justify-content: center;
     margin: 2rem;
     text-align: center;
 }
@@ -495,7 +496,7 @@ a{
     height: 100%;
     justify-content: space-between;
     align-items: center;
-    margin: 0 5rem;
+    margin: 0 2rem;
     color: var(--light-main-color);
 }
 
@@ -574,7 +575,7 @@ input {
     background-color: var(--light-blue);
     padding: 0.5rem;
     margin: 0.5rem 0;
-    margin-right: 1rem;
+    margin-right: 2rem;
     border-radius: 0 1rem 1rem 0;
     cursor: pointer;
 }
@@ -595,11 +596,23 @@ input {
     height: 100%;
     width: fit-content;
 }
+.puzzle-list-body-container{
+    height: calc(100vh - 10rem);
+    overflow-y: scroll;
+    padding: 0 2rem;
+}
 .puzzle-list-header{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+}
+.puzzle-list-search-bar{
+    width: 100%;
+    display: flex;
+}
+.puzzle-list-search-bar input{
+    flex: 1;
 }
 .align-right{
     display: flex;
@@ -624,9 +637,9 @@ input {
 /* .puzzle-list-create-btn{
     width:fit-content;
 } */
-.puzzle-list-body-container{
+/* .puzzle-list-body-container{
     flex: 1;
-}
+} */
 
 .puzzle-list-item{
     background-color: var(--dark-main-color);
@@ -641,7 +654,7 @@ input {
 }
 .puzzle-list-item-action-bar{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     /* background-color: var(--dark-main-color); */
     justify-content: center;
     margin-right: 0.5rem;
@@ -650,6 +663,10 @@ input {
     height: 2.5rem;
     cursor: pointer;
     margin: 0.1rem;
+}
+.puzzle-list-item-body{
+    height: 100%;
+    justify-content: space-between;
 }
 .puzzle-list-preview-img{
     display: flex;
@@ -692,4 +709,8 @@ input {
 }
 .blocklyToolboxDiv{
     min-width: 10rem;
+}
+.platform-sidebar-selected-page{
+    margin-right: 0.5rem;
+    outline: 2px solid white;
 }

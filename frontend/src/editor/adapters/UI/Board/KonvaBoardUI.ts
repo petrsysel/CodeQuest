@@ -391,4 +391,15 @@ export class KonvaBoardUI implements IBoardUI{
 			}
 		})
 	}
+
+	getPreviewImage(){
+		// const canvas = this._konvaContainer.getElementsByTagName('canvas')[0]
+		// const ratio = canvas.width/canvas.height
+		// canvas.width = 100
+		// canvas.height = 100*ratio
+		// return canvas.toDataURL()
+		const img = this._konvaData.stage.toDataURL({pixelRatio:0.3})
+		console.log(img)
+		return img
+	}
 }

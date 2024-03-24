@@ -12,6 +12,7 @@ import { InsetCodeDialogue } from "./platform/adapters/dialogues/InsertCodeDialo
 import { PuzzleListUI } from "./platform/adapters/puzzleList/PuzzleListUI"
 import { ServerApi } from "./platform/ServerApi"
 import { ClientIdManager } from "./platform/adapters/ClientIdManager"
+import { NotificationUI } from "./shared/notification/adapters/NotificationUI"
 
 function main(){
     const serverApi = new ServerApi()
@@ -22,6 +23,7 @@ function main(){
     const registerForm = new RegisterDialogue()
     const insertPuzzleCodeForm = new InsetCodeDialogue()
     const clientIdManager = new ClientIdManager()
+    const notification = new NotificationUI()
     
     new Platform(
         serverApi,
@@ -31,7 +33,8 @@ function main(){
         loginForm,
         registerForm,
         insertPuzzleCodeForm,
-        clientIdManager
+        clientIdManager,
+        notification
     )
 }
 

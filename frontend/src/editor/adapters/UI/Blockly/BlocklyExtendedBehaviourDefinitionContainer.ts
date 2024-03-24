@@ -367,7 +367,7 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 		javascriptGenerator.forBlock['rule_check'] = function(block: any, generator: any) {
 			const body = generator.statementToCode(block, `rule_check_body`).replace(new RegExp(',$'), '')
 			
-			const code = `new RuleCheckAction([${body}])`;
+			const code = `new RuleCheckAction([${body}]),`;
 			return code
 		}
 	}

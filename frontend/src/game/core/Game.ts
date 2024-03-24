@@ -2,6 +2,9 @@ import { IBoardUI } from "../../editor/ports/UI/IBoardUI"
 import { ICodeEditorUI } from "../../editor/ports/UI/ICodeEditorUI"
 import { IControlPanelUI } from "../../editor/ports/UI/IControlPanelUI"
 import { IObjectPanelUI } from "../../editor/ports/UI/IObjectPanelUI"
+import { IClientIdManager } from "../../platform/core/IClientIdManager"
+import { IServerAPI } from "../../platform/core/IServerAPI"
+import { User } from "../../platform/core/User"
 import { INotificationUI } from "../../shared/notification/ports/INotificationUI"
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle"
 import { PuzzleObjectId } from "../../shared/puzzle-lib/core/PuzzleTypes"
@@ -14,6 +17,7 @@ export class Game{
 
 	private _selectedObjectId: string | undefined
 	private originalPuzzle: Puzzle
+	private loggedUser: User | undefined
 
 	constructor(
 		codeUI: ICodeEditorUI,
@@ -22,7 +26,9 @@ export class Game{
 		objectList: IObjectPanelUI,
 		gameLauncher: IGameLauncher,
 		notificationUI: INotificationUI,
-		visualizationPlayer: IVisualizationPlayer
+		visualizationPlayer: IVisualizationPlayer,
+		serverApi: IServerAPI,
+		clientIdManager: IClientIdManager
 		){
 		
 		
@@ -34,10 +40,13 @@ export class Game{
 		
 		this._puzzle = new Puzzle()
 		const puzzleFromStorage = localStorage.getItem("cq-puzzle")
-		if(puzzleFromStorage){
-			this._puzzle.loadFromString(puzzleFromStorage)
-		}
-		else this._puzzle.loadFromString(puzzleMock.threeWizards())
+		
+		const clientid = clientIdManager.get()
+
+        serverApi.isLogged(clientid).then(user => {
+            this.loggedUser = user
+            const logged = user != undefined
+        })
 
 		codeUI.setupToolbox(this._puzzle.getBlocks())
 		
@@ -136,6 +145,38 @@ export class Game{
 				loadRuleChecks: false
 			})
 		}
+
+		const queryString = window.location.search
+        const urlParams = new URLSearchParams(queryString)
+        const id = urlParams.get('puzzleid')
+        if(id){
+            serverApi.getContent(clientid, id).then(response => {
+                if(!response.error){
+                    this._puzzle.loadFromString(response.response!)
+                    console.log(`LOADED PUZZLE: ${this._puzzle.getId()}`)
+					const playerObject = this._puzzle.getObjectList().find(o => o.settings.playerEdit)?.id
+					if(playerObject){
+						this._selectedObjectId = playerObject
+						objectList.setSelected(playerObject)
+						objectList.render(this._puzzle.getObjectList())
+						boardUI.setSelected(playerObject)
+						boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+
+						let object = this._puzzle.getObject(this._selectedObjectId)
+						codeUI.clearWorkspace()
+						if(object)codeUI.loadWorkspace(object.settings.code, {
+							loadRuleChecks: false
+						})
+
+						codeUI.setupToolbox(this._puzzle.getBlocks())
+		
+						this.originalPuzzle = this._puzzle.clone()
+					}
+					
+                }
+                else console.error(response.error)
+            })
+        }
 	}
 
 

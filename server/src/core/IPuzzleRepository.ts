@@ -8,4 +8,5 @@ export interface IPuzzleRepository {
 	getById(id: PuzzleId): Promise<FullPuzzle | undefined>
 	find(query: string, offset?: number, limit?: number, authorId?: string): Promise<PuzzleInfo[]>
 	publish(id: PuzzleId, code?: string): Promise<void>
+	remove(id: PuzzleId): Promise<void>
 }

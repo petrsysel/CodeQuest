@@ -60,7 +60,12 @@ export class NotificationUI implements INotificationUI{
 	}
 	dialogue(message: string, options?: NotificationOptions): Promise<DialogueResponse> {
 		return new Promise((resolve, reject) => {
-			
+			this._show()
+			this._displayMessage(message)
+			this._showYesNoButton(decision => {
+				this._hide()
+				resolve(decision)
+			})
 		})
 	}
 
@@ -80,11 +85,21 @@ export class NotificationUI implements INotificationUI{
 		this._buttonOk.addEventListener("click", callback)
 		this._buttonClose.addEventListener("click", callback)
 	}
-	private _showYesNoButton(){
+	private _showYesNoButton(callback: (response: DialogueResponse) => void){
 		this._buttonYes.style.display="block"
 		this._buttonNo.style.display="block"
 		this._buttonCancel.style.display="none"
 		this._buttonOk.style.display="none"
+
+		this._buttonYes.addEventListener('click', () => {
+			callback("yes")
+		})
+		this._buttonNo.addEventListener('click', () => {
+			callback("no")
+		})
+		this._buttonCancel.addEventListener('click', () => {
+			callback("no")
+		})
 	}
 	private _displayMessage(message: string){
 		this._messagePlaceholder.innerHTML = message

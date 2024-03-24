@@ -8,7 +8,7 @@ export class UserUtils{
 			username: jsonUser.username,
 			email: jsonUser.email,
 			id: randomUUID(),
-			fullname: jsonUser.fullname,
+			fullname: jsonUser.fullname ? jsonUser.fullname : jsonUser.username,
 			passwordHash: await bcrypt.hash(jsonUser.password, 10)
 		}
 	}

@@ -1,5 +1,7 @@
+export type PuzzleListMode = "public" | "custom"
 export type SidebarOptions = {
-    loggedUser: boolean
+    loggedUser: boolean,
+    renderMode: PuzzleListMode
 }
 export type SidebarEvent = 'public-puzzles-request' | 'custom-puzzles-request' | 'insert-code-request'
 export interface ISidebar{
