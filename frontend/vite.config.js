@@ -9,6 +9,6 @@ export default {
 				editor: "./editor.html"
 			}
 		},
-		setupFiles: "./globalSetup.js"
+		setupFiles: ["./globalSetup.js"]
 	}
   }
