@@ -8,7 +8,6 @@ export default {
 				game: "./game.html",
 				editor: "./editor.html"
 			}
-		},
-		setupFiles: ["./globalSetup.js"]
+		}
 	}
   }

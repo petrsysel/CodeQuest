@@ -2,11 +2,12 @@ import { BlocklyGenerator } from "../../../editor/adapters/UI/Blockly/BlocklyGen
 import { GameActor } from "../../../game/core/GameActor"
 import { Puzzle } from "./Puzzle"
 import { Block, CostumeData, PuzzleObject, PuzzlePrimitive } from "./PuzzleTypes"
+import { v4 as uuidv4 } from 'uuid';
 
 export class PuzzleUtils{
     static createPuzzle(): PuzzlePrimitive{
         return {
-            id: (crypto as any).randomUUID(),
+            id: uuidv4(),
             version: 1,
             settings:{
                 name: "Nová úloha",
@@ -20,7 +21,7 @@ export class PuzzleUtils{
     static createObject(number: number = 0): PuzzleObject{
         let sufix = number?` ${number}`: ''
         return {
-            id: (crypto as any).randomUUID(),
+            id: uuidv4(),
             settings:{
                 name: `Nový objekt${sufix}`,
                 layer: 1,
@@ -36,7 +37,7 @@ export class PuzzleUtils{
     }
     static duplicateObject(from: PuzzleObject): PuzzleObject{
         return {
-            id: (crypto as any).randomUUID(),
+            id: uuidv4(),
             settings:{
                 name: from.settings.name,
                 layer: from.settings.layer,

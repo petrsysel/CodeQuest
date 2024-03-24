@@ -2,6 +2,7 @@ import { IPuzzle } from "../ports/IPuzzle"
 import { ObjectSettingsValidator } from "./ObjectSettingsValidator"
 import { CostumeData, PuzzleId, PuzzleObject, PuzzleObjectId, PuzzleObjectSettings, PuzzlePrimitive, PuzzleSettings } from "./PuzzleTypes"
 import { PuzzleUtils } from "./PuzzleUtils"
+import { v4 as uuidv4 } from 'uuid';
 
 export class Puzzle implements IPuzzle{
     private _primitive: PuzzlePrimitive
@@ -281,7 +282,7 @@ export class Puzzle implements IPuzzle{
     }
     duplicate(){
         let primitive: PuzzlePrimitive = JSON.parse(JSON.stringify(this._primitive))
-        primitive.id = crypto.randomUUID()
+        primitive.id = uuidv4()
         primitive.settings.name += ' - kopie'
         return new Puzzle(primitive)
     }

@@ -1,5 +1,6 @@
 import { ClientID } from "../core/ClientID";
 import { IClientIdManager } from "../core/IClientIdManager";
+import { v4 as uuidv4 } from 'uuid';
 
 export class ClientIdManager implements IClientIdManager{
 	private key: string
@@ -13,7 +14,7 @@ export class ClientIdManager implements IClientIdManager{
 	private init(){
 		this.id = localStorage.getItem(this.key)
 		if(!this.id) {
-			localStorage.setItem(this.key, crypto.randomUUID())
+			localStorage.setItem(this.key, uuidv4())
 			this.init()
 		}
 	}
