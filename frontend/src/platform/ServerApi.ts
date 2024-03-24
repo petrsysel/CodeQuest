@@ -16,8 +16,8 @@ export class ServerApi implements IServerAPI{
 	private port: number
 	private protocol: 'http' | 'https'
 	constructor(){
-		this.host = 'localhost'
-		this.port = 3000
+		this.host = 'codeblockie.com'
+		this.port = 80
 		this.protocol = 'http'
 	}
 	private address(api: string){
