@@ -20,8 +20,8 @@ export class Server{
 	){
 		
 		const server = createServer({
-			key: readFileSync('./certs/key-pem'),
-			cert: readFileSync('./certs/cert-pem'),
+			key: readFileSync('./certs/key.pem'),
+			cert: readFileSync('./certs/cert.pem'),
 
 			maxVersion: 'TLSv1.3',
 			minVersion: 'TLSv1.2'
