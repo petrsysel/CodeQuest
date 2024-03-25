@@ -18,6 +18,13 @@ export class Server{
 		sessionManager: ISessionManager,
 		express: Express 
 	){
+		const httpHandler = expres()
+		httpHandler.use((req, res) => {
+			const domain = process.env.HOST
+			res.redirect('https://' + domain + req.originalUrl);
+		});
+
+		httpHandler.listen(80);
 		
 		const server = createServer({
 			key: readFileSync('./certs/key.pem'),
