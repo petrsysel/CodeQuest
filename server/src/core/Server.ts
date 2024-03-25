@@ -20,11 +20,14 @@ export class Server{
 	){
 		const httpHandler = expres()
 		httpHandler.use((req, res) => {
+			console.log("redirecting")
 			const domain = process.env.HOST
 			res.redirect('https://' + domain + req.originalUrl);
 		});
 
-		httpHandler.listen(80);
+		httpHandler.listen(80, () => {
+			console.log(`Server is listening on http://${hostname}:80`)
+		});
 		
 		const server = createServer({
 			key: readFileSync('./certs/key.pem'),
