@@ -41,7 +41,10 @@ export class Server{
 			next()
 		});
 
-		express.listen(port, hostname, () => {
+		// express.listen(port, hostname, () => {
+		// 	console.log(`Server is listening on http://${hostname}:${port}`)
+		// })
+		server.listen(port, hostname, () => {
 			console.log(`Server is listening on http://${hostname}:${port}`)
 		})
 
