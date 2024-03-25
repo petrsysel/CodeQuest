@@ -8,7 +8,8 @@ import { UserUtils } from "./UserUtils";
 import { send } from "process";
 import bodyParser from "body-parser"
 import { FullPuzzle, generateCode } from "./Puzzle";
-import { readFile, readdir } from "fs";
+import { readFile, readFileSync, readdir } from "fs";
+import https, { createServer } from 'https'
 
 export class Server{
 	constructor(
@@ -17,6 +18,14 @@ export class Server{
 		sessionManager: ISessionManager,
 		express: Express 
 	){
+		
+		const server = createServer({
+			cert: readFileSync('certs/host.crt'),
+			key: readFileSync('certs/host.key'),
+
+			maxVersion: 'TLSv1.3',
+			minVersion: 'TLSv1.2'
+		}, express)
 		
 		const port: number = +(process.env.PORT || 3000)
 		const hostname = process.env.HOST || 'localhost'
