@@ -47,7 +47,7 @@ export class IfAction extends Action<void>{
 				doStatement.wakeup()
 			})
 		})
-		this.elseStatement.forEach(a => a.wakeup())
+		if(this.elseStatement) this.elseStatement.forEach(a => a.wakeup())
 		this.exitHybernation()
 	}
 }
