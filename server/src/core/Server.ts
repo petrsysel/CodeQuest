@@ -20,13 +20,13 @@ export class Server{
 	){
 		
 		const server = createServer({
-			cert: readFileSync('certs/host.crt'),
-			key: readFileSync('certs/host.key'),
+			cert: readFileSync('./certs/host.crt'),
+			key: readFileSync('./certs/host.key'),
 
 			maxVersion: 'TLSv1.3',
 			minVersion: 'TLSv1.2'
 		}, express)
-		
+
 		const port: number = +(process.env.PORT || 3000)
 		const hostname = process.env.HOST || 'localhost'
 
