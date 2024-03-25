@@ -132,7 +132,11 @@ export class OBTGameLauncher implements IGameLauncher{
 			CallFunctionAction,
 			RuleCheckAction
 		]
-		enabledActions.forEach(() => {})
+		
+		// walkaround for vite optimization
+		eval(`
+			if(${enabledActions.length}) console.log("blbost")
+		`)
 
 		const operatingPuzzle = puzzle.clone()
 		const sharedData = new SharedData()
