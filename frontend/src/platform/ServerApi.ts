@@ -2,6 +2,9 @@ import { Puzzle } from "../shared/puzzle-lib/core/Puzzle";
 import { CostumeData } from "../shared/puzzle-lib/core/PuzzleTypes";
 import { ContentResponse, IServerAPI, PuzzleAccess, ServerAction, StoredPuzzleInfo } from "./core/IServerAPI";
 import { User } from "./core/User";
+
+import config from "./apiConfig"
+
 async function post(api: string, body: any){
 	return await fetch(api, {
 		method: 'POST',
@@ -14,11 +17,11 @@ async function post(api: string, body: any){
 export class ServerApi implements IServerAPI{
 	private host: string
 	private port: number
-	private protocol: 'http' | 'https'
+	private protocol: string
 	constructor(){
-		this.host = 'codeblockie.com'
-		this.port = 443
-		this.protocol = 'https'
+		this.host = config.host
+		this.port = config.port
+		this.protocol = config.protocol
 	}
 	private address(api: string){
 		return `${this.protocol}://${this.host}:${this.port}/api/${api}`
