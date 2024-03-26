@@ -19,7 +19,9 @@ export class BlocklyWorkspaceGenerator{
 		let options: BlocklyOptions = {
 			toolbox: toolbox,
 			theme: theme,
-			collapse: true,
+			collapse: false,
+			//@ts-ignore
+			autoClose: false,
 			comments: true,
 			disable: true,
 			maxBlocks: Infinity,
@@ -46,7 +48,7 @@ export class BlocklyWorkspaceGenerator{
 			  length: 1,
 			  colour: '#000',
 			  snap: false
-			}
+			},
 		}
 		return options
 	}
@@ -80,7 +82,8 @@ export class BlocklyWorkspaceGenerator{
 			  'cursorColour': '#d0d0d0'
 			},
 			'fontStyle': font,
-			'name': "cq-theme"
+			'name': "cq-theme",
+			
 		})
 	}
 
@@ -94,7 +97,7 @@ export class BlocklyWorkspaceGenerator{
 		this._workspace = Blockly.inject(this._destination, options);
 
 		Blockly.setLocale(Cs)
-
+		this._workspace.getToolbox()!.getFlyout()!.autoClose = false
 		return this._workspace
 	}
 
