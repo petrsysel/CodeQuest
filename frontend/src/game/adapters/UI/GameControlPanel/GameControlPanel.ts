@@ -14,8 +14,12 @@ export const gameControlPanelTemplate = /*html*/`
 <div class="control-panel-controls">
 	<span class="speed-control-label">Rychlost:</span>
 	<input class="speed-control" id="game-speed-control" type="range" min="1" max="100" value="50">
-	<a href="javascript:void(0)" id="play-puzzle-button-element"><img src="./images/icons/cq-play.png"></a>
-	<a href="javascript:void(0)" id="stop-puzzle-button-element"><img src="./images/icons/cq-stop.png"></a>
+	<a href="javascript:void(0)" id="play-puzzle-button-element" class="tooltip">
+	<span class="tooltiptext">Spustit úlohu</span>
+	<img src="./images/icons/cq-play.png"></a>
+	<a href="javascript:void(0)" id="stop-puzzle-button-element" class="tooltip">
+	<span class="tooltiptext">Zastavit úlohu</span>
+	<img src="./images/icons/cq-stop.png"></a>
 	<img id="loading-puzzle-element" src="./images/icons/cq-loading.png">
 <div>
 `
