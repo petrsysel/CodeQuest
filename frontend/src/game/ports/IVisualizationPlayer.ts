@@ -8,4 +8,5 @@ export interface IVisualizationPlayer{
 	stop(): void
 	isPlaying(): boolean
 	on(event: VisualizerEvent, callback: (data: VisualizerData) => void): void
+	changeSpeed(speed: number): void
 }

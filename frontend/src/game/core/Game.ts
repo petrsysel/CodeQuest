@@ -79,6 +79,42 @@ export class Game{
 			}
 		}
 
+		const queryString = window.location.search
+        const urlParams = new URLSearchParams(queryString)
+        const id = urlParams.get('puzzleid')
+        if(id){
+            serverApi.getContent(clientid, id).then(response => {
+                if(!response.error){
+                    this._puzzle.loadFromString(response.response!)
+					const playerObject = this._puzzle.getObjectList().find(o => o.settings.playerEdit)?.id
+					if(playerObject){
+						this._selectedObjectId = playerObject
+						objectList.setSelected(playerObject)
+						objectList.render(this._puzzle.getObjectList())
+						boardUI.setSelected(playerObject)
+						boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+
+						let object = this._puzzle.getObject(this._selectedObjectId)
+						codeUI.clearWorkspace()
+						if(object)codeUI.loadWorkspace(object.settings.code, {
+							loadRuleChecks: false
+						})
+
+						codeUI.setupToolbox(this._puzzle.getBlocks())
+		
+						this.originalPuzzle = this._puzzle.clone()
+					}
+					
+                }
+                else console.error(response.error)
+            })
+        }
+
+		controlPanelUI.on('speed-change', data => {
+			const speed = data!.speed!
+			visualizationPlayer.changeSpeed(1-speed/100)
+		})
+
 		controlPanelUI.on('play-puzzle', () => {
 			let code = codeUI.getCode()
 			
@@ -143,36 +179,7 @@ export class Game{
 			})
 		}
 
-		const queryString = window.location.search
-        const urlParams = new URLSearchParams(queryString)
-        const id = urlParams.get('puzzleid')
-        if(id){
-            serverApi.getContent(clientid, id).then(response => {
-                if(!response.error){
-                    this._puzzle.loadFromString(response.response!)
-					const playerObject = this._puzzle.getObjectList().find(o => o.settings.playerEdit)?.id
-					if(playerObject){
-						this._selectedObjectId = playerObject
-						objectList.setSelected(playerObject)
-						objectList.render(this._puzzle.getObjectList())
-						boardUI.setSelected(playerObject)
-						boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
-
-						let object = this._puzzle.getObject(this._selectedObjectId)
-						codeUI.clearWorkspace()
-						if(object)codeUI.loadWorkspace(object.settings.code, {
-							loadRuleChecks: false
-						})
-
-						codeUI.setupToolbox(this._puzzle.getBlocks())
 		
-						this.originalPuzzle = this._puzzle.clone()
-					}
-					
-                }
-                else console.error(response.error)
-            })
-        }
 	}
 
 

@@ -15,4 +15,5 @@ export interface IBoardUI {
     on(event: BoardUIEvents, callback: (data: BoardUIData) => void): void
     animate(puzzleSettings: PuzzleSettings, objects: PuzzleObject[], instructions: GameInstruction[], puzzle: Puzzle): Promise<unknown>
     getPreviewImage(): string
+    changeAnimationSpeed(speed: number): void
 }

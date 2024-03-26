@@ -46,4 +46,7 @@ export class VisualizationPlayer implements IVisualizationPlayer{
 	private _emit(event: VisualizerEvent, data: VisualizerData){
 		this._eventBehaviour.emit(event, data)
 	}
+	changeSpeed(speed: number): void {
+		this._boardUI.changeAnimationSpeed(speed)
+	}
 }

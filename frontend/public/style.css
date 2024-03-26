@@ -315,6 +315,12 @@ a{
     display: flex;
     flex-wrap: nowrap;
     word-wrap: none;
+    justify-content: center;
+    align-items: center;
+    color: var(--light-main-color);
+}
+.control-panel-controls .speed-control-label{
+    margin-right: 0.5rem;
 }
 
 .puzzle-settings-container{
@@ -746,4 +752,8 @@ input {
   
   .tooltip:hover .tooltiptext {
     visibility: visible;
+  }
+
+  .speed-control{
+    width: 5rem;
   }

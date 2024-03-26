@@ -38,12 +38,17 @@ export class KonvaBoardUI implements IBoardUI{
 	private _destination: string
 
 	private _options: BoardOptions
+	private maxAnimationTime: number
+	private animationTime: number
 
 	constructor(destination: string, options: BoardOptions){
 		this._eventBehaviour = new EventBehaviour()
 
 		this._destination = destination
 		this._options = options
+
+		this.maxAnimationTime = 1.5
+		this.animationTime = 0.75
 
 		this._loadedCostumes = []
 		this._konvaContainer = document.getElementById(destination) as HTMLElement
@@ -200,7 +205,7 @@ export class KonvaBoardUI implements IBoardUI{
 			const reversed = side == "left"? -1:1
 			const tween = new Konva.Tween({
 				node: obj.konvaObject,
-				duration: 1,
+				duration: this.animationTime,
 				easing: Konva.Easings.EaseInOut,
 				rotation: rotation + 90 *reversed,
 				onFinish: onFinish
@@ -258,7 +263,7 @@ export class KonvaBoardUI implements IBoardUI{
 				play: () => {
 					setTimeout(() => {
 						onFinish()
-					}, 1000) // Timeout nahradit rychlostí přehrávání
+					}, this.animationTime * 1000) // Timeout nahradit rychlostí přehrávání
 				}
 			}
 			return tweenMock
@@ -276,7 +281,7 @@ export class KonvaBoardUI implements IBoardUI{
 		const distance = (this._konvaData.squareWidth + this._konvaData.spaceWidth) * squareAmount
 		const tween = new Konva.Tween({
 			node: object.konvaObject,
-			duration: 1,
+			duration: this.animationTime,
 			easing: Konva.Easings.EaseInOut,
 			x: sx + distance * xaxis * reversed,
 			y: sy + distance * yaxis * reversed,
@@ -399,5 +404,9 @@ export class KonvaBoardUI implements IBoardUI{
 		// return canvas.toDataURL()
 		const img = this._konvaData.stage.toDataURL({pixelRatio:0.3})
 		return img
+	}
+
+	changeAnimationSpeed(speed: number): void {
+		this.animationTime = this.maxAnimationTime * speed
 	}
 }
