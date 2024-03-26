@@ -57,7 +57,7 @@ export class ControlPanelUI implements IControlPanelUI{
 		this._eventBehaviour.emit(event, data)
 	}
 
-	on(event: ControlPanelUIEvents, callback: (data: unknown) => void): void {
+	on(event: ControlPanelUIEvents, callback: (data: ControlPanelUIData) => void): void {
 		this._eventBehaviour.on(event, callback)
 	}
 
