@@ -28,8 +28,8 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 			if(existing){
 				console.log(`Updating puzzle: ${puzzle.name}`)
 				this.connection.query(
-					`UPDATE puzzles SET name=?, content=?,image=?, code=? WHERE id=?`,
-					[puzzle.name, puzzle.content, puzzle.image, puzzle.code, puzzle.id],
+					`UPDATE puzzles SET name=?, content=?,image=? WHERE id=?`,
+					[puzzle.name, puzzle.content, puzzle.image, puzzle.id],
 					(err, result) => {
 						if(err) reject(err)
 						else resolve()
