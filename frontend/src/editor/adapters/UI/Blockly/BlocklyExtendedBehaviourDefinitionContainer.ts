@@ -100,7 +100,7 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 
 		javascriptGenerator.forBlock['wait'] = function(block: any, generator: any) {
 			var value_turn_count = generator.valueToCode(block, 'turn_count', javascript.Order.ATOMIC);
-			var code = `new MutliWaitAction(${value_turn_count}),`;
+			var code = `new MultiWaitAction(${value_turn_count}),`;
 			return code;
 		};
 		

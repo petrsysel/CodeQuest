@@ -17,14 +17,10 @@ export class WaitAction extends Action<void>{
 	}
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
-			const roundAmount = await this.delay.execute(stepper, object,puzzle, sharedData)
-			let roundCounter = 0
-			console.log(roundAmount)
 			stepper.on('step', async () => {
 				stepper.registerInstruction(Instruction.wait(object.id, 1))
 				resolve()
 				this.hybernate()
-				
 			})
 			stepper.set()
 		})

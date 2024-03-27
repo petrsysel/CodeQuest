@@ -19,10 +19,12 @@ export class MultiWaitAction extends Action<void>{
 	execute(stepper: Stepper, object: PuzzleObject, puzzle: Puzzle, sharedData: SharedData): Promise<void> {
 		return new Promise(async (resolve, reject) => {
 			const roundAmount = await this.delay.execute(stepper, object,puzzle, sharedData)
-			const waitList = new Array(0).map(() => new WaitAction(this.delay))
+			const waitList = new Array<string>(roundAmount).fill("").map(init => new WaitAction(this.delay))
 			for(const wait of waitList){
 				await wait.execute(stepper, object, puzzle, sharedData)
 			}
+			this.hybernate()
+			resolve()
 		})
 	}
 
