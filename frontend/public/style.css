@@ -534,6 +534,9 @@ a .platform-title{
     text-decoration: none;
     color: var(--light-main-color);
 }
+a{
+    text-decoration: none;
+}
 
 .dialogue-overlay{
     position: fixed;
@@ -756,4 +759,25 @@ input {
 
   .speed-control{
     width: 5rem;
+  }
+
+  .navbar-links{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    
+  }
+  .navbar-links a{
+    text-decoration: none;
+  }
+  .navbar-links p {
+    color: var(--light-main-color);
+    padding: 0.75rem;
+    margin: 0 0.75rem;
+    height: 100%;
+    font-size: 1.5rem;
+    border-radius: 1000px;
+  }
+  .navbar-links p:hover {
+    outline: 2px solid var(--light-main-color);
   }

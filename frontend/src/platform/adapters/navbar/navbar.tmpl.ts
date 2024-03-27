@@ -13,10 +13,15 @@ import h from "hyperscript";
 </div>
 */
 export const navbar = h('div.platform-navbar-container',
-    h('a',
-        h('div.platform-title', "CodeBlockie"),
-        {href: '.'}
+    h('div.navbar-links',
+        h('a',
+            h('p', "CodeBlockie"),{href: 'https://codeblockie.com'}
+        ),
+        h('a',
+            h('p', "Nápověda"),{href: 'https://codeblockie.com/docs/intro'}, {target: '_blank'}
+        ),
     ),
+    
     h('div.platform-bar#platform-user-bar',
         h('p#platform-user-name', "User Name"),
         h('button#platform-log-out-btn.platform-btn', "Odhlásit se")
