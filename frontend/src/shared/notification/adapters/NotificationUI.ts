@@ -6,7 +6,7 @@ export const messageTemplate = /*html*/`
 	<div class="notif-bg">
 		<div class="notif-window">
 			<div class="notif-header">
-				<a hfref="javascript:void(0)"  id="notif-close-button"><img src="/images/icons/cq-close.png"></a>
+				<a hfref="javascript:void(0)"  id="notif-close-button"><img src="./images/icons/cq-close.png"></a>
 			</div>
 			<div class="notif-color"></div>
 			<div class="notif-message-container">

@@ -227,7 +227,7 @@ export class ServerApi implements IServerAPI{
 			resolve(data.map((path: string) => {
 				const costumeData: CostumeData = {
 					name: path.split('.')[0],
-					path: `/costumes/${path}`,
+					path: `./costumes/${path}`,
 					tags: [path]
 				}
 				return costumeData

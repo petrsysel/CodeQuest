@@ -10,6 +10,7 @@ import bodyParser from "body-parser"
 import { FullPuzzle, generateCode } from "./Puzzle";
 import { readFile, readFileSync, readdir } from "fs";
 import https, { createServer } from 'https'
+import path from "path";
 
 export class Server{
 	constructor(
@@ -25,8 +26,8 @@ export class Server{
 			res.redirect('https://' + domain + req.originalUrl);
 		});
 
-		httpHandler.listen(80, () => {
-			console.log(`Server is listening on http://${hostname}:80`)
+		httpHandler.listen(process.env.HTTP_PORT, () => {
+			console.log(`Server is listening on http://${hostname}:${process.env.HTTP_PORT}`)
 		});
 		
 		const server = createServer({
@@ -55,14 +56,16 @@ export class Server{
 		// 	console.log(`Server is listening on http://${hostname}:${port}`)
 		// })
 		server.listen(port, hostname, () => {
-			console.log(`Server is listening on http://${hostname}:${port}`)
+			console.log(`Server is listening on https://${hostname}:${port}`)
 		})
 
 		// express.get('/', (req, res) => {
 		// 	// res.redirect('http://localhost:5173')	// platform page
 		// })
-		express.use(expres.static('public'))
+		express.use('/app', expres.static("app"));
+		express.use('/', expres.static("docs"));
 		// express.use()
+		// express.use('/', expres.static('./public/docs'))
 		express.get('/api', (req, res) => {
 			readFile('./assets/api.html', (err, data) => {
 				if(err) {
@@ -273,7 +276,7 @@ export class Server{
 		})
 		express.post('/api/costumes', (req, res) => {
 			
-			readdir('./public/costumes',{}, (err, files) => {
+			readdir('./app/costumes',{}, (err, files) => {
 				res.send(files)
 			})
 			

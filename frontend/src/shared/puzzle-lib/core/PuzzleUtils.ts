@@ -54,8 +54,8 @@ export class PuzzleUtils{
 
     static getDefaultCostume(): CostumeData{
         return {
-			name: "Kouzelník",
-			path: "/frontend/costumes/Kouzelník.png",
+			name: "kouzelník",
+			path: "./costumes/kouzelník.png",
 			tags: ["fantasy", "kouzelník"]
 		}
     }

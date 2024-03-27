@@ -15,7 +15,7 @@ export const puzzleSettingsTemplate = /*html*/`
             </div>
             
             <div class="costume-picker-control-bar-item costume-picker-close">
-                <a hfref="javascript:void(0)"  id="puzzle-settings-close-button"><img src="/images/icons/cq-close.png"></a>
+                <a hfref="javascript:void(0)"  id="puzzle-settings-close-button"><img src="./images/icons/cq-close.png"></a>
             </div>
         </div>
         <div class="puzzle-settings-container" id="puzzle-settings-container">

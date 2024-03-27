@@ -10,13 +10,13 @@ export const controlPanelTemplate = /*html*/`
 	<div class="control-panel-controls">
 	<a href="javascript:void(0)" id="puzzle-settings-button-element" class="tooltip">
 	<span class="tooltiptext">Nastavení úlohy</span>
-	<img src="/images/icons/cq-settings.png"></a>
+	<img src="./images/icons/cq-settings.png"></a>
 	<a href="javascript:void(0)" id="try-puzzle-button-element" class="tooltip">
 	<span class="tooltiptext">Spustit úlohu</span>
-	<img src="/images/icons/cq-play.png"></a>
+	<img src="./images/icons/cq-play.png"></a>
 	<a href="javascript:void(0)" id="save-puzzle-button-element" class="tooltip">
 	<span class="tooltiptext">Uložit úlohu</span>
-	<img src="/images/icons/cq-save.png"></a>
+	<img src="./images/icons/cq-save.png"></a>
 	<div>
 `
 

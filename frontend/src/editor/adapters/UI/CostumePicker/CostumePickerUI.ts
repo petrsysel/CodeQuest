@@ -16,7 +16,7 @@ export const CPTemplate = /*html*/`
                 Vyhledat: <input type="text" class="costume-picker-filter" id="cp-filter-input">
             </div>
             <div class="costume-picker-control-bar-item costume-picker-close">
-                <a hfref="javascript:void(0)"  id="cp-close-button"><img src="/images/icons/cq-close.png"></a>
+                <a hfref="javascript:void(0)"  id="cp-close-button"><img src="./images/icons/cq-close.png"></a>
             </div>
         </div>
         <div class="costume-picker-costume-container" id="cp-costume-container">

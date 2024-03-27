@@ -7,13 +7,13 @@ export const objectPanelTemplate = /*html*/`
     <div class="object-panel-controls">
         <a href="javascript:void(0)" id="add-object-button-element" class="tooltip">
         <span class="tooltiptext">Přidat objekt</span>
-        <img src="/images/icons/cq-add.png"></a>
+        <img src="./images/icons/cq-add.png"></a>
         <a href="javascript:void(0)" id="duplicate-object-button-element" class="tooltip">
         <span class="tooltiptext">Duplikovat objekt</span>
-        <img src="/images/icons/cq-duplicate.png"></a>
+        <img src="./images/icons/cq-duplicate.png"></a>
         <a href="javascript:void(0)" id="delete-object-button-element" class="tooltip">
         <span class="tooltiptext">Smazat objekt</span>
-        <img src="/images/icons/cq-delete.png"></a>
+        <img src="./images/icons/cq-delete.png"></a>
     </div>
 
     <div class="objec-table-container">
@@ -71,8 +71,8 @@ export class ObjectPanelUI implements IObjectPanelUI{
             let inGameEdit = document.createElement('td')
             let objectName = document.createElement('td')
 
-            let codeImage = "<img src='/images/icons/cq-code.png'>"
-            let gameImage = "<img src='/images/icons/cq-game.png'>"
+            let codeImage = "<img src='./images/icons/cq-code.png'>"
+            let gameImage = "<img src='./images/icons/cq-game.png'>"
 
             row.appendChild(haveCode)
             row.appendChild(inGameEdit)

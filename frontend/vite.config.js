@@ -1,7 +1,8 @@
 export default {
 	root: './',
+	base: './',
 	build: {
-	  	outDir: '../server/public',
+	  	outDir: '../server/app',
 		rollupOptions: {
 			input: {
 				main: "./index.html",
