@@ -13,6 +13,7 @@ import { PuzzleListUI } from "./platform/adapters/puzzleList/PuzzleListUI"
 import { ServerApi } from "./platform/ServerApi"
 import { ClientIdManager } from "./platform/adapters/ClientIdManager"
 import { NotificationUI } from "./shared/notification/adapters/NotificationUI"
+import { AppStateManager } from "./platform/adapters/AppStateManager"
 
 function main(){
     const serverApi = new ServerApi()
@@ -24,6 +25,7 @@ function main(){
     const insertPuzzleCodeForm = new InsetCodeDialogue()
     const clientIdManager = new ClientIdManager()
     const notification = new NotificationUI()
+    const stateManager = new AppStateManager()
     
     new Platform(
         serverApi,
@@ -34,7 +36,8 @@ function main(){
         registerForm,
         insertPuzzleCodeForm,
         clientIdManager,
-        notification
+        notification,
+        stateManager
     )
 }
 

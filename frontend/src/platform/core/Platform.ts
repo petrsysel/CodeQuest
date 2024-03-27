@@ -2,11 +2,12 @@ import { IDialogue } from "../../shared/dialogue/core/IDialogue";
 import { INotificationUI } from "../../shared/notification/ports/INotificationUI";
 import { Puzzle } from "../../shared/puzzle-lib/core/Puzzle";
 import { getQuestionMarkImg } from "../mocks/getQuestionmarkImg";
+import { IAppStateManager } from "./IAppStateManager";
 import { IClientIdManager } from "./IClientIdManager";
 import { INavBar } from "./INavBar";
 import { IPuzzleListUI } from "./IPuzzleListUI";
 import { IServerAPI, LoginData, PuzzleAccess, RegisterData, ServerAction } from "./IServerAPI";
-import { ISidebar } from "./ISidebar";
+import { ISidebar, PuzzleListMode } from "./ISidebar";
 import { User } from "./User";
 
 export class Platform{
@@ -21,7 +22,8 @@ export class Platform{
         registerForm: IDialogue<RegisterData>,
         insertPuzzleCode: IDialogue<string>,
         clientIdManager: IClientIdManager,
-        yesNoDialogue: INotificationUI
+        yesNoDialogue: INotificationUI,
+        stateManager: IAppStateManager
     ){
         const clientId = clientIdManager.get()
 
@@ -42,24 +44,29 @@ export class Platform{
         serverApi.isLogged(clientId).then(user => {
             this.loggedUser = user
             const logged = user != undefined
+
+            const lastState = stateManager.loadLastState()
+            const mode: PuzzleListMode = lastState === 'public-puzzles' ? 'public' : 'custom'
+            const access: PuzzleAccess = lastState === 'public-puzzles' ? 'public' : 'private'
+
             navBar.render({
                 loggedUser: logged,
                 user: user
             })
             sideBar.render({
                 loggedUser: logged,
-                renderMode: "public"
+                renderMode: mode
             })
             puzzleList.render([], {
-                mode: "public",
+                mode: mode,
                 loggedUser: this.loggedUser != undefined,
                 append: false,
                 limit: 10
             })
-            serverApi.fetchPuzzles(clientId, "public", 10, 0).then(result => {
+            serverApi.fetchPuzzles(clientId, access, 10, 0).then(result => {
                 
                 puzzleList.render(result, {
-                    mode: "public",
+                    mode: mode,
                     loggedUser: this.loggedUser != undefined,
                     append: false,
                     limit: 10
@@ -125,6 +132,7 @@ export class Platform{
         })
 
         sideBar.on('custom-puzzles-request', () => {
+            stateManager.saveState('custom-puzzles')
             sideBar.render({
                 loggedUser: this.loggedUser != undefined,
                 renderMode: "custom"
@@ -141,6 +149,7 @@ export class Platform{
             
         })
         sideBar.on('public-puzzles-request', () => {
+            stateManager.saveState('public-puzzles')
             sideBar.render({
                 loggedUser: this.loggedUser != undefined,
                 renderMode: "public"
