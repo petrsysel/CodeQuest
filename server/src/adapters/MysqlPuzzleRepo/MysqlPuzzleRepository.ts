@@ -26,9 +26,10 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 		const existing = await this.getById(puzzle.id)
 		return new Promise((resolve, reject) => {
 			if(existing){
+				console.log(`Updating puzzle: ${puzzle.name}`)
 				this.connection.query(
-					`UPDATE puzzles SET name=?, content=?,image=? WHERE id=?`,
-					[puzzle.name, puzzle, puzzle.image, puzzle.id],
+					`UPDATE puzzles SET name=?, content=?,image=?, code=? WHERE id=?`,
+					[puzzle.name, puzzle, puzzle.image, puzzle.id, puzzle.code],
 					(err, result) => {
 						if(err) reject(err)
 						else resolve()
@@ -36,6 +37,7 @@ export class MysqlPuzzleRepository implements IPuzzleRepository{
 				)
 			}
 			else{
+				console.log(`Saving new puzzle: ${puzzle.name}`)
 				this.connection.query<ResultSetHeader>(
 					`INSERT INTO puzzles (id, name, author, authorid, content, image, code) VALUES(?,?,?,?,?,?,?)`,
 					[
