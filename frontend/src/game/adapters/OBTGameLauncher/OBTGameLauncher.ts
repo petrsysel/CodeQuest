@@ -63,6 +63,7 @@ import { CallMethodAction } from "./Actions/functions/CallMethodAction";
 import { ReturnFunctionAction } from "./Actions/functions/ReturnFunctionAction";
 import { CallFunctionAction } from "./Actions/functions/CallFunctionAction";
 import { RuleCheckAction } from "./Actions/events/RuleCheckAction";
+import { MultiWaitAction } from "./Actions/events/MultiWaitAction";
 
 export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
@@ -120,6 +121,7 @@ export class OBTGameLauncher implements IGameLauncher{
 			WinAction,
 			GameOverAction,
 			WaitAction,
+			MultiWaitAction,
 			DistanceToAction,
 			IsTouchingAction,
 			IsInFrontOfMeAction,
