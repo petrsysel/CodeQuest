@@ -133,4 +133,6 @@ dist
 archive/**/*
 server/public/**/*
 server/certs/**/*
+server/app/**/*
+server/docs/**/*
 frontend/src/platform/apiConfig.ts
