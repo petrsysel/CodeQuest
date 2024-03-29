@@ -12,7 +12,7 @@ export class MysqlUserRepository implements IUserRepository{
 		connection.on('connection', () => {
 			console.log("Database connected succesfuly.")
 		})
-		connection.on('error', e => {
+		connection.on('', (e: any) => {
 			console.log("Error on DB:")
 			console.log(e)
 		})
