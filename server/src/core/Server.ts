@@ -21,7 +21,6 @@ export class Server{
 	){
 		const httpHandler = expres()
 		httpHandler.use((req, res) => {
-			console.log("redirecting")
 			const domain = process.env.HOST
 			res.redirect('https://' + domain + req.originalUrl);
 		});
