@@ -6,6 +6,13 @@ export class BlocklyToolboxContainer{
   
   <category name="Pohyb" colour="#9fa55b">
   <block type="go_forward" deletable="true" movable="true" editable="true"></block>
+  <block type="go_forward_by" deletable="true" movable="true" editable="true">
+    <value name="steps">
+      <shadow type="math_number">
+        <field name="NUM">1</field>
+      </shadow>
+    </value>
+  </block>
   <block type="jump" deletable="true" movable="true" editable="true"></block>
   <block type="turn" deletable="true" movable="true" editable="true">
     <field name="turn_side">turn_left</field>
@@ -101,7 +108,7 @@ export class BlocklyToolboxContainer{
   <block type="math_number_property">
     <mutation divisor_input="false"></mutation>
     <field name="PROPERTY">EVEN</field>
-    <value name="NUMBER_TO_CHECK">
+    <value name="NUMBER_TO_">
       <shadow type="math_number">
         <field name="NUM">0</field>
       </shadow>

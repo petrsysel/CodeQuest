@@ -11,6 +11,23 @@ export class BlocklyBlockDefinitionContainer{
 		"helpUrl": ""
 	  },
 	  {
+		"type": "go_forward_by",
+		"message0": "Jdi vpřed o %1",
+		"args0": [
+		  {
+			"type": "input_value",
+			"name": "steps",
+			"check": "Number"
+		  }
+		],
+		"inputsInline": true,
+		"previousStatement": null,
+		"nextStatement": null,
+		"colour": 65,
+		"tooltip": "Postavička popojde vpřed o zadaný počet kroků",
+		"helpUrl": ""
+	  },
+	  {
 		"type": "jump",
 		"message0": "Skoč",
 		"previousStatement": null,

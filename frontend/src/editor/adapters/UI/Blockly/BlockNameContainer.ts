@@ -2,6 +2,7 @@ export class BlockNameContainer{
 	private static names = new Map([
 		["nazev_typu", "Jméno bloku"],
 		["go_forward", "Jdi vpřed"],
+		["go_forward_by", "Jdi vpřed o"],
 		["jump", "Skoč"],
 		["turn", "Otoč se"],
 		["set_direction", "Nastav směr"],

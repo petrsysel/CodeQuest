@@ -64,6 +64,7 @@ import { ReturnFunctionAction } from "./Actions/functions/ReturnFunctionAction";
 import { CallFunctionAction } from "./Actions/functions/CallFunctionAction";
 import { RuleCheckAction } from "./Actions/events/RuleCheckAction";
 import { MultiWaitAction } from "./Actions/events/MultiWaitAction";
+import { GoByAction } from "./Actions/movement/GoByActions";
 
 export class OBTGameLauncher implements IGameLauncher{
 	private signal: Signal<LauncherEvent, LaucherData>
@@ -87,6 +88,7 @@ export class OBTGameLauncher implements IGameLauncher{
 		// Pro sestavení stromu musejí být importovány
 		const enabledActions = [
 			GoAction,
+			GoByAction,
 			JumpAction,
 			TurnAction,
 			SetDirectionAction,
@@ -137,7 +139,7 @@ export class OBTGameLauncher implements IGameLauncher{
 		
 		// walkaround for vite optimization
 		eval(`
-			if(${enabledActions.length}) console.log("blbost")
+			if(${enabledActions.length}) console.log("Action state OK")
 		`)
 
 		const operatingPuzzle = puzzle.clone()

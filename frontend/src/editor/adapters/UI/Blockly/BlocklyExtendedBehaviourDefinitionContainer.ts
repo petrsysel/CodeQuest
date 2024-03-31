@@ -14,6 +14,11 @@ export class BlocklyExtendedBehaviourDefinitionContainer {
 			var code = `new GoAction(),`;
 			return code
 		}
+		javascriptGenerator.forBlock['go_forward_by'] = function(block: any, generator: any) {
+			const steps = generator.valueToCode(block, 'steps', javascript.Order.ATOMIC);
+			const code = `new GoByAction(${steps}),`;
+			return code
+		}
 		javascriptGenerator.forBlock['jump'] = function(block: any, generator: any) {
 			var code = `new JumpAction(),`;
 			return code
