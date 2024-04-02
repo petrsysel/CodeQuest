@@ -87,6 +87,7 @@ export class Game{
                 if(!response.error){
                     this._puzzle.loadFromString(response.response!)
 					const playerObject = this._puzzle.getObjectList().find(o => o.settings.playerEdit)?.id
+					controlPanelUI.render(this._puzzle.getSettings())
 					if(playerObject){
 						this._selectedObjectId = playerObject
 						objectList.setSelected(playerObject)
