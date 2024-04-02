@@ -286,4 +286,9 @@ export class Puzzle implements IPuzzle{
         primitive.settings.name += ' - kopie'
         return new Puzzle(primitive)
     }
+    sortObjects(mode: 'layer'){
+        this._primitive.objects = this._primitive.objects.sort((a, b) => {
+            return a.settings.layer - b.settings.layer
+        })
+    }
 }

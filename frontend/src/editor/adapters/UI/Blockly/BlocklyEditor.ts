@@ -48,7 +48,7 @@ export class BlocklyEditor implements ICodeEditorUI {
     
     this._workspace = this._workspaceGenerator.createWorkspace(enabledBlocks)
     this._workspace.addChangeListener((event: any) => {
-      if (event.type == 'move' || event.type == 'change') this._emit('code-change', this.getWorkspace())
+      if (event.type == 'move' || event.type == 'change' || event.type == 'block_field_intermediate_change') this._emit('code-change', this.getWorkspace())
     })
   }
 

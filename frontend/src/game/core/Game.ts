@@ -92,7 +92,11 @@ export class Game{
 						objectList.setSelected(playerObject)
 						objectList.render(this._puzzle.getObjectList())
 						boardUI.setSelected(playerObject)
-						boardUI.render(this._puzzle.getSettings(), this._puzzle.getObjectList())
+						this._puzzle.sortObjects('layer')
+						
+						boardUI.render(this._puzzle.getSettings(),
+							this._puzzle.getObjectList()
+						)
 
 						let object = this._puzzle.getObject(this._selectedObjectId)
 						codeUI.clearWorkspace()
@@ -104,7 +108,9 @@ export class Game{
 		
 						this.originalPuzzle = this._puzzle.clone()
 					}
-					
+					else{
+						console.error("Chybí hráčský objekt.")
+					}
                 }
                 else console.error(response.error)
             })

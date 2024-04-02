@@ -147,9 +147,9 @@ export class KonvaBoardUI implements IBoardUI{
 		
 		this._clearLayer()
 
-		let sortedObjects = objects.sort((a, b) => {
+		let sortedObjects = [...objects.sort((a, b) => {
 			return a.settings.layer - b.settings.layer
-		})
+		})]
 		
 		await sortedObjects.forEach(async object => {
 			const objInst = await this._createInstance(object)
