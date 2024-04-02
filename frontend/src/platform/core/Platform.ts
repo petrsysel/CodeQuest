@@ -46,8 +46,13 @@ export class Platform{
             const logged = user != undefined
 
             const lastState = stateManager.loadLastState()
-            const mode: PuzzleListMode = lastState === 'public-puzzles' ? 'public' : 'custom'
-            const access: PuzzleAccess = lastState === 'public-puzzles' ? 'public' : 'private'
+            let mode: PuzzleListMode = lastState === 'public-puzzles' ? 'public' : 'custom'
+            let access: PuzzleAccess = lastState === 'public-puzzles' ? 'public' : 'private'
+
+            if(!logged){
+                mode = 'public'
+                access = 'public'
+            }
 
             navBar.render({
                 loggedUser: logged,
